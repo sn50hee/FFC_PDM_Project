@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFC_PDM", "FFC_PDM\FFC_PDM.csproj", "{B9D54FB9-C1EE-4C05-9D53-C50C0802E027}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B9D54FB9-C1EE-4C05-9D53-C50C0802E027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9D54FB9-C1EE-4C05-9D53-C50C0802E027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9D54FB9-C1EE-4C05-9D53-C50C0802E027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9D54FB9-C1EE-4C05-9D53-C50C0802E027}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61CE9433-49A6-4DB1-8D49-A5BD81E96D45}
+	EndGlobalSection
+EndGlobal
