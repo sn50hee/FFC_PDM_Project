@@ -96,7 +96,7 @@
                                         <Label x:Name="Voltage" Content="Voltage" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                         <Label Content="안정 범위: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                         <Label Content="위험 장비: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                        <WpfPlot HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
+                                        <WpfPlot x:Name="WP_Volt" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
                                 </Grid>
                             </Border>
                             <Border BorderBrush="Black" Grid.Column="1" BorderThickness="1">

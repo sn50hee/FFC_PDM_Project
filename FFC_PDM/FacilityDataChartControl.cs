@@ -7,14 +7,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using System.Windows.Media;
 //using static ScottPlot.Plottable.PopulationPlot;
 
 namespace FFC_PDM
 {
     internal class FacilityDataChartControl
     {
-        StatisticsTabChartData statisticsTabChartData;
-
         public WpfPlot CreateBarChart(WpfPlot chart, Dictionary<string, int> chartData, string title, bool showValuesAboveBars)
         {
             string[] keys = chartData.Keys.OrderBy(key => key).ToArray();
@@ -53,55 +53,53 @@ namespace FFC_PDM
         }
 
         // 김정관 추가 시작
-        public WpfPlot CreateCustomChart(WpfPlot chart, (List<(string machineID, double voltage)> voltageData, Dictionary<string, double[]> chartData) data, string title)
+        public WpfPlot CreateCustomChart(WpfPlot chart, List<ParseTelemetry> chartData, string title)
         {
             Plot plt = chart.Plot;
 
-            // 예: Voltage에 대한 라인 플롯
-            var voltageLine = plt.AddSignal(data.chartData["Values"]);
-            voltageLine.Color = System.Drawing.Color.Blue;
+            var machineIDsWithVolts = chartData.Select(d => new { MachineID = d.machineID, Volt = d.volt }).ToList();
+            var machineIDs = machineIDsWithVolts.Select(d =>
+            {
+                if (double.TryParse(d.MachineID, out double result))
+                {
+                    return result;
+                }
+                else
+                {
+                    return 0.0;
+                }
+            })
+            .Where(d => !double.IsNaN(d))
+            .ToArray();
 
-            // 추가: 다른 차트 데이터에 대한 플롯 생성
-            // (이 예제에서는 생략)
+            var volts = machineIDsWithVolts.Select(d =>
+            {
+                if (double.TryParse(d.Volt.ToString(), out double result))
+                {
+                    return result;
+                }
+                else
+                {
+                    return 0.0;
+                }
+            }).ToArray();
+
+            var machineIDsSubset = machineIDs.Take(101).ToArray();
+            var voltsSubset = volts.Take(101).ToArray();
+
+            var scatter = plt.AddScatter(machineIDsSubset, voltsSubset);
+            scatter.MarkerSize = 5;
 
             plt.Title(title);
-            plt.XLabel("시간");
-            plt.YLabel("전압");
+            //plt.XLabel("시간");
+            //plt.YLabel("전압");
 
             return chart;
         }
         // 김정관 끝
     }
 
-    // 김정관 추가 시작
-    internal class ViewDetailsTabChartData : FacilityDataControl
-    {
-        public (List<(DateTime datetime, string machineID, double volt)>, Dictionary<string, double[]>) GetVoltageData()
-        {
-            // CSV 파일에서 데이터 읽기
-            var csvData = File.ReadAllLines("Resource/PdM_telemetry.csv")
-                .Skip(1) // 헤더를 건너뜁니다.
-                .Select(line => line.Split(','))
-                .Select(parts => (
-                    datetime: DateTime.Parse(parts[0].Trim('"')),
-                    machineID: parts[1].Trim('"'),
-                    volt: double.Parse(parts[2])
-                ))
-                .ToList();
-
-            // 추가: Voltage를 기반으로 플롯 데이터 생성
-            Dictionary<string, double[]> chartData = new Dictionary<string, double[]>
-            {
-                { "Values", csvData.Select(data => data.volt).ToArray() },
-                // 추가: 기타 차트 데이터도 필요에 따라 추가
-            };
-
-            return (csvData, chartData);
-        }
-
-    }
 
 }
-    //김정관 끝
 
 
