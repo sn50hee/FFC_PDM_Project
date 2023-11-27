@@ -107,10 +107,8 @@ A. 개발 기간: 2023.11.27(월) ~ 2023.11.30(목)
 
 # 4. 기능 및 UI
 ## 1) 기능
-<details>
-<summary></summary>
 
-&nbsp;&nbsp;&nbsp;&nbsp;A) 통계 탭을 통하여 전체 장비의 고장률, 오류 발생률 등 통계 정보를 pie char로 보여준다.
+&nbsp;&nbsp;&nbsp;&nbsp;A) 통계 탭을 통하여 전체 장비의 고장률, 오류 발생률 등 통계 정보를 pie chart로 보여준다.
 
 &nbsp;&nbsp;&nbsp;&nbsp;B) 상세 보기 탭에서는 모델명, 모델ID를 선택할 수 있다.(다중 선택 가능)
 
@@ -124,8 +122,6 @@ A. 개발 기간: 2023.11.27(월) ~ 2023.11.30(목)
 
 &nbsp;&nbsp;&nbsp;&nbsp;G) 고장 횟수, 유지보수 횟수는 bar chart로 보여준다
 
-
-</details>
 
 ## 2) 화면 설계
 통계 탭
