@@ -20,8 +20,8 @@ namespace FFC_PDM
             {
                 ParseTelemetry parseTelemetry = new ParseTelemetry
                 {
-                    datetime = DateTime.Parse(telemetry.datetime),
-                    volt = double.Parse(telemetry.volt),
+                    //datetime = DateTime.Parse(telemetry.datetime),
+                    //volt = double.Parse(telemetry.volt),
                     machineID = telemetry.machineID
                 };
                 parseTelemetryData.Add(parseTelemetry);
