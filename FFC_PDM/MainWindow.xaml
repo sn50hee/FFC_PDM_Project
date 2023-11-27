@@ -5,23 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFC_PDM"
         mc:Ignorable="d"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TabControl>
             <TabItem Header="통계">
                 <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="55*"/>
+                        <ColumnDefinition Width="729*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="3*"/>
                     </Grid.RowDefinitions>
 
-                    <DataGrid x:Name="DG_Name" AutoGenerateColumns="False" CanUserAddRows="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <DataGrid x:Name="DG_Name" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="3" Margin="0,0,0,304" Grid.RowSpan="2">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="모델명" Binding="{Binding Path=model_name}"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid Grid.Row="1" Grid.ColumnSpan="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
@@ -40,6 +46,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="상세 보기">
+                
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">
                     <Grid Background="#FFE5E5E5"  Height="1080">
                         <Grid.RowDefinitions>
@@ -61,9 +68,9 @@
 
                             </Grid.ColumnDefinitions>
                             <Label Content="모델명" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
-                            <ComboBox HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1" Margin="0,0,0,0" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="ModelNameComboBox" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1" Margin="0,0,0,0" VerticalAlignment="Center"/>
                             <Label Content="모델ID" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
-                            <ComboBox HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="3" Margin="0,0,0,0" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="ModelIDComboBox" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="3" Margin="0,0,0,0" VerticalAlignment="Center"/>
                             <Label Content="시작일" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
                             <DatePicker Grid.Row="0" Grid.Column="5" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Center"/>
                             <Label Content="종료일" Grid.Row="0" Grid.Column="6" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
@@ -80,16 +87,16 @@
                             <Border BorderBrush="Black" Grid.Column="0" BorderThickness="1">
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="1*"/>
-                                        <RowDefinition Height="1*"/>
-                                        <RowDefinition Height="1*"/>
-                                        <RowDefinition Height="5*"/>
-                                    </Grid.RowDefinitions>
+                                            <RowDefinition Height="1*"/>
+                                            <RowDefinition Height="1*"/>
+                                            <RowDefinition Height="1*"/>
+                                            <RowDefinition Height="5*"/>
+                                        </Grid.RowDefinitions>
 
-                                    <Label Content="Data1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <Label Content="안정 범위: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <Label Content="위험 장비: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <WpfPlot HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
+                                        <Label x:Name="Voltage" Content="Voltage" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <Label Content="안정 범위: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <Label Content="위험 장비: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <WpfPlot HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
                                 </Grid>
                             </Border>
                             <Border BorderBrush="Black" Grid.Column="1" BorderThickness="1">
@@ -101,7 +108,7 @@
                                         <RowDefinition Height="5*"/>
                                     </Grid.RowDefinitions>
 
-                                    <Label Content="Data1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <Label x:Name="Rotate" Content="Rotate" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <Label Content="안정 범위: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <Label Content="위험 장비: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <WpfPlot HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
@@ -117,7 +124,7 @@
                                         <RowDefinition Height="5*"/>
                                     </Grid.RowDefinitions>
 
-                                    <Label Content="Data1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <Label x:Name="Pressure" Content="Pressure" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <Label Content="안정 범위: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <Label Content="위험 장비: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <WpfPlot HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
@@ -132,7 +139,7 @@
                                         <RowDefinition Height="5*"/>
                                     </Grid.RowDefinitions>
 
-                                    <Label Content="Data1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <Label Content="Vibration" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <Label Content="안정 범위: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <Label Content="위험 장비: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <WpfPlot HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>

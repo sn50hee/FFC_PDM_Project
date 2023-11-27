@@ -99,4 +99,7 @@ namespace FFC_PDM
         public string pressure { get; set; }
         public string vibration { get; set; }
     }
+
+
+
 }
