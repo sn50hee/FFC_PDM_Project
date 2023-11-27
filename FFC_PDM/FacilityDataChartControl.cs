@@ -53,20 +53,6 @@ namespace FFC_PDM
         }
 
         // 김정관 추가 시작
-<<<<<<< HEAD
-        public WpfPlot CreateCustomChart(WpfPlot chart, List<Telemetry> telemetryData, string title)
-        {
-            Plot plt = chart.Plot;
-
-            var voltageLine = plt.AddSignal(telemetryData.Select(data => data.volt).ToArray());
-            voltageLine.Color = System.Drawing.Color.Blue;
-
-            // Additional plots for other telemetry data (rotate, pressure, vibration) can be added here.
-
-            plt.Title(title);
-            plt.XLabel("Datetime");
-            plt.YLabel("Voltage");
-=======
         public WpfPlot CreateCustomChart(WpfPlot chart, List<ParseTelemetry> chartData, string title)
         {
             Plot plt = chart.Plot;
@@ -107,30 +93,12 @@ namespace FFC_PDM
             plt.Title(title);
             //plt.XLabel("시간");
             //plt.YLabel("전압");
->>>>>>> 89b3fd15e1f0944c5861aacadac5936e2e188c5d
 
             return chart;
         }
         // 김정관 끝
     }
 
-<<<<<<< HEAD
-    // 김정관 추가 시작
-    internal class ViewDetailsTabChartData : FacilityDataControl
-    {
-        public List<Telemetry> GetTelemetryData()
-        {
-            // Use the GetTelemetryData method from FacilityDataControl
-            return base.GetTelemetryData();
-        }
-
-        internal List<Telemetry> GetTelemetryChartData()
-        {
-            throw new NotImplementedException();
-        }
-    }
-=======
->>>>>>> 89b3fd15e1f0944c5861aacadac5936e2e188c5d
 
 }
 

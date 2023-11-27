@@ -22,7 +22,6 @@ namespace FFC_PDM
     /// </summary>
     public partial class MainWindow : Window
     {
-        FacilityDataChartControl facilityDataChartControl;
         public MainWindow()
         {
             InitializeComponent();
@@ -31,8 +30,9 @@ namespace FFC_PDM
             Col2View();
             Col3View();
 
-            InitDetailsTab();
-            facilityDataChartControl = new FacilityDataChartControl();
+            //김정관 추가
+            UpdateVoltageGraph();
+            //김정관 끝
         }
 
         public void GridDataView()
@@ -71,33 +71,11 @@ namespace FFC_PDM
             col3.Refresh();
         }
 
-        public void LoadTelemetryChart()
+
+        // 김정관 추가
+        private void UpdateVoltageGraph()
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
-<<<<<<< HEAD
-            var telemetryChartData = new ViewDetailsTabChartData().GetTelemetryChartData();
-            col1 = facilityDataChartControl.CreateCustomChart(col1, telemetryChartData, "Voltage Chart");
-            col1.Refresh();
-        }
-
-        private void InitDetailsTab()
-        {
-            // 백그라운드 스레드에서 데이터 가져오기
-            Task.Run(() =>
-            {
-                var modelNames = GetModelNames();
-                var modelIDs = GetModelIDs();
-
-                // UI 스레드에서 업데이트
-                Dispatcher.Invoke(() =>
-                {
-                    // 모델명 ComboBox 초기화
-                    ModelNameComboBox.ItemsSource = modelNames;
-                    // 모델 ID ComboBox 초기화
-                    ModelIDComboBox.ItemsSource = modelIDs;
-                });
-            });
-=======
             List<ParseTelemetry> date = new ViewDetailsTabChartData().GetVoltageData();
             WP_Volt = facilityDataChartControl.CreateCustomChart(WP_Volt, date, "VoltageGraph");
             WP_Volt.Refresh();
@@ -142,58 +120,9 @@ namespace FFC_PDM
             //     그래프 업데이트
             //    WP_Volt.Refresh();
             //});
->>>>>>> 89b3fd15e1f0944c5861aacadac5936e2e188c5d
         }
 
-        private List<string> GetModelNames()
-        {
-            var telemetryData = new FacilityDataControl().GetTelemetryData();
-            return telemetryData.Select(t => t.machineID).Distinct().ToList();
-        }
-
-        private List<string> GetModelIDs()
-        {
-            var telemetryData = new FacilityDataControl().GetTelemetryData();
-            return telemetryData.Select(t => t.machineID).Distinct().ToList();
-        }
-
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            // 선택된 모델 ID 가져오기
-            string selectedModelID = ModelIDComboBox.SelectedItem as string;
-
-            // 선택된 시작일과 종료일 가져오기
-            DateTime startDate = DatePickerStart.SelectedDate ?? DateTime.MinValue;
-            DateTime endDate = DatePickerEnd.SelectedDate ?? DateTime.MaxValue;
-
-            // Telemetry 데이터 가져오기
-            List<Telemetry> telemetryData = GetTelemetryData(selectedModelID, startDate, endDate);
-
-            // 차트 업데이트
-            UpdateCharts(telemetryData);
-        }
-
-        private List<Telemetry> GetTelemetryData(string modelID, DateTime startDate, DateTime endDate)
-        {
-            // 모든 Telemetry 데이터 가져오기
-            List<Telemetry> allTelemetryData = new FacilityDataControl().GetTelemetryData();
-
-            // 선택된 모델 ID로 필터링
-            List<Telemetry> filteredData = allTelemetryData
-                .Where(data => data.machineID == modelID && data.datetime >= startDate && data.datetime <= endDate)
-                .ToList();
-
-            return filteredData;
-        }
-
-        private void UpdateCharts(List<Telemetry> telemetryData)
-        {
-            // VoltagePlot 차트 업데이트
-            facilityDataChartControl.CreateCustomChart(VoltagePlot, telemetryData, "Voltage Chart");
-
-            // 추가적으로 필요한 차트 업데이트를 여기에 추가할 수 있습니다.
-        }
-
+        // 김정관 끝
     }
 
     public class GridData

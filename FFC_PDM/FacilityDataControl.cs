@@ -60,6 +60,8 @@ namespace FFC_PDM
             string filePath = "FFC_PDM.Resources.PdM_telemetry.csv";
             return ReadData(filePath, line => new Telemetry { datetime = line[0], machineID = line[1], volt = line[2], rotate = line[3], pressure = line[4], vibration = line[5] });
         }
+
+        }
     }
 
     public class Failures
@@ -92,14 +94,10 @@ namespace FFC_PDM
 
     public class Telemetry
     {
-        public string datetime { get; set; }
+    public string datetime { get; set; }
         public string machineID { get; set; }
         public string volt { get; set; }
         public string rotate { get; set; }
         public string pressure { get; set; }
         public string vibration { get; set; }
     }
-
-
-
-}
