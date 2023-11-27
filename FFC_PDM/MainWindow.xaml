@@ -94,10 +94,17 @@
                                         <RowDefinition Height="5*"/>
                                     </Grid.RowDefinitions>
 
+<<<<<<< HEAD
                                     <Label x:Name="Voltage" Content="Voltage" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <Label Content="안정 범위: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <Label Content="위험 장비: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <WpfPlot x:Name="VoltagePlot" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
+=======
+                                        <Label x:Name="Voltage" Content="Voltage" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <Label Content="안정 범위: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <Label Content="위험 장비: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <WpfPlot x:Name="WP_Volt" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
+>>>>>>> 89b3fd15e1f0944c5861aacadac5936e2e188c5d
                                 </Grid>
                             </Border>
 

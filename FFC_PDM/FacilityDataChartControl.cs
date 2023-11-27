@@ -7,14 +7,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using System.Windows.Media;
 //using static ScottPlot.Plottable.PopulationPlot;
 
 namespace FFC_PDM
 {
     internal class FacilityDataChartControl
     {
-        StatisticsTabChartData statisticsTabChartData;
-
         public WpfPlot CreateBarChart(WpfPlot chart, Dictionary<string, int> chartData, string title, bool showValuesAboveBars)
         {
             string[] keys = chartData.Keys.OrderBy(key => key).ToArray();
@@ -53,6 +53,7 @@ namespace FFC_PDM
         }
 
         // 김정관 추가 시작
+<<<<<<< HEAD
         public WpfPlot CreateCustomChart(WpfPlot chart, List<Telemetry> telemetryData, string title)
         {
             Plot plt = chart.Plot;
@@ -65,12 +66,55 @@ namespace FFC_PDM
             plt.Title(title);
             plt.XLabel("Datetime");
             plt.YLabel("Voltage");
+=======
+        public WpfPlot CreateCustomChart(WpfPlot chart, List<ParseTelemetry> chartData, string title)
+        {
+            Plot plt = chart.Plot;
+
+            var machineIDsWithVolts = chartData.Select(d => new { MachineID = d.machineID, Volt = d.volt }).ToList();
+            var machineIDs = machineIDsWithVolts.Select(d =>
+            {
+                if (double.TryParse(d.MachineID, out double result))
+                {
+                    return result;
+                }
+                else
+                {
+                    return 0.0;
+                }
+            })
+            .Where(d => !double.IsNaN(d))
+            .ToArray();
+
+            var volts = machineIDsWithVolts.Select(d =>
+            {
+                if (double.TryParse(d.Volt.ToString(), out double result))
+                {
+                    return result;
+                }
+                else
+                {
+                    return 0.0;
+                }
+            }).ToArray();
+
+            var machineIDsSubset = machineIDs.Take(101).ToArray();
+            var voltsSubset = volts.Take(101).ToArray();
+
+            var scatter = plt.AddScatter(machineIDsSubset, voltsSubset);
+            scatter.MarkerSize = 5;
+
+            plt.Title(title);
+            //plt.XLabel("시간");
+            //plt.YLabel("전압");
+>>>>>>> 89b3fd15e1f0944c5861aacadac5936e2e188c5d
 
             return chart;
         }
         // 김정관 끝
     }
 
+<<<<<<< HEAD
     // 김정관 추가 시작
     internal class ViewDetailsTabChartData : FacilityDataControl
     {
@@ -85,8 +129,9 @@ namespace FFC_PDM
             throw new NotImplementedException();
         }
     }
+=======
+>>>>>>> 89b3fd15e1f0944c5861aacadac5936e2e188c5d
 
 }
-    //김정관 끝
 
 
