@@ -75,48 +75,51 @@ namespace FFC_PDM
         // 김정관 추가
         private void UpdateVoltageGraph()
         {
-            ViewDetailsTabChartData viewDetailsTabChartData = new ViewDetailsTabChartData();
-            var voltageData = viewDetailsTabChartData.GetVoltageData();
+            FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
+            List<ParseTelemetry> date = new ViewDetailsTabChartData().GetVoltageData();
+            WP_Volt = facilityDataChartControl.CreateCustomChart(WP_Volt, date, "VoltageGraph");
+            WP_Volt.Refresh();
+            // WP_Volt
 
             // UI 업데이트를 Dispatcher에서 실행
-            Dispatcher.Invoke(() =>
-            {
-                // 여기서는 간단히 예시로 Scatter 플롯을 그리도록 하겠습니다.
-                col1.Plot.Clear();
+            //Dispatcher.Invoke(() =>
+            //{
+            //     여기서는 간단히 예시로 Scatter 플롯을 그리도록 하겠습니다.
+            //    WP_Volt.Plot.Clear();
 
-                var machineIDsWithVolts = voltageData.Item1.Select(d => new { MachineID = d.machineID, Volt = d.volt }).ToList();
-                var machineIDs = machineIDsWithVolts.Select(d =>
-                {
-                    if (double.TryParse(d.MachineID, out double result))
-                    {
-                        return result;
-                    }
-                    else
-                    {
-                        return 0.0;
-                    }
-                })
-                .Where(d => !double.IsNaN(d))
-                .ToArray();
+            //    var machineIDsWithVolts = voltageData.Item1.Select(d => new { MachineID = d.machineID, Volt = d.volt }).ToList();
+            //    var machineIDs = machineIDsWithVolts.Select(d =>
+            //    {
+            //        if (double.TryParse(d.MachineID, out double result))
+            //        {
+            //            return result;
+            //        }
+            //        else
+            //        {
+            //            return 0.0;
+            //        }
+            //    })
+            //    .Where(d => !double.IsNaN(d))
+            //    .ToArray();
 
-                var volts = machineIDsWithVolts.Select(d =>
-                {
-                    if (double.TryParse(d.Volt.ToString(), out double result))
-                    {
-                        return result;
-                    }
-                    else
-                    {
-                        return 0.0;
-                    }
-                }).ToArray();
+            //    var volts = machineIDsWithVolts.Select(d =>
+            //    {
+            //        if (double.TryParse(d.Volt.ToString(), out double result))
+            //        {
+            //            return result;
+            //        }
+            //        else
+            //        {
+            //            return 0.0;
+            //        }
+            //    }).ToArray();
 
-                var scatter = col1.Plot.AddScatter(machineIDs, volts);
-                scatter.MarkerSize = 5;
+            //    var scatter = WP_Volt.Plot.AddScatter(machineIDs, volts);
+            //    scatter.MarkerSize = 5;
 
-                // 그래프 업데이트
-                col1.Refresh();
-            });
+            //     그래프 업데이트
+            //    WP_Volt.Refresh();
+            //});
         }
 
         // 김정관 끝
