@@ -23,7 +23,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;[캐글의 xinjang(Predictive Maintenance)의 PdM 데이터 활용](https://www.kaggle.com/datasets/yuansaijie0604/xinjiang-pm/code)
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp; 데이터 예시</summary>
+&nbsp;&nbsp;&nbsp;&nbsp; <summary>데이터 예시</summary>
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. PdM_errors.csv
 
