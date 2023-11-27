@@ -62,7 +62,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. 언어: python3.8
 
-&nbsp;&nbsp;&nbsp;&nbsp;B. 라이브러리: numpy1.24.3, pandas2.0.3
+&nbsp;&nbsp;&nbsp;&nbsp;B. 라이브러리: numpy1.24.3, pandas2.0.3, joblib
 
 &nbsp;&nbsp;&nbsp;&nbsp;C. 개발 툴: Visual Studio Code 1.84.2
 </details>
@@ -80,11 +80,8 @@
 <details>
 <summary>1-3) 데이터 분석 모델과 WPF 연결</summary>
 
-&nbsp;&nbsp;&nbsp;&nbsp;A. 
+&nbsp;&nbsp;&nbsp;&nbsp;A. 구현체: IronPython
 
-&nbsp;&nbsp;&nbsp;&nbsp;B. 
-
-&nbsp;&nbsp;&nbsp;&nbsp;C. 
 </details>
 
 
