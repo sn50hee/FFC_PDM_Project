@@ -53,20 +53,18 @@ namespace FFC_PDM
         }
 
         // 김정관 추가 시작
-        public WpfPlot CreateCustomChart(WpfPlot chart, (List<(string machineID, double voltage)> voltageData, Dictionary<string, double[]> chartData) data, string title)
+        public WpfPlot CreateCustomChart(WpfPlot chart, List<Telemetry> telemetryData, string title)
         {
             Plot plt = chart.Plot;
 
-            // 예: Voltage에 대한 라인 플롯
-            var voltageLine = plt.AddSignal(data.chartData["Values"]);
+            var voltageLine = plt.AddSignal(telemetryData.Select(data => data.volt).ToArray());
             voltageLine.Color = System.Drawing.Color.Blue;
 
-            // 추가: 다른 차트 데이터에 대한 플롯 생성
-            // (이 예제에서는 생략)
+            // Additional plots for other telemetry data (rotate, pressure, vibration) can be added here.
 
             plt.Title(title);
-            plt.XLabel("시간");
-            plt.YLabel("전압");
+            plt.XLabel("Datetime");
+            plt.YLabel("Voltage");
 
             return chart;
         }
@@ -76,29 +74,16 @@ namespace FFC_PDM
     // 김정관 추가 시작
     internal class ViewDetailsTabChartData : FacilityDataControl
     {
-        public (List<(DateTime datetime, string machineID, double volt)>, Dictionary<string, double[]>) GetVoltageData()
+        public List<Telemetry> GetTelemetryData()
         {
-            // CSV 파일에서 데이터 읽기
-            var csvData = File.ReadAllLines("Resource/PdM_telemetry.csv")
-                .Skip(1) // 헤더를 건너뜁니다.
-                .Select(line => line.Split(','))
-                .Select(parts => (
-                    datetime: DateTime.Parse(parts[0].Trim('"')),
-                    machineID: parts[1].Trim('"'),
-                    volt: double.Parse(parts[2])
-                ))
-                .ToList();
-
-            // 추가: Voltage를 기반으로 플롯 데이터 생성
-            Dictionary<string, double[]> chartData = new Dictionary<string, double[]>
-            {
-                { "Values", csvData.Select(data => data.volt).ToArray() },
-                // 추가: 기타 차트 데이터도 필요에 따라 추가
-            };
-
-            return (csvData, chartData);
+            // Use the GetTelemetryData method from FacilityDataControl
+            return base.GetTelemetryData();
         }
 
+        internal List<Telemetry> GetTelemetryChartData()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

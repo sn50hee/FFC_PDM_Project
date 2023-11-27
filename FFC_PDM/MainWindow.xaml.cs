@@ -22,6 +22,7 @@ namespace FFC_PDM
     /// </summary>
     public partial class MainWindow : Window
     {
+        FacilityDataChartControl facilityDataChartControl;
         public MainWindow()
         {
             InitializeComponent();
@@ -30,9 +31,8 @@ namespace FFC_PDM
             Col2View();
             Col3View();
 
-            //김정관 추가
-            UpdateVoltageGraph();
-            //김정관 끝
+            InitDetailsTab();
+            facilityDataChartControl = new FacilityDataChartControl();
         }
 
         public void GridDataView()
@@ -71,55 +71,82 @@ namespace FFC_PDM
             col3.Refresh();
         }
 
-
-        // 김정관 추가
-        private void UpdateVoltageGraph()
+        public void LoadTelemetryChart()
         {
-            ViewDetailsTabChartData viewDetailsTabChartData = new ViewDetailsTabChartData();
-            var voltageData = viewDetailsTabChartData.GetVoltageData();
+            FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
+            var telemetryChartData = new ViewDetailsTabChartData().GetTelemetryChartData();
+            col1 = facilityDataChartControl.CreateCustomChart(col1, telemetryChartData, "Voltage Chart");
+            col1.Refresh();
+        }
 
-            // UI 업데이트를 Dispatcher에서 실행
-            Dispatcher.Invoke(() =>
+        private void InitDetailsTab()
+        {
+            // 백그라운드 스레드에서 데이터 가져오기
+            Task.Run(() =>
             {
-                // 여기서는 간단히 예시로 Scatter 플롯을 그리도록 하겠습니다.
-                col1.Plot.Clear();
+                var modelNames = GetModelNames();
+                var modelIDs = GetModelIDs();
 
-                var machineIDsWithVolts = voltageData.Item1.Select(d => new { MachineID = d.machineID, Volt = d.volt }).ToList();
-                var machineIDs = machineIDsWithVolts.Select(d =>
+                // UI 스레드에서 업데이트
+                Dispatcher.Invoke(() =>
                 {
-                    if (double.TryParse(d.MachineID, out double result))
-                    {
-                        return result;
-                    }
-                    else
-                    {
-                        return 0.0;
-                    }
-                })
-                .Where(d => !double.IsNaN(d))
-                .ToArray();
-
-                var volts = machineIDsWithVolts.Select(d =>
-                {
-                    if (double.TryParse(d.Volt.ToString(), out double result))
-                    {
-                        return result;
-                    }
-                    else
-                    {
-                        return 0.0;
-                    }
-                }).ToArray();
-
-                var scatter = col1.Plot.AddScatter(machineIDs, volts);
-                scatter.MarkerSize = 5;
-
-                // 그래프 업데이트
-                col1.Refresh();
+                    // 모델명 ComboBox 초기화
+                    ModelNameComboBox.ItemsSource = modelNames;
+                    // 모델 ID ComboBox 초기화
+                    ModelIDComboBox.ItemsSource = modelIDs;
+                });
             });
         }
 
-        // 김정관 끝
+        private List<string> GetModelNames()
+        {
+            var telemetryData = new FacilityDataControl().GetTelemetryData();
+            return telemetryData.Select(t => t.machineID).Distinct().ToList();
+        }
+
+        private List<string> GetModelIDs()
+        {
+            var telemetryData = new FacilityDataControl().GetTelemetryData();
+            return telemetryData.Select(t => t.machineID).Distinct().ToList();
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            // 선택된 모델 ID 가져오기
+            string selectedModelID = ModelIDComboBox.SelectedItem as string;
+
+            // 선택된 시작일과 종료일 가져오기
+            DateTime startDate = DatePickerStart.SelectedDate ?? DateTime.MinValue;
+            DateTime endDate = DatePickerEnd.SelectedDate ?? DateTime.MaxValue;
+
+            // Telemetry 데이터 가져오기
+            List<Telemetry> telemetryData = GetTelemetryData(selectedModelID, startDate, endDate);
+
+            // 차트 업데이트
+            UpdateCharts(telemetryData);
+        }
+
+        private List<Telemetry> GetTelemetryData(string modelID, DateTime startDate, DateTime endDate)
+        {
+            // 모든 Telemetry 데이터 가져오기
+            List<Telemetry> allTelemetryData = new FacilityDataControl().GetTelemetryData();
+
+            // 선택된 모델 ID로 필터링
+            List<Telemetry> filteredData = allTelemetryData
+                .Where(data => data.machineID == modelID && data.datetime >= startDate && data.datetime <= endDate)
+                .ToList();
+
+            return filteredData;
+        }
+
+        private void UpdateCharts(List<Telemetry> telemetryData)
+        {
+            // VoltagePlot 차트 업데이트
+            facilityDataChartControl.CreateCustomChart(VoltagePlot, telemetryData, "Voltage Chart");
+
+            // 추가적으로 필요한 차트 업데이트를 여기에 추가할 수 있습니다.
+        }
+
     }
 
     public class GridData
