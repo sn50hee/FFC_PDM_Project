@@ -80,7 +80,7 @@
 <details>
 <summary>1-3) 데이터 분석 모델과 WPF 연결</summary>
 
-&nbsp;&nbsp;&nbsp;&nbsp;A. 구현체: IronPython
+&nbsp;&nbsp;&nbsp;&nbsp;A. 구현체: IronPython3.4.1
 
 </details>
 
