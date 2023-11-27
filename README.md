@@ -101,7 +101,8 @@ A. 개발 기간: 2023.11.27(월) ~ 2023.11.30(목)
 <details>
 <summary>C. 클래스 다이어그램</summary>
 
-![클래스 다이어그램](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/ce7c6faa-68ca-4233-bbf5-36d88f01e2cd)
+![클래스 다이어그램](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/27bccb82-3e69-413a-9e9f-04ea0b955ba2)
+
 
 </details>
 
