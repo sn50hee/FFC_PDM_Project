@@ -22,6 +22,33 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;[캐글의 xinjang(Predictive Maintenance)의 PdM 데이터 활용](https://www.kaggle.com/datasets/yuansaijie0604/xinjiang-pm/code)
 
+<details>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp; 데이터 예시</summary>
+
+&nbsp;&nbsp;&nbsp;&nbsp;A. PdM_errors.csv
+
+![image](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/85281b24-7ed6-462d-832e-7f24134a4c59)
+
+&nbsp;&nbsp;&nbsp;&nbsp;B. PdM_failures.csv
+
+![image](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/fce08720-5f42-4a3d-a250-4a525e2159e4)
+
+&nbsp;&nbsp;&nbsp;&nbsp;C. PdM_machines.csv
+
+![image](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/1322c73a-8434-4caa-aed6-71865e7cd0bb)
+
+&nbsp;&nbsp;&nbsp;&nbsp;D. PdM_maint.csv
+
+![image](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/80ae350e-8b76-4d2a-a052-3f7d6b2a1727)
+
+&nbsp;&nbsp;&nbsp;&nbsp;E. PdM_telemetry.csv
+
+![image](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/f1b56fff-224b-4973-bdb5-ee30d90ee050)
+
+</details>
+
+
+
 - 데이터 분석 계획
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A. 장비 가동 데이터, 장비 정보, 설비 고장 이력 데이터, 경고 이력 데이터, 유지 보수 이력 데이터를 활용하여 고장에 위험을 주는 요소를 선별한다.
