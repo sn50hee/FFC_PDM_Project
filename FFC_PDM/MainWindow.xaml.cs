@@ -1,6 +1,7 @@
 ﻿using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,11 +29,20 @@ namespace FFC_PDM
         public MainWindow()
         {
             InitializeComponent();
-            //GridDataView();
-            Col1View();
-            Col2View();
-            Col3View();
+
+            // 윤석희 추가
+            WP_HindranceRateView();
+            WP_RecentFacilityView();
+            WP_ErrorRateView();
+            /*
+             * 아래 코드는 통계 탭 고장 위험 장비 목록 보여주는 건데 주석 풀면 실행 시간 너무 오래 걸리니까 테스트 할 때는 주석 풀지 말아주세요
+             * DG_FailuressListView();
+             */
+
+            // 윤석희끝
+
             GenerateCBModelName();
+            
 
             //김정관 추가
             UpdateVoltageGraph();
@@ -43,40 +53,35 @@ namespace FFC_PDM
 
         }
 
-        public void GridDataView() // 샘플데이터 표시(김정관)
+        public void DG_FailuressListView()
         {
-            List<GridData> list = new List<GridData>();
-            list.Add(new GridData { modelId = "1" });
-            list.Add(new GridData { modelId = "2" });
-            list.Add(new GridData { modelId = "3" });
-            list.Add(new GridData { modelId = "4" });
-            list.Add(new GridData { modelId = "5" });
+            List<StatisticsTabGridData> data = new StatisticsTabChartData().GetFailuressListViewData();
+            DG_FailuressList.ItemsSource = data;
 
-            DG_Name.ItemsSource = list;
         }
 
-        public void Col1View() // 차트 생성 및 초기화, Datagrid에 연결
+        public void WP_HindranceRateView() // 차트 생성 및 초기화, Datagrid에 연결
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
-            Dictionary<string, int> date = new StatisticsTabChartData().HindranceRateData();
-            col1 = facilityDataChartControl.CreatePieChart(col1, date, "부품별 고장", true, true, true);
-            col1.Refresh();
+            Dictionary<string, int> data = new StatisticsTabChartData().HindranceRateData();
+            WP_HindranceRate = facilityDataChartControl.CreatePieChart(WP_HindranceRate, data, "부품별 고장", true, true, true);
+            WP_HindranceRate.Refresh();
         }
 
-        public void Col2View()
+        public void WP_RecentFacilityView()
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
-            Dictionary<string, int> date = new StatisticsTabChartData().RecentErrorsData();
-            col2 = facilityDataChartControl.CreateBarChart(col2, date, "최근 10일 고장 모델", true);
-            col2.Refresh();
+            Dictionary<string, int> data = new StatisticsTabChartData().RecentFacilityData();
+            WP_RecentFacility = facilityDataChartControl.CreateBarChart(WP_RecentFacility, data, "최근 10건 고장 모델", true);
+            WP_RecentFacility.Refresh();
         }
 
-        public void Col3View()
+        public void WP_ErrorRateView()
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
-            Dictionary<string, int> date = new StatisticsTabChartData().ErrorRateData();
-            col3 = facilityDataChartControl.CreateBarChart(col3, date, "오류 횟수", true);
-            col3.Refresh();
+            Dictionary<string, int> data = new StatisticsTabChartData().ErrorRateData();
+            WP_ErrorRate = facilityDataChartControl.CreateBarChart(WP_ErrorRate, data, "오류 횟수", true);
+            WP_ErrorRate.Refresh();
         }
 
         public void GenerateCBModelName()
@@ -145,10 +150,13 @@ namespace FFC_PDM
         }
         // 김정관 끝
 
+        ObservableCollection<StatisticsTabGridData> gridDatas = new ObservableCollection<StatisticsTabGridData>();
+        
         private void AddRowButton_Click(object sender, RoutedEventArgs e)
         {
             // + 버튼 클릭 시 새로운 행 추가
-            DG_checkData.Items.Add(new GridData());
+            gridDatas.Add(new StatisticsTabGridData { age = null, modelId = null, pressure = null, rotate = null, vibration = null, volt = null, failure = null});
+            DG_checkData.ItemsSource = gridDatas;
         }
 
         private void RemoveRowButton_Click(object sender, RoutedEventArgs e)
@@ -156,20 +164,39 @@ namespace FFC_PDM
             if (DG_checkData.Items.Count > 0)
             {
                 int lastIndex = DG_checkData.Items.Count - 1;
-                DG_checkData.Items.RemoveAt(lastIndex);
+                gridDatas.RemoveAt(lastIndex);
             }
+        }
+
+        private void Btn_check_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> inputDataList = new List<string>();
+            foreach(StatisticsTabGridData data in gridDatas)
+            {
+                if(data.volt == null ||  data.rotate == null || data.pressure == null || data.vibration == null || data.modelId == null || data.age == null)
+                {
+                    MessageBox.Show("모든 값을 입력해야 합니다");
+                    break;
+                }
+                inputDataList.Add($"[[{data.volt.ToString()},{data.rotate.ToString()},{data.pressure.ToString()},{data.vibration.ToString()},0,{data.modelId.ToString()},{data.age.ToString()}]]");
+            }
+            GetPythonModel getPythonModel = new GetPythonModel();
+            List<string> outputDataList = getPythonModel.FailureCheck(inputDataList);
+
+            for(int i = 0; i < outputDataList.Count; i++)
+            {
+                if (outputDataList[i] == "[1]\r\n")
+                {
+                    gridDatas[i].failure = "고장 위험";
+                }
+                else
+                {
+                    gridDatas[i].failure = "안전";
+                }
+            }
+
+            DG_checkData.Items.Refresh();
         }
     }
 
-
-    public class GridData
-    {
-        public string modelId { get; set; }
-        public string age { get; set; }
-        public string errorID { get; set; }
-        public string volt { get; set; }
-        public string rotate { get; set; }
-        public string pressure { get; set; }
-        public string vibration { get; set; }
-    }
 }

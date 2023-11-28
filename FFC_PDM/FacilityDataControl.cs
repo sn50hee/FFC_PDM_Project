@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Windows.Controls;
 
 namespace FFC_PDM
 {
@@ -91,6 +93,12 @@ namespace FFC_PDM
 
             return telemetryData;
         }
+
+        public List<StatisticsTabGridData> GetLatestTelemetryData()
+        {
+            string filePath = "FFC_PDM.Resources.PdM_telemetry_latest.csv";
+            return ReadData(filePath, line => new StatisticsTabGridData { volt = double.Parse(line[0]), rotate= double.Parse(line[1]), pressure= double.Parse(line[2]), vibration= double.Parse(line[3]), modelId = int.Parse(line[5]), age= int.Parse(line[6]), failure=null });
+        }
     }
 }
 
@@ -142,3 +150,15 @@ public class ParseTelemetry_1
     public double pressure { get; set; }
     public double vibration { get; set; }
 }
+
+public class StatisticsTabGridData
+{
+    public int? modelId { get; set; }
+    public int? age { get; set; }
+    public double? volt { get; set; }
+    public double? rotate { get; set; }
+    public double? pressure { get; set; }
+    public double? vibration { get; set; }
+    public string failure { get; set; }
+}
+
