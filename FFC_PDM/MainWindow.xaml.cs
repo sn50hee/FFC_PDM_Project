@@ -74,7 +74,7 @@ namespace FFC_PDM
         public void Col3View()
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
-            Dictionary<string, int>  date = new StatisticsTabChartData().ErrorRateData();
+            Dictionary<string, int> date = new StatisticsTabChartData().ErrorRateData();
             col3 = facilityDataChartControl.CreateBarChart(col3, date, "오류 횟수", true);
             col3.Refresh();
         }
@@ -83,8 +83,9 @@ namespace FFC_PDM
         {
             SearchDataFilterl searchDataFilterl = new SearchDataFilterl();
             CB_ModelName = searchDataFilterl.MadeComboBox(CB_ModelName);
-            
+
         }
+
         /*
         public void GenerateCBModelID()
         {
@@ -112,15 +113,15 @@ namespace FFC_PDM
 
                 CB_Model_ID.Items.Add((i).ToString());
             }
-       
 
-            
+
+
             // machineIDList를 콤보박스에 추가하기
         }
 
         private void CB_Model_ID_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
         }
 
         // 김정관 추가
@@ -197,11 +198,32 @@ namespace FFC_PDM
 
         }
         // 김정관 끝
+
+        private void AddRowButton_Click(object sender, RoutedEventArgs e)
+        {
+            // + 버튼 클릭 시 새로운 행 추가
+            DG_checkData.Items.Add(new GridData());
+        }
+
+        private void RemoveRowButton_Click(object sender, RoutedEventArgs e)
+        {
+            // - 버튼 클릭 시 가장 최근에 추가된 행 삭제
+            if (DG_checkData.Items.Count > 0)
+            {
+                DG_checkData.Items.Remove(new GridData());
+            }
+        }
     }
 
 
     public class GridData
     {
-        public string model_name { get; set; }
+        public string modelId { get; set; }
+        public string age { get; set; }
+        public string errorID { get; set; }
+        public string volt { get; set; }
+        public string rotate { get; set; }
+        public string pressure { get; set; }
+        public string vibration { get; set; }
     }
 }

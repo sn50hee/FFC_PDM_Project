@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FFC_PDM"
         mc:Ignorable="d"
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot"
-        Title="MainWindow" Height="1090" Width="800"> 
+        Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TabControl>
             <TabItem Header="통계">
@@ -68,7 +68,7 @@
                             </Grid.ColumnDefinitions>
                             <Label Content="모델명" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
 
-                          <ComboBox x:Name="CB_ModelName" HorizontalAlignment="Stretch"  Grid.Row="0" Grid.Column="1" Margin="0,0,0,0" VerticalAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>
+                            <ComboBox x:Name="CB_ModelName" HorizontalAlignment="Stretch"  Grid.Row="0" Grid.Column="1" Margin="0,0,0,0" VerticalAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>
                             <Label Content="모델ID" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
                             <ComboBox x:Name="CB_Model_ID" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="3" Margin="0,0,0,0" VerticalAlignment="Center" SelectionChanged="CB_Model_ID_SelectionChanged"/>
 
@@ -88,15 +88,15 @@
                             <Border BorderBrush="Black" Grid.Column="0" BorderThickness="1">
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                            <RowDefinition Height="1*"/>
-                                            <RowDefinition Height="1*"/>
-                                            <RowDefinition Height="6*"/>
-                                        </Grid.RowDefinitions>
+                                        <RowDefinition Height="1*"/>
+                                        <RowDefinition Height="1*"/>
+                                        <RowDefinition Height="6*"/>
+                                    </Grid.RowDefinitions>
 
-                                        <Label x:Name="Voltage" Content="Voltage" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                        <Label Content="안정 범위: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                        <WpfPlot x:Name="WP_Volt" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch"/>
-                                        
+                                    <Label x:Name="Voltage" Content="Voltage" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <Label Content="안정 범위: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <WpfPlot x:Name="WP_Volt" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch"/>
+
                                 </Grid>
                             </Border>
                             <Border BorderBrush="Black" Grid.Column="1" BorderThickness="1">
@@ -162,7 +162,7 @@
                                 <Label Content="고장기록" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                 <Label Content="고장 발생 날짜: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                 <Label Content="모델명: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                <WpfPlot HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
+                                <WpfPlot x:Name="Warning" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
                             </Grid>
 
                             <Grid Grid.Column="3">
@@ -176,13 +176,42 @@
                                 <Label Content="유지보수 이력" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                 <Label Content="유지보수 날짜: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                 <Label Content="모델명: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                <WpfPlot HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
+                                <WpfPlot x:Name="Maintence" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
                             </Grid>
                         </Grid>
 
 
                     </Grid>
                 </ScrollViewer>
+            </TabItem>
+            <TabItem Header="고장 확인">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid x:Name="DG_checkData" AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="0">
+                        <DataGrid.Columns>
+                            <!-- 7개의 빈 컬럼 생성 -->
+                            <DataGridTextColumn Header="모델ID" Binding="{Binding modelId}" />
+                            <DataGridTextColumn Header="age" Binding="{Binding age}" />
+                            <DataGridTextColumn Header="오류 여부" Binding="{Binding errorID}" />
+                            <DataGridTextColumn Header="volt" Binding="{Binding volt}" />
+                            <DataGridTextColumn Header="rotate" Binding="{Binding rotate}" />
+                            <DataGridTextColumn Header="pressure" Binding="{Binding pressure}" />
+                            <DataGridTextColumn Header="vibration" Binding="{Binding vibration}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="Btn_addRow" Content="+" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,70,0" Grid.Row="1" Width="50" Click="AddRowButton_Click"/>
+                    <Button x:Name="Btn_removeRow" Content="-" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Grid.Row="1" Width="50" Click="RemoveRowButton_Click"/>
+                    <Button x:Name="Btn_check" Content="고장 확인하기" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Row="2" />
+
+
+
+
+
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>
