@@ -67,9 +67,32 @@ namespace FFC_PDM
         public List<Telemetry> GetTelemetryData()
         {
             string filePath = "FFC_PDM.Resources.PdM_telemetry.csv";
-            return ReadData(filePath, line => new Telemetry { datetime = line[0], machineID = line[1], volt = line[2], rotate = line[3], pressure = line[4], vibration = line[5] });
+            //return ReadData(filePath, line => new Telemetry { datetime = line[0], machineID = line[1], volt = line[2], rotate = line[3], pressure = line[4], vibration = line[5] });
+            List<Telemetry> telemetryData = ReadData(filePath, line => new Telemetry { datetime = line[0], machineID = line[1], volt = line[2], rotate = line[3], pressure = line[4], vibration = line[5] });
+
+            // 최대 20,000개의 데이터만 가져오기
+            return telemetryData.Take(20000).ToList();
+        }
+
+
+        // 파싱 위치 변환(ViewDetailsTabChartData.cs 안씀)
+        public List<ParseTelemetry_1> GetParseTelemetryData()
+        {
+            string filePath = "FFC_PDM.Resources.PdM_telemetry_no_duplicates.csv";
+            List<ParseTelemetry_1> telemetryData = ReadData(filePath, line => new ParseTelemetry_1
+            {
+                datetime = DateTime.Parse(line[0]),
+                machineID = double.Parse(line[1]),
+                volt = double.Parse(line[2]),
+                rotate = double.Parse(line[3]),
+                pressure = double.Parse(line[4]),
+                vibration = double.Parse(line[5])
+            });
+
+            return telemetryData;
         }
     }
+}
 
     public class Failures
     {
@@ -102,11 +125,20 @@ namespace FFC_PDM
 
     public class Telemetry
     {
-        public string datetime { get; set; }
-        public string machineID { get; set; }
-        public string volt { get; set; }
-        public string rotate { get; set; }
-        public string pressure { get; set; }
-        public string vibration { get; set; }
+    public string datetime { get; set; }
+    public string machineID { get; set; }
+    public string volt { get; set; }
+    public string rotate { get; set; }
+    public string pressure { get; set; }
+    public string vibration { get; set; }
     }
+
+public class ParseTelemetry_1
+{
+    public DateTime datetime { get; set; }
+    public double machineID { get; set; }
+    public double volt { get; set; }
+    public double rotate { get; set; }
+    public double pressure { get; set; }
+    public double vibration { get; set; }
 }

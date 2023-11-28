@@ -13,11 +13,13 @@
     <None Remove="Resources\PdM_machines.csv" />
     <None Remove="Resources\PdM_maint.csv" />
     <None Remove="Resources\PdM_telemetry.csv" />
+    <None Remove="Resources\PdM_telemetry_no_duplicates.csv" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\PdM_maint.csv" />
     <EmbeddedResource Include="Resources\PdM_telemetry.csv" />
+    <EmbeddedResource Include="Resources\PdM_telemetry_no_duplicates.csv" />
   </ItemGroup>
 
   <ItemGroup>
