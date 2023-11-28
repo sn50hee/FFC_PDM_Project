@@ -28,7 +28,7 @@ namespace FFC_PDM
         public MainWindow()
         {
             InitializeComponent();
-            GridDataView();
+            //GridDataView();
             Col1View();
             Col2View();
             Col3View();
@@ -46,11 +46,11 @@ namespace FFC_PDM
         public void GridDataView() // 샘플데이터 표시(김정관)
         {
             List<GridData> list = new List<GridData>();
-            list.Add(new GridData { model_name = "1" });
-            list.Add(new GridData { model_name = "2" });
-            list.Add(new GridData { model_name = "3" });
-            list.Add(new GridData { model_name = "4" });
-            list.Add(new GridData { model_name = "5" });
+            list.Add(new GridData { modelId = "1" });
+            list.Add(new GridData { modelId = "2" });
+            list.Add(new GridData { modelId = "3" });
+            list.Add(new GridData { modelId = "4" });
+            list.Add(new GridData { modelId = "5" });
 
             DG_Name.ItemsSource = list;
         }
@@ -86,14 +86,6 @@ namespace FFC_PDM
 
         }
 
-        /*
-        public void GenerateCBModelID()
-        {
-            SearchDataFilterl searchDataFilterl = new SearchDataFilterl();
-            CB_Model_ID = searchDataFilterl.MadeIDComboBox(CB_ModelName);
-        }
-        */
-
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -119,11 +111,6 @@ namespace FFC_PDM
             // machineIDList를 콤보박스에 추가하기
         }
 
-        private void CB_Model_ID_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         // 김정관 추가
         private void UpdateVoltageGraph() // 전압 데이터 표시 차트 업데이트 메서드
         {
@@ -131,47 +118,6 @@ namespace FFC_PDM
             List<ParseTelemetry_1> date = new FacilityDataControl().GetParseTelemetryData(); // 김정관 수정
             WP_Volt = facilityDataChartControl.CreateVoltageChart(WP_Volt, date, "VoltageGraph");
             WP_Volt.Refresh();
-
-            // WP_Volt
-
-            // UI 업데이트를 Dispatcher에서 실행
-            //Dispatcher.Invoke(() =>
-            //{
-            //    WP_Volt.Plot.Clear();
-
-            //    var machineIDsWithVolts = voltageData.Item1.Select(d => new { MachineID = d.machineID, Volt = d.volt }).ToList();
-            //    var machineIDs = machineIDsWithVolts.Select(d =>
-            //    {
-            //        if (double.TryParse(d.MachineID, out double result))
-            //        {
-            //            return result;
-            //        }
-            //        else
-            //        {
-            //            return 0.0;
-            //        }
-            //    })
-            //    .Where(d => !double.IsNaN(d))
-            //    .ToArray();
-
-            //    var volts = machineIDsWithVolts.Select(d =>
-            //    {
-            //        if (double.TryParse(d.Volt.ToString(), out double result))
-            //        {
-            //            return result;
-            //        }
-            //        else
-            //        {
-            //            return 0.0;
-            //        }
-            //    }).ToArray();
-
-            //    var scatter = WP_Volt.Plot.AddScatter(machineIDs, volts);
-            //    scatter.MarkerSize = 5;
-
-            //     그래프 업데이트
-            //    WP_Volt.Refresh();
-            //});
         }
         private void UpdateRotateGraph() // 회전 데이터 표시 차트 업데이트 메서드
         {
@@ -207,10 +153,10 @@ namespace FFC_PDM
 
         private void RemoveRowButton_Click(object sender, RoutedEventArgs e)
         {
-            // - 버튼 클릭 시 가장 최근에 추가된 행 삭제
             if (DG_checkData.Items.Count > 0)
             {
-                DG_checkData.Items.Remove(new GridData());
+                int lastIndex = DG_checkData.Items.Count - 1;
+                DG_checkData.Items.RemoveAt(lastIndex);
             }
         }
     }
