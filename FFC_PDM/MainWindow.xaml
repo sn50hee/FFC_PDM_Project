@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FFC_PDM"
         mc:Ignorable="d"
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot"
-        Title="MainWindow" Height="1090" Width="800"> 
+        Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TabControl>
             <TabItem Header="통계">
@@ -21,9 +21,14 @@
                         <RowDefinition Height="3*"/>
                     </Grid.RowDefinitions>
 
-                    <DataGrid x:Name="DG_Name" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="3" Margin="0,0,0,304" Grid.RowSpan="2">
+                    <DataGrid x:Name="DG_FailuressList" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="3" Margin="0,0,0,304" Grid.RowSpan="2">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="모델명" Binding="{Binding Path=model_name}"/>
+                            <DataGridTextColumn Header="모델ID" Binding="{Binding Path=modelId}" Width="*"/>
+                            <DataGridTextColumn Header="age" Binding="{Binding Path=age}" Width="*"/>
+                            <DataGridTextColumn Header="volt" Binding="{Binding Path=volt}" Width="*"/>
+                            <DataGridTextColumn Header="rotate" Binding="{Binding Path=rotate}" Width="*"/>
+                            <DataGridTextColumn Header="pressure" Binding="{Binding Path=pressure}" Width="*"/>
+                            <DataGridTextColumn Header="vibration" Binding="{Binding Path=vibration}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -34,13 +39,13 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
                         <Border BorderBrush="Black" Grid.Column="0" BorderThickness="2">
-                            <WpfPlot x:Name="col1" Height="Auto" Width="Auto"/>
+                            <WpfPlot x:Name="WP_HindranceRate" Height="Auto" Width="Auto"/>
                         </Border>
                         <Border BorderBrush="Black"  Grid.Column="1" BorderThickness="2">
-                            <WpfPlot x:Name="col2" Height="Auto" Width="Auto"/>
+                            <WpfPlot x:Name="WP_RecentFacility" Height="Auto" Width="Auto"/>
                         </Border>
                         <Border BorderBrush="Black" Grid.Column="2" BorderThickness="2">
-                            <WpfPlot x:Name="col3" Height="Auto" Width="Auto"/>
+                            <WpfPlot x:Name="WP_ErrorRate" Height="Auto" Width="Auto"/>
                         </Border>
                     </Grid>
                 </Grid>
@@ -70,7 +75,7 @@
 
                             <ComboBox x:Name="CB_ModelName" HorizontalAlignment="Stretch"  Grid.Row="0" Grid.Column="1" Margin="0,0,0,0" VerticalAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>
                             <Label Content="모델ID" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
-                            <ComboBox x:Name="CB_Model_ID" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="3" Margin="0,0,0,0" VerticalAlignment="Center" SelectionChanged="CB_Model_ID_SelectionChanged"/>
+                            <ComboBox x:Name="CB_Model_ID" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="3" Margin="0,0,0,0" VerticalAlignment="Center"/>
 
                             <Label Content="시작일" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
                             <DatePicker Grid.Row="0" Grid.Column="5" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Center"/>
@@ -88,15 +93,15 @@
                             <Border BorderBrush="Black" Grid.Column="0" BorderThickness="1">
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                            <RowDefinition Height="1*"/>
-                                            <RowDefinition Height="1*"/>
-                                            <RowDefinition Height="6*"/>
-                                        </Grid.RowDefinitions>
+                                        <RowDefinition Height="1*"/>
+                                        <RowDefinition Height="1*"/>
+                                        <RowDefinition Height="6*"/>
+                                    </Grid.RowDefinitions>
 
-                                        <Label x:Name="Voltage" Content="Voltage" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                        <Label Content="안정 범위: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                        <WpfPlot x:Name="WP_Volt" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch"/>
-                                        
+                                    <Label x:Name="Voltage" Content="Voltage" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <Label Content="안정 범위: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <WpfPlot x:Name="WP_Volt" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch"/>
+
                                 </Grid>
                             </Border>
                             <Border BorderBrush="Black" Grid.Column="1" BorderThickness="1">
@@ -183,6 +188,43 @@
 
                     </Grid>
                 </ScrollViewer>
+            </TabItem>
+            <TabItem Header="고장 확인">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid x:Name="DG_checkData" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Grid.Row="0">
+                        <DataGrid.Columns>
+                            <!-- 7개의 빈 컬럼 생성 -->
+                            <DataGridTextColumn Header="모델ID" Binding="{Binding modelId, ValidatesOnExceptions=True}" IsReadOnly="False" Width="0.7*"/>
+                            <DataGridTextColumn Header="age" Binding="{Binding age}" IsReadOnly="False" Width="0.5*"/>
+                            <!--<DataGridTextColumn Header="오류 여부" Binding="{Binding errorID}" Width="*"/>-->
+                            <DataGridTextColumn Header="volt" Binding="{Binding volt}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="rotate" Binding="{Binding rotate}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="pressure" Binding="{Binding pressure}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="vibration" Binding="{Binding vibration}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="고장 판별" Binding="{Binding failure}" IsReadOnly="True" Width="*"/>
+                        </DataGrid.Columns>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding failure}" Value="고장 위험">
+                                        <Setter Property="Foreground" Value="Red"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding failure}" Value="안전">
+                                        <Setter Property="Foreground" Value="Green"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.CellStyle>
+                    </DataGrid>
+                    <Button x:Name="Btn_addRow" Content="+" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,70,0" Grid.Row="1" Width="50" Click="AddRowButton_Click"/>
+                    <Button x:Name="Btn_removeRow" Content="-" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Grid.Row="1" Width="50" Click="RemoveRowButton_Click"/>
+                    <Button x:Name="Btn_check" Content="고장 확인하기" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Row="2" Click="Btn_check_Click" />
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

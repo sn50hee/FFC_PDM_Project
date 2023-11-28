@@ -12,10 +12,12 @@ namespace FFC_PDM
 {
     internal class GetPythonModel
     {
-        public void GetModel()
+
+        public List<string> FailureCheck(List<string> newDatas)
         {
             string contentsPath = "./contents/";
             var pythonPath = GetPythonExecutablePath();
+            List<string> outputs = new List<string>();
 
             var processInfo = new ProcessStartInfo
             {
@@ -28,22 +30,25 @@ namespace FFC_PDM
                 CreateNoWindow = true
             };
 
-            using (var process = new Process { StartInfo = processInfo })
+            foreach(string newdata in newDatas)
             {
-                process.Start();
+                using (var process = new Process { StartInfo = processInfo })
+                {
+                    process.Start();
 
-                process.StandardInput.WriteLine("[[158.5692601, 390.7888887, 91.69100281, 42.63577924, 14, 0, 2, 18]]");
-                process.StandardInput.Flush();
-                process.StandardInput.Close();
+                    process.StandardInput.WriteLine(newdata);
+                    process.StandardInput.Flush();
+                    process.StandardInput.Close();
 
-                // 실행 결과 확인
-                var output = process.StandardOutput.ReadToEnd();
-                var error = process.StandardError.ReadToEnd();
+                    // 실행 결과 확인
+                    var output = process.StandardOutput.ReadToEnd();
+                    var error = process.StandardError.ReadToEnd();
 
-                Console.WriteLine("Output: " + output);
-                Console.WriteLine("Error: " + error);
+                    outputs.Add(output);
+                }
             }
-
+            
+            return outputs;
         }
 
         static string GetPythonExecutablePath()

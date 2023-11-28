@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FFC_PDM
@@ -32,26 +34,45 @@ namespace FFC_PDM
             return errorIDCountDictionary;
         }
 
-        public Dictionary<string, int> RecentErrorsData()
+        public Dictionary<string, int> RecentFacilityData()
         {
-
-            DateTime referenceDate = new DateTime(2015, 12, 31, 23, 59, 59);
 
             List<Errors> getErrorsData = GetErrorsData();
 
-            DateTime startDate = referenceDate.AddDays(-10);
+            var recentData = getErrorsData.OrderByDescending(e => DateTime.Parse(e.datetime)).Take(10);
 
-            getErrorsData = getErrorsData
-                .Where(error => DateTime.Parse(error.datetime) >= startDate && DateTime.Parse(error.datetime) <= referenceDate)
-                .ToList();
-
-            List<string> errorIDDataOnly = getErrorsData.Select(machineID => machineID.machineID).ToList();
-            Dictionary<string, int> errorIDCountDictionary = errorIDDataOnly
-                .GroupBy(machineID => machineID)
-                .OrderByDescending(group => group.Count())
-                .ToDictionary(group => group.Key, group => group.Count());
+            Dictionary<string, int> errorIDCountDictionary = recentData.GroupBy(e => e.machineID)
+                                                                .ToDictionary(group => group.Key, group => group.Count());
 
             return errorIDCountDictionary;
+        }
+
+        public List<StatisticsTabGridData> GetFailuressListViewData()
+        {
+
+            List<StatisticsTabGridData> dataList = GetLatestTelemetryData();
+            List<string> inputDataList = new List<string>();
+
+
+            foreach (StatisticsTabGridData data in dataList)
+            {
+                inputDataList.Add($"[[{data.volt.ToString()},{data.rotate.ToString()},{data.pressure.ToString()},{data.vibration.ToString()},0,{data.modelId.ToString()},{data.age.ToString()}]]");
+            }
+
+            GetPythonModel getPythonModel = new GetPythonModel();
+            List<string> checkList = getPythonModel.FailureCheck(inputDataList);
+
+            List <StatisticsTabGridData> result = new List<StatisticsTabGridData >();
+
+            for (int i = 0; i < checkList.Count; i++)
+            {
+                if (checkList[i] == "[1]\r\n")
+                {
+                    result.Add(dataList[i]);
+                }
+            }
+
+            return result;
         }
 
     }
