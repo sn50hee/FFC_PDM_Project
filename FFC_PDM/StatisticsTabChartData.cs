@@ -49,7 +49,6 @@ namespace FFC_PDM
             Dictionary<string, int> errorIDCountDictionary = errorIDDataOnly
                 .GroupBy(machineID => machineID)
                 .OrderByDescending(group => group.Count())
-                .Take(10)
                 .ToDictionary(group => group.Key, group => group.Count());
 
             return errorIDCountDictionary;
