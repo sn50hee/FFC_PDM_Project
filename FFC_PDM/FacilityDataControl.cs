@@ -8,6 +8,9 @@ namespace FFC_PDM
 {
     internal class FacilityDataControl
     {
+        // 함수는 리스트 형태로 불러온다. 
+        // 인자는 delegate 형태로 받아온다. 그래서 화살표 함수로 파라미터를 전하는 것이 가능하다. 
+        // 데이터를 읽어오는 함수
         private List<T> ReadData<T>(string filePath, Func<string[], T> createInstance)
         {
             List<T> dataList = new List<T>();
@@ -15,15 +18,18 @@ namespace FFC_PDM
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(filePath))
             using (StreamReader reader = new StreamReader(stream))
             {
+                // 데이터 읽어오기 
                 reader.ReadLine(); // Skip header
 
                 while (!reader.EndOfStream)
                 {
+                    // csv 파일.. , 기준으로 분리하기
                     string[] line = reader.ReadLine().Split(',');
                     for (int i = 0; i < line.Length; i++)
                     {
                         line[i] = line[i].Trim('\"');
                     }
+                    // 리스트에 추가
                     dataList.Add(createInstance(line));
                 }
             }
@@ -42,7 +48,10 @@ namespace FFC_PDM
             string filePath = "FFC_PDM.Resources.PdM_errors.csv";
             return ReadData(filePath, line => new Errors { datetime = line[0], machineID = line[1], errorID = line[2] });
         }
-
+        
+        // 밑에 있는 클래스 -> 불러오는 데이터
+        // return ReadData(filePath, line => new Machines {machineID = line[0], model = line[1], age = line[2]});
+        // list => (machineID, model, age)
         public List<Machines> GetMachinesData()
         {
             string filePath = "FFC_PDM.Resources.PdM_machines.csv";
@@ -101,6 +110,7 @@ namespace FFC_PDM
 
     public class Machines
     {
+        //받아오는 데이터 형식 {machineID ; 1}, {model ; 1}
         public string machineID { get; set; }
         public string model { get; set; }
         public string age { get; set; }
