@@ -15,6 +15,7 @@
     <None Remove="Resources\PdM_telemetry.csv" />
     <None Remove="Resources\PdM_telemetry_latest.csv" />
     <None Remove="Resources\PdM_telemetry_no_duplicates.csv" />
+    <None Remove="Resources\PdM_telemetry_no_duplicates_cleaned.csv" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +23,7 @@
     <EmbeddedResource Include="Resources\PdM_telemetry.csv" />
     <EmbeddedResource Include="Resources\PdM_telemetry_latest.csv" />
     <EmbeddedResource Include="Resources\PdM_telemetry_no_duplicates.csv" />
+    <EmbeddedResource Include="Resources\PdM_telemetry_no_duplicates_cleaned.csv" />
   </ItemGroup>
 
   <ItemGroup>

@@ -14,9 +14,11 @@ namespace FFC_PDM
 {
     class StatisticsTabChartData: FacilityDataControl
     {
-        private int currentIndex;
+        private int plotCurrentIndex;
+        private int gridCurrentIndex;
         public StatisticsTabChartData() {
-            currentIndex = 1;
+            plotCurrentIndex = 1;
+            gridCurrentIndex = 0;
         }
 
         public Dictionary<string, int> HindranceRateData()
@@ -100,13 +102,13 @@ namespace FFC_PDM
         public WpfPlot GetPointsToPlot(WpfPlot wpfPlot, List<(System.DateTime, double)> chartData,int count)
         {
             // 데이터를 count만큼 가져와서 반환
-            List<(System.DateTime, double)> points = chartData.Take(count*currentIndex).ToList();
-            currentIndex++;
+            List<(System.DateTime, double)> points = chartData.Take(count*plotCurrentIndex).ToList();
+            plotCurrentIndex++;
 
-            if (currentIndex >= chartData.Count)
+            if (plotCurrentIndex >= chartData.Count)
             {
                 // 데이터를 모두 사용한 경우 초기화
-                currentIndex = 0;
+                plotCurrentIndex = 0;
             }
 
             FacilityDataChartControl chart = new FacilityDataChartControl();
@@ -117,13 +119,13 @@ namespace FFC_PDM
 
         public StatisticsTabGridData RiskOfFailuressDataPlot(DataGrid dataGrid, List<StatisticsTabGridData> chartData, int count)
         {
-            StatisticsTabGridData data = chartData[count * currentIndex];
-            currentIndex++;
+            StatisticsTabGridData data = chartData[count * gridCurrentIndex];
+            gridCurrentIndex++;
 
-            if (currentIndex >= chartData.Count)
+            if (gridCurrentIndex >= chartData.Count)
             {
                 // 데이터를 모두 사용한 경우 초기화
-                currentIndex = 0;
+                gridCurrentIndex = 0;
             }
 
             return data;
@@ -133,6 +135,11 @@ namespace FFC_PDM
         public List<StatisticsTabGridData> GetFailuressListViewData()
         {
             List<StatisticsTabGridData> data = GetLatestTelemetryData();
+            return data;
+        }
+        public List<StatisticsTabGridData> GetFailuressListViewData(double volt, double rotate, double pressure, double vibration)
+        {
+            List<StatisticsTabGridData> data = GetLatestTelemetryData(volt, rotate, pressure, vibration);
             return data;
         }
 

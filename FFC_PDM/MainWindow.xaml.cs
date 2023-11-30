@@ -69,7 +69,7 @@ namespace FFC_PDM
         public void DG_FailuressListView()
         {
             StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
-            List<StatisticsTabGridData> data = statisticsTabChartData.GetFailuressListViewData();
+            List<StatisticsTabGridData> data = statisticsTabChartData.GetFailuressListViewData(200,360,120,50);
 
             var timer = new System.Windows.Threading.DispatcherTimer();
             timer.Tick += (sender, e) => {
