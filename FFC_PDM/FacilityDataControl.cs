@@ -126,10 +126,14 @@ namespace FFC_PDM
             return telemetryData;
         }
 
-        public Dictionary<string, int> GetParseErrorsData()
+        ///////////////////////////////////////////////////////////////////////////
+        public Dictionary<string, int> GetParseErrorsData(double selectedModelID, DateTime startDate, DateTime endDate)
         {
             string filePath = "FFC_PDM.Resources.PdM_failures.csv";
             List<Errors_1> errorsList = ReadData(filePath, line => new Errors_1 { datetime = DateTime.Parse(line[0]), machineID = double.Parse(line[1]), errorID = line[2] });
+
+            // 선택한 machineID 및 기간에 해당하는 데이터 필터링
+            errorsList = errorsList.Where(error => error.machineID == selectedModelID && error.datetime >= startDate && error.datetime <= endDate).ToList();
 
             // List<Errors_1>에서 Dictionary<string, int>로 변환
             Dictionary<string, int> errorsDictionary = errorsList
@@ -138,6 +142,22 @@ namespace FFC_PDM
 
             return errorsDictionary;
         }
+
+        public Dictionary<string, int> GetParseMaintData(double selectedModelID, DateTime startDate, DateTime endDate)
+        {
+            string filePath = "FFC_PDM.Resources.PdM_maint.csv";
+            List<Maint_1> compList = ReadData(filePath, line => new Maint_1 { datetime = DateTime.Parse(line[0]), machineID = double.Parse(line[1]), comp = line[2] });
+
+            compList = compList.Where(error => error.machineID == selectedModelID && error.datetime >= startDate && error.datetime <= endDate).ToList();
+
+            // List<Errors_1>에서 Dictionary<string, int>로 변환
+            Dictionary<string, int> compDictionary = compList
+                .GroupBy(error => error.comp) //error.comp 수정해야됨
+                .ToDictionary(group => group.Key, group => group.Count());
+
+            return compDictionary;
+        }
+        ///////////////////////////////////////////////////////////////////////////
 
         public List<StatisticsTabGridData> GetLatestTelemetryData()
         {
@@ -163,18 +183,7 @@ namespace FFC_PDM
                 .ToList();
             return result;
         }
-        public Dictionary<string, int> GetParseMaintData()
-        {
-            string filePath = "FFC_PDM.Resources.PdM_maint.csv";
-            List<Maint_1> compList = ReadData(filePath, line => new Maint_1 { datetime = DateTime.Parse(line[0]), machineID = double.Parse(line[1]), comp = line[2] });
 
-            // List<Errors_1>에서 Dictionary<string, int>로 변환
-            Dictionary<string, int> compDictionary = compList
-                .GroupBy(error => error.comp) //error.comp 수정해야됨
-                .ToDictionary(group => group.Key, group => group.Count());
-
-            return compDictionary;
-        }
     }
 }
 

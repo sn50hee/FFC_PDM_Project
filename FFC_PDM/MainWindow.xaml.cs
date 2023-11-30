@@ -38,13 +38,6 @@ namespace FFC_PDM
             // 윤석희끝
 
             GenerateCBModelName();
-            
-
-            //김정관 추가
-            UpdateWarningGraph();
-            UpdateMaintGraph();
-            //김정관 끝
-
         }
 
         
@@ -155,47 +148,66 @@ namespace FFC_PDM
             WP_Vibration.Refresh();
         }
 
-        public void UpdateWarningGraph()
+        public void UpdateWarningGraph(double selectedModelID, DateTime startDate, DateTime endDate)
         {
             // FacilityDataChartControl 및 StatisticsTabChartData 인스턴스 생성
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
 
-            // 통계 데이터 가져오기
-            Dictionary<string, int> data = statisticsTabChartData.GetParseErrorsData();
+            // 선택한 machineID에 대한 에러 데이터 가져오기
+            Dictionary<string, int> data = statisticsTabChartData.GetParseErrorsData(selectedModelID, startDate, endDate);
 
-            // 파이 차트 업데이트
-            WP_Warning = facilityDataChartControl.CreateWarningPieChart(WP_Warning, data, "고장 모델 비율");
-            WP_Warning.Refresh();
+            WP_Warning.Plot.Clear();
+            if (data.Any())
+            {
+                // 파이 차트 업데이트
+                WP_Warning = facilityDataChartControl.CreateWarningPieChart(WP_Warning, data, "고장 모델 비율");
+                WP_Warning.Refresh();
+            }
+            else
+            {
+
+            }
         }
 
-        public void UpdateMaintGraph()
+        public void UpdateMaintGraph(double selectedModelID, DateTime startDate, DateTime endDate)
         {
             // FacilityDataChartControl 및 StatisticsTabChartData 인스턴스 생성
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
 
             // 통계 데이터 가져오기
-            Dictionary<string, int> data = statisticsTabChartData.GetParseMaintData();
+            Dictionary<string, int> data = statisticsTabChartData.GetParseMaintData(selectedModelID, startDate, endDate);
 
-            // 파이 차트 업데이트
-            WP_Maint = facilityDataChartControl.CreateMaintPieChart(WP_Maint, data, "유지 보수");
-            WP_Maint.Refresh();
+            WP_Maint.Plot.Clear();
+            if (data.Any())
+            {
+                WP_Maint = facilityDataChartControl.CreateMaintPieChart(WP_Maint, data, "유지 보수");
+                WP_Maint.Refresh();
+            }
+            else
+            {
+
+            }
+            
         }
 
         private void Search_Click(object sender, RoutedEventArgs e) //값이 비어져있으면 메시지박스에 입력안한 항목있다고 띄어주기, 
         {
             // CB_Model_ID에서 선택된 값 가져오기
-            int? selectedModelIDNullable = CB_Model_ID.SelectedValue as int?;
+            int? selectedModelIDNullable = int.Parse(CB_Model_ID.SelectedValue.ToString());
             // 만약 선택된 값이 null이면 기본값인 0으로 대체
             int selectedModelID = selectedModelIDNullable ?? 0; // null이면 0으로 처리
-            // DatePicker에서 선택된 시작 날짜 가져오기
-            DateTime startDateValue = startDate.SelectedDate ?? DateTime.MinValue;
-            // DatePicker에서 선택된 종료 날짜 가져오기
-            DateTime endDateValue = endDate.SelectedDate ?? DateTime.MaxValue;
+            // DatePicker에서 선택된 시작 날짜 가져오기 --> 00시부터하고
+            DateTime startDateValue = startDate.SelectedDate?.Date ?? DateTime.MinValue;
+            // DatePicker에서 선택된 종료 날짜 가져오기 --> 23시 59분까지 받아올 수 있게
+            DateTime endDateValue = endDate.SelectedDate?.Date.AddDays(1).AddSeconds(-1) ?? DateTime.MaxValue;
 
-
+            //김정관 추가
             UpdateGraph(selectedModelID, startDateValue, endDateValue);
+            UpdateWarningGraph(selectedModelID, startDateValue, endDateValue);
+            UpdateMaintGraph(selectedModelID, startDateValue, endDateValue);
+            //김정관 끝
         }
         // 김정관 끝
 
