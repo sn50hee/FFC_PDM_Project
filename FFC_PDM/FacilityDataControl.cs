@@ -73,7 +73,8 @@ namespace FFC_PDM
             List<Telemetry> telemetryData = ReadData(filePath, line => new Telemetry { datetime = line[0], machineID = line[1], volt = line[2], rotate = line[3], pressure = line[4], vibration = line[5] });
 
             // 최대 20,000개의 데이터만 가져오기
-            return telemetryData.Take(20000).ToList();
+            return telemetryData.Take(
+                00).ToList();
         }
 
 
@@ -98,6 +99,21 @@ namespace FFC_PDM
         {
             string filePath = "FFC_PDM.Resources.PdM_telemetry_no_duplicates_cleaned.csv";
             List<ParseTelemetry_1> telemetryData = ReadData(filePath, line => new ParseTelemetry_1
+                {
+                    datetime = DateTime.Parse(line[0]),
+                    machineID = double.Parse(line[1]),
+                    volt = double.Parse(line[2]),
+                    rotate = double.Parse(line[3]),
+                    pressure = double.Parse(line[4]),
+                    vibration = double.Parse(line[5])
+                });
+
+            return telemetryData;
+        }
+        public List<ParseTelemetry_1> GetParseTelemetryData_1(int selectedModelID, DateTime startDate, DateTime endDate)
+        {
+            string filePath = "FFC_PDM.Resources.PdM_telemetry_no_duplicates.csv";
+            List<ParseTelemetry_1> telemetryData = ReadData(filePath, line => new ParseTelemetry_1
             {
                 datetime = DateTime.Parse(line[0]),
                 machineID = double.Parse(line[1]),
@@ -108,6 +124,19 @@ namespace FFC_PDM
             });
 
             return telemetryData;
+        }
+
+        public Dictionary<string, int> GetParseErrorsData()
+        {
+            string filePath = "FFC_PDM.Resources.PdM_failures.csv";
+            List<Errors_1> errorsList = ReadData(filePath, line => new Errors_1 { datetime = DateTime.Parse(line[0]), machineID = double.Parse(line[1]), errorID = line[2] });
+
+            // List<Errors_1>에서 Dictionary<string, int>로 변환
+            Dictionary<string, int> errorsDictionary = errorsList
+                .GroupBy(error => error.errorID)
+                .ToDictionary(group => group.Key, group => group.Count());
+
+            return errorsDictionary;
         }
 
         public List<StatisticsTabGridData> GetLatestTelemetryData()
@@ -134,7 +163,18 @@ namespace FFC_PDM
                 .ToList();
             return result;
         }
+        public Dictionary<string, int> GetParseMaintData()
+        {
+            string filePath = "FFC_PDM.Resources.PdM_maint.csv";
+            List<Maint_1> compList = ReadData(filePath, line => new Maint_1 { datetime = DateTime.Parse(line[0]), machineID = double.Parse(line[1]), comp = line[2] });
 
+            // List<Errors_1>에서 Dictionary<string, int>로 변환
+            Dictionary<string, int> compDictionary = compList
+                .GroupBy(error => error.comp) //error.comp 수정해야됨
+                .ToDictionary(group => group.Key, group => group.Count());
+
+            return compDictionary;
+        }
     }
 }
 
@@ -177,6 +217,7 @@ public class Telemetry
     public string vibration { get; set; }
 }
 
+// 김정관 수정
 public class ParseTelemetry_1
 {
     public DateTime datetime { get; set; }
@@ -186,6 +227,22 @@ public class ParseTelemetry_1
     public double pressure { get; set; }
     public double vibration { get; set; }
 }
+
+public class Errors_1
+{
+    public DateTime datetime { get; set; }
+    public double machineID { get; set; }
+    public string errorID { get; set; }
+}
+
+public class Maint_1
+{
+    public DateTime datetime { get; set; }
+    public double machineID { get; set; }
+    public string comp { get; set; }
+}
+
+// 김정관 끝
 
 public class StatisticsTabGridData
 {

@@ -41,10 +41,8 @@ namespace FFC_PDM
             
 
             //김정관 추가
-            UpdateVoltageGraph();
-            UpdateRotateGraph();
-            UpdatePressureGraph();
-            UpdateVibrationGraph();
+            UpdateWarningGraph();
+            UpdateMaintGraph();
             //김정관 끝
 
         }
@@ -130,36 +128,74 @@ namespace FFC_PDM
         }
 
         // 김정관 추가
-        private void UpdateVoltageGraph() // 전압 데이터 표시 차트 업데이트 메서드
+        private void UpdateGraph(int selectedModelID, DateTime startDate, DateTime endDate) // 회전 데이터 표시 차트 업데이트 메서드
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             List<ParseTelemetry_1> date = new FacilityDataControl().GetParseTelemetryData(); // 김정관 수정
-            WP_Volt = facilityDataChartControl.CreateVoltageChart(WP_Volt, date, "VoltageGraph");
+
+            WP_Volt.Plot.Clear();
+            WP_Rotate.Plot.Clear();
+            WP_Pressure.Plot.Clear();
+            WP_Vibration.Plot.Clear();
+
+            WP_Volt = facilityDataChartControl.CreateVoltageChart(WP_Volt, date, "VoltageGraph", selectedModelID, startDate, endDate);
+            WP_Volt.Plot.AddVerticalSpan(200, 10000);
             WP_Volt.Refresh();
-        }
-        private void UpdateRotateGraph() // 회전 데이터 표시 차트 업데이트 메서드
-        {
-            FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
-            List<ParseTelemetry_1> date = new FacilityDataControl().GetParseTelemetryData(); // 김정관 수정
-            WP_Rotate = facilityDataChartControl.CreateRotateChart(WP_Rotate, date, "RotateGraph");
+
+            WP_Rotate = facilityDataChartControl.CreateRotateChart(WP_Rotate, date, "RotateGraph", selectedModelID, startDate, endDate);
+            WP_Rotate.Plot.AddVerticalSpan(360, -10000);
             WP_Rotate.Refresh();
 
-        }
-        private void UpdatePressureGraph() // 압력 데이터 표시 차트 업데이트 메서드
-        {
-            FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
-            List<ParseTelemetry_1> date = new FacilityDataControl().GetParseTelemetryData(); // 김정관 수정
-            WP_Pressure = facilityDataChartControl.CreatePressureChart(WP_Pressure, date, "PressureGraph");
+            WP_Pressure = facilityDataChartControl.CreatePressureChart(WP_Pressure, date, "PressureGraph", selectedModelID, startDate, endDate);
+            WP_Pressure.Plot.AddVerticalSpan(120, 10000);
             WP_Pressure.Refresh();
 
-        }
-        private void UpdateVibrationGraph() // 진동 데이터 표시 차트 업데이트 메서드
-        {
-            FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
-            List<ParseTelemetry_1> date = new FacilityDataControl().GetParseTelemetryData(); // 김정관 수정
-            WP_Vibration = facilityDataChartControl.CreateVibrationChart(WP_Vibration, date, "VibrationGraph");
+            WP_Vibration = facilityDataChartControl.CreateVibrationChart(WP_Vibration, date, "VibrationGraph", selectedModelID, startDate, endDate);
+            WP_Vibration.Plot.AddVerticalSpan(50, 10000);
             WP_Vibration.Refresh();
+        }
 
+        public void UpdateWarningGraph()
+        {
+            // FacilityDataChartControl 및 StatisticsTabChartData 인스턴스 생성
+            FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
+            StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
+
+            // 통계 데이터 가져오기
+            Dictionary<string, int> data = statisticsTabChartData.GetParseErrorsData();
+
+            // 파이 차트 업데이트
+            WP_Warning = facilityDataChartControl.CreateWarningPieChart(WP_Warning, data, "고장 모델 비율");
+            WP_Warning.Refresh();
+        }
+
+        public void UpdateMaintGraph()
+        {
+            // FacilityDataChartControl 및 StatisticsTabChartData 인스턴스 생성
+            FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
+            StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
+
+            // 통계 데이터 가져오기
+            Dictionary<string, int> data = statisticsTabChartData.GetParseMaintData();
+
+            // 파이 차트 업데이트
+            WP_Maint = facilityDataChartControl.CreateMaintPieChart(WP_Maint, data, "유지 보수");
+            WP_Maint.Refresh();
+        }
+
+        private void Search_Click(object sender, RoutedEventArgs e) //값이 비어져있으면 메시지박스에 입력안한 항목있다고 띄어주기, 
+        {
+            // CB_Model_ID에서 선택된 값 가져오기
+            int? selectedModelIDNullable = CB_Model_ID.SelectedValue as int?;
+            // 만약 선택된 값이 null이면 기본값인 0으로 대체
+            int selectedModelID = selectedModelIDNullable ?? 0; // null이면 0으로 처리
+            // DatePicker에서 선택된 시작 날짜 가져오기
+            DateTime startDateValue = startDate.SelectedDate ?? DateTime.MinValue;
+            // DatePicker에서 선택된 종료 날짜 가져오기
+            DateTime endDateValue = endDate.SelectedDate ?? DateTime.MaxValue;
+
+
+            UpdateGraph(selectedModelID, startDateValue, endDateValue);
         }
         // 김정관 끝
 
