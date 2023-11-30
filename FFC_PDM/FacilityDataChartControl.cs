@@ -56,7 +56,6 @@ namespace FFC_PDM
             return chart;
         }
 
-
         public WpfPlot CreatePlottingDateTimeChart(WpfPlot wpfPlot, List<(System.DateTime, double)> chartData)
         {
             List<DateTime> dateTimeList = chartData.Select(item => item.Item1).ToList();
@@ -67,7 +66,7 @@ namespace FFC_PDM
                 chartData.Select(item => item.Item2).ToArray(),
                 markerSize: 5
             );
-            wpfPlot.Plot.Title("Voltage over Time");
+            wpfPlot.Plot.Title("장비 가동률");
             wpfPlot.Plot.XAxis.DateTimeFormat(true);
             wpfPlot.Plot.YAxis.SetBoundary(95, 100);
 

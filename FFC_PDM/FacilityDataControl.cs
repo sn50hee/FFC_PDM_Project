@@ -95,6 +95,21 @@ namespace FFC_PDM
             return telemetryData;
         }
 
+        public List<ParseTelemetry_1> GetcleanParseTelemetryData()
+        {
+            string filePath = "FFC_PDM.Resources.PdM_telemetry_no_duplicates_cleaned.csv";
+            List<ParseTelemetry_1> telemetryData = ReadData(filePath, line => new ParseTelemetry_1
+                {
+                    datetime = DateTime.Parse(line[0]),
+                    machineID = double.Parse(line[1]),
+                    volt = double.Parse(line[2]),
+                    rotate = double.Parse(line[3]),
+                    pressure = double.Parse(line[4]),
+                    vibration = double.Parse(line[5])
+                });
+
+            return telemetryData;
+        }
         public List<ParseTelemetry_1> GetParseTelemetryData_1(int selectedModelID, DateTime startDate, DateTime endDate)
         {
             string filePath = "FFC_PDM.Resources.PdM_telemetry_no_duplicates.csv";
