@@ -148,10 +148,6 @@ namespace FFC_PDM
                 .ToList();
             return result;
         }
-    }
-}
-
-        //수정 중
         public Dictionary<string, int> GetParseMaintData()
         {
             string filePath = "FFC_PDM.Resources.PdM_maint.csv";
@@ -232,7 +228,6 @@ public class Maint_1
 }
 
 // 김정관 끝
-}
 
 public class StatisticsTabGridData
 {
