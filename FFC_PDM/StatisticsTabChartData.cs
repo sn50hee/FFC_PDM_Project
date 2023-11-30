@@ -88,7 +88,7 @@ namespace FFC_PDM
 
         public List<(System.DateTime, double)> TelemetryDataListToDict()
         {
-            getFailuressListViewData = GetParseTelemetryData();
+            getFailuressListViewData = GetcleanParseTelemetryData();
 
             List<(System.DateTime, double)> resultList = getFailuressListViewData
                 .GroupBy(data => data.datetime)
@@ -112,6 +112,8 @@ namespace FFC_PDM
             }
 
             FacilityDataChartControl chart = new FacilityDataChartControl();
+
+            // 선차트
             wpfPlot = chart.CreatePlottingDateTimeChart(wpfPlot,points);
 
             return wpfPlot;

@@ -61,7 +61,7 @@ namespace FFC_PDM
                 WP_OperatingRatio = statisticsTabChartData.GetPointsToPlot(WP_OperatingRatio, data, 10);
                 WP_OperatingRatio.Refresh();
             };
-            timer.Interval = TimeSpan.FromSeconds(3); // 3초 주기로 업데이트
+            timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
         }
 
@@ -76,7 +76,7 @@ namespace FFC_PDM
                 RiskOfFailuressData.Add(statisticsTabChartData.RiskOfFailuressDataPlot(DG_FailuressList, data, 1));
                 DG_FailuressList.ItemsSource = RiskOfFailuressData;
             };
-            timer.Interval = TimeSpan.FromSeconds(1); // 3초 주기로 업데이트
+            timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
 
         }
