@@ -86,7 +86,7 @@
                             <DatePicker x:Name="startDate" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Center"/>
                             <Label Content="종료일" Grid.Row="0" Grid.Column="6" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
                             <DatePicker x:Name="endDate" Grid.Row="0" Grid.Column="7" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Center"/>
-                            <Button x:Name="Search" Grid.Row="0" Grid.Column="8" Content="검색" HorizontalAlignment="Stretch" Margin="5,12,5,12" VerticalAlignment="Stretch" Click="Search_Click">
+                            <Button x:Name="Search" Grid.Row="0" Grid.Column="8" Content="검색" HorizontalAlignment="Stretch" Margin="10,0,10,0" VerticalAlignment="Center" Click="Search_Click">
                                 <Button.Resources>
                                     <Style TargetType="Border">
                                         <Setter Property="CornerRadius" Value="2"></Setter>
@@ -111,7 +111,7 @@
 
                                     <Label x:Name="Voltage" Content="  Voltage" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
                                     <Label Content="  안정 범위: 200 미만" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <WpfPlot x:Name="WP_Volt" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch" MouseMove="ViewDetailsTabChart_MouseMove"/>
+                                    <WpfPlot x:Name="WP_Volt" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch" MouseMove="WP_Volt_MouseMove" MouseLeave="WP_Volt_MouseLeave"/>
 
                                 </Grid>
                             </Border>
@@ -125,7 +125,7 @@
 
                                     <Label x:Name="Rotate" Content="Rotate" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
                                     <Label Content="안정 범위: 360 초과" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <WpfPlot x:Name="WP_Rotate" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch"/>
+                                    <WpfPlot x:Name="WP_Rotate" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch" MouseMove="WP_Rotate_MouseMove" MouseLeave="WP_Rotate_MouseLeave"/>
                                 </Grid>
                             </Border>
 
@@ -139,7 +139,7 @@
 
                                     <Label x:Name="Pressure" Content="Pressure" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
                                     <Label Content="안정 범위: 120 미만" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <WpfPlot x:Name="WP_Pressure" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch"/>
+                                    <WpfPlot x:Name="WP_Pressure" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch" MouseMove="WP_Pressure_MouseMove" MouseLeave="WP_Pressure_MouseLeave"/>
                                 </Grid>
                             </Border>
                             <Border BorderBrush="White" BorderThickness="0.5" Margin="10,0,10,0" Grid.Column="3" >
@@ -153,18 +153,18 @@
                                     <Label Content="Vibration" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
                                     <Label Content="안정 범위: 50 미만" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <Label Content="위험 장비: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <WpfPlot x:Name="WP_Vibration" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch"/>
+                                    <WpfPlot x:Name="WP_Vibration" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch" MouseMove="WP_Vibration_MouseMove" MouseLeave="WP_Vibration_MouseLeave"/>
                                 </Grid>
                             </Border>
                         </Grid>
 
                         <Grid Grid.Row="2" Grid.Column="1">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1.5*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1.5*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1.5*"/>
                             </Grid.ColumnDefinitions>
 
                             <Grid Grid.Column="1">
@@ -174,8 +174,6 @@
                                 </Grid.RowDefinitions>
 
                                 <Label Content="고장기록" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
-                                <Label Content="고장 발생 날짜: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                <Label Content="모델명: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                 <WpfPlot x:Name="WP_Warning" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
                             </Grid>
 
@@ -186,8 +184,6 @@
                                 </Grid.RowDefinitions>
 
                                 <Label Content="유지보수 이력" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
-                                <Label Content="유지보수 날짜: " Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                <Label Content="모델명: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                 <WpfPlot x:Name="WP_Maint" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
                             </Grid>
                         </Grid>

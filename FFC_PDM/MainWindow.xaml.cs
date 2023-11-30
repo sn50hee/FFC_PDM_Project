@@ -125,7 +125,7 @@ namespace FFC_PDM
         // 김정관 추가
         private void UpdateGraph(int selectedModelID, DateTime startDate, DateTime endDate) // 회전 데이터 표시 차트 업데이트 메서드
         {
-            FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
+            facilityDataChartControl = new FacilityDataChartControl();
             List<ParseTelemetry_1> date = new FacilityDataControl().GetParseTelemetryData(); // 김정관 수정
 
             WP_Volt.Plot.Clear();
@@ -196,20 +196,36 @@ namespace FFC_PDM
 
         private void Search_Click(object sender, RoutedEventArgs e) //값이 비어져있으면 메시지박스에 입력안한 항목있다고 띄어주기, 
         {
-            // CB_Model_ID에서 선택된 값 가져오기
-            int? selectedModelIDNullable = int.Parse(CB_Model_ID.SelectedValue.ToString());
-            // 만약 선택된 값이 null이면 기본값인 0으로 대체
-            int selectedModelID = selectedModelIDNullable ?? 0; // null이면 0으로 처리
-            // DatePicker에서 선택된 시작 날짜 가져오기 --> 00시부터하고
-            DateTime startDateValue = startDate.SelectedDate?.Date ?? DateTime.MinValue;
-            // DatePicker에서 선택된 종료 날짜 가져오기 --> 23시 59분까지 받아올 수 있게
-            DateTime endDateValue = endDate.SelectedDate?.Date.AddDays(1).AddSeconds(-1) ?? DateTime.MaxValue;
+            if(CB_Model_ID.SelectedValue==null || startDate.SelectedDate==null || endDate.SelectedDate == null)
+            {
+                MessageBox.Show("선택하지 않은 항목이 있습니다.");
+            }
+            else
+            {
+                // CB_Model_ID에서 선택된 값 가져오기
+                int? selectedModelIDNullable = int.Parse(CB_Model_ID.SelectedValue.ToString());
+                // 만약 선택된 값이 null이면 기본값인 0으로 대체
+                int selectedModelID = selectedModelIDNullable ?? 0; // null이면 0으로 처리
+                                                                    // DatePicker에서 선택된 시작 날짜 가져오기 --> 00시부터하고
+                DateTime startDateValue = startDate.SelectedDate?.Date ?? DateTime.MinValue;
+                // DatePicker에서 선택된 종료 날짜 가져오기 --> 23시 59분까지 받아올 수 있게
+                DateTime endDateValue = endDate.SelectedDate?.Date.AddDays(1).AddSeconds(-1) ?? DateTime.MaxValue;
 
-            //김정관 추가
-            UpdateGraph(selectedModelID, startDateValue, endDateValue);
-            UpdateWarningGraph(selectedModelID, startDateValue, endDateValue);
-            UpdateMaintGraph(selectedModelID, startDateValue, endDateValue);
-            //김정관 끝
+                if(startDateValue >= endDateValue)
+                {
+                    MessageBox.Show("종료일은 시작일보다 작을 수 없습니다.");
+                }
+                else
+                {
+                    //김정관 추가
+                    UpdateGraph(selectedModelID, startDateValue, endDateValue);
+                    UpdateWarningGraph(selectedModelID, startDateValue, endDateValue);
+                    UpdateMaintGraph(selectedModelID, startDateValue, endDateValue);
+                    //김정관 끝
+                }
+
+            }
+
         }
         // 김정관 끝
 
@@ -261,10 +277,73 @@ namespace FFC_PDM
 
             DG_checkData.Items.Refresh();
         }
-
-        private void ViewDetailsTabChart_MouseMove(object sender, MouseEventArgs e)
+        FacilityDataChartControl facilityDataChartControl;
+        private void WP_Volt_MouseMove(object sender, MouseEventArgs e)
         {
+            if (facilityDataChartControl != null)
+            {
+                WP_Volt = facilityDataChartControl.Volt_MouseMove(WP_Volt, e);
+                WP_Volt.Refresh();
+            }
+        }
+        private void WP_Volt_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (facilityDataChartControl != null)
+            {
+                WP_Volt = facilityDataChartControl.Volt_MouseLeave(WP_Volt, e);
+                WP_Volt.Refresh();
+            }
+        }
 
+        private void WP_Rotate_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (facilityDataChartControl != null)
+            {
+                WP_Rotate = facilityDataChartControl.Rotate_MouseMove(WP_Rotate, e);
+                WP_Rotate.Refresh();
+            }
+        }
+        private void WP_Rotate_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (facilityDataChartControl != null)
+            {
+                WP_Rotate = facilityDataChartControl.Rotate_MouseLeave(WP_Rotate, e);
+                WP_Rotate.Refresh();
+            }
+        }
+
+        private void WP_Pressure_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (facilityDataChartControl != null)
+            {
+                WP_Pressure = facilityDataChartControl.Pressure_MouseMove(WP_Pressure, e);
+                WP_Pressure.Refresh();
+            }
+        }
+        private void WP_Pressure_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (facilityDataChartControl != null)
+            {
+                WP_Pressure = facilityDataChartControl.Pressure_MouseLeave(WP_Pressure, e);
+                WP_Pressure.Refresh();
+            }
+        }
+
+        private void WP_Vibration_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (facilityDataChartControl != null)
+            {
+                WP_Vibration = facilityDataChartControl.Vibration_MouseMove(WP_Vibration, e);
+                WP_Vibration.Refresh();
+            }
+        }
+        private void WP_Vibration_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (facilityDataChartControl != null)
+            {
+                WP_Vibration = facilityDataChartControl.Vibration_MouseLeave(WP_Vibration, e);
+                WP_Vibration.Refresh();
+            }
         }
 
     }
