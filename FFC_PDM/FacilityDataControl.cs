@@ -8,6 +8,9 @@ namespace FFC_PDM
 {
     internal class FacilityDataControl
     {
+        // 함수는 리스트 형태로 불러온다. 
+        // 인자는 delegate 형태로 받아온다. 그래서 화살표 함수로 파라미터를 전하는 것이 가능하다. 
+        // 데이터를 읽어오는 함수
         private List<T> ReadData<T>(string filePath, Func<string[], T> createInstance)
         {
             List<T> dataList = new List<T>();
@@ -15,15 +18,18 @@ namespace FFC_PDM
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(filePath))
             using (StreamReader reader = new StreamReader(stream))
             {
+                // 데이터 읽어오기 
                 reader.ReadLine(); // Skip header
 
                 while (!reader.EndOfStream)
                 {
+                    // csv 파일.. , 기준으로 분리하기
                     string[] line = reader.ReadLine().Split(',');
                     for (int i = 0; i < line.Length; i++)
                     {
                         line[i] = line[i].Trim('\"');
                     }
+                    // 리스트에 추가
                     dataList.Add(createInstance(line));
                 }
             }
@@ -43,6 +49,9 @@ namespace FFC_PDM
             return ReadData(filePath, line => new Errors { datetime = line[0], machineID = line[1], errorID = line[2] });
         }
 
+        // 밑에 있는 클래스 -> 불러오는 데이터
+        // return ReadData(filePath, line => new Machines {machineID = line[0], model = line[1], age = line[2]});
+        // list => (machineID, model, age)
         public List<Machines> GetMachinesData()
         {
             string filePath = "FFC_PDM.Resources.PdM_machines.csv";
@@ -62,7 +71,8 @@ namespace FFC_PDM
             List<Telemetry> telemetryData = ReadData(filePath, line => new Telemetry { datetime = line[0], machineID = line[1], volt = line[2], rotate = line[3], pressure = line[4], vibration = line[5] });
 
             // 최대 20,000개의 데이터만 가져오기
-            return telemetryData.Take(20000).ToList();
+            return telemetryData.Take(
+                00).ToList();
         }
 
 
@@ -82,47 +92,92 @@ namespace FFC_PDM
 
             return telemetryData;
         }
+
+        public List<ParseTelemetry_1> GetParseTelemetryData_1(int selectedModelID, DateTime startDate, DateTime endDate)
+        {
+            string filePath = "FFC_PDM.Resources.PdM_telemetry_no_duplicates.csv";
+            List<ParseTelemetry_1> telemetryData = ReadData(filePath, line => new ParseTelemetry_1
+            {
+                datetime = DateTime.Parse(line[0]),
+                machineID = double.Parse(line[1]),
+                volt = double.Parse(line[2]),
+                rotate = double.Parse(line[3]),
+                pressure = double.Parse(line[4]),
+                vibration = double.Parse(line[5])
+            });
+
+            return telemetryData;
+        }
+
+        public Dictionary<string, int> GetParseErrorsData()
+        {
+            string filePath = "FFC_PDM.Resources.PdM_failures.csv";
+            List<Errors_1> errorsList = ReadData(filePath, line => new Errors_1 { datetime = DateTime.Parse(line[0]), machineID = double.Parse(line[1]), errorID = line[2] });
+
+            // List<Errors_1>에서 Dictionary<string, int>로 변환
+            Dictionary<string, int> errorsDictionary = errorsList
+                .GroupBy(error => error.errorID)
+                .ToDictionary(group => group.Key, group => group.Count());
+
+            return errorsDictionary;
+        }
+
+        //수정 중
+        public Dictionary<string, int> GetParseMaintData()
+        {
+            string filePath = "FFC_PDM.Resources.PdM_maint.csv";
+            List<Maint_1> compList = ReadData(filePath, line => new Maint_1 { datetime = DateTime.Parse(line[0]), machineID = double.Parse(line[1]), comp = line[2] });
+
+            // List<Errors_1>에서 Dictionary<string, int>로 변환
+            Dictionary<string, int> compDictionary = compList
+                .GroupBy(error => error.comp) //error.comp 수정해야됨
+                .ToDictionary(group => group.Key, group => group.Count());
+
+            return compDictionary;
+        }
     }
 }
 
-    public class Failures
-    {
-        public string datetime { get; set; }
-        public string machineID { get; set; }
-        public string failure { get; set; }
-    }
+public class Failures
+{
+    public string datetime { get; set; }
+    public string machineID { get; set; }
+    public string failure { get; set; }
+}
 
-    public class Errors
-    {
-        public string datetime { get; set; }
-        public string machineID { get; set; }
-        public string errorID { get; set; }
-    }
+public class Errors
+{
+    public string datetime { get; set; }
+    public string machineID { get; set; }
+    public string errorID { get; set; }
+}
 
-    public class Machines
-    {
-        public string machineID { get; set; }
-        public string model { get; set; }
-        public string age { get; set; }
-    }
+public class Machines
+{
+    //받아오는 데이터 형식 {machineID ; 1}, {model ; 1}
+    public string machineID { get; set; }
+    public string model { get; set; }
+    public string age { get; set; }
+}
 
-    public class Maint
-    {
-        public string datetime { get; set; }
-        public string machineID { get; set; }
-        public string comp { get; set; }
-    }
+public class Maint
+{
+    public string datetime { get; set; }
+    public string machineID { get; set; }
+    public string comp { get; set; }
+}
 
-    public class Telemetry
-    {
+public class Telemetry
+{
     public string datetime { get; set; }
     public string machineID { get; set; }
     public string volt { get; set; }
     public string rotate { get; set; }
     public string pressure { get; set; }
     public string vibration { get; set; }
-    }
+}
 
+// 김정관 수정
 public class ParseTelemetry_1
 {
     public DateTime datetime { get; set; }
@@ -132,3 +187,19 @@ public class ParseTelemetry_1
     public double pressure { get; set; }
     public double vibration { get; set; }
 }
+
+public class Errors_1
+{
+    public DateTime datetime { get; set; }
+    public double machineID { get; set; }
+    public string errorID { get; set; }
+}
+
+public class Maint_1
+{
+    public DateTime datetime { get; set; }
+    public double machineID { get; set; }
+    public string comp { get; set; }
+}
+
+// 김정관 끝
