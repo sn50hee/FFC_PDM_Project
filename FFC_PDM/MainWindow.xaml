@@ -111,7 +111,7 @@
 
                                     <Label x:Name="Voltage" Content="  Voltage" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
                                     <Label Content="  안정 범위: 200 미만" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <WpfPlot x:Name="WP_Volt" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch"/>
+                                    <WpfPlot x:Name="WP_Volt" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch" MouseMove="ViewDetailsTabChart_MouseMove"/>
 
                                 </Grid>
                             </Border>

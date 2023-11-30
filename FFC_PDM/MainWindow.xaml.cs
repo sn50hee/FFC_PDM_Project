@@ -1,8 +1,10 @@
 ﻿using ScottPlot;
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -76,7 +78,7 @@ namespace FFC_PDM
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             Dictionary<string, int> data = new StatisticsTabChartData().RecentFacilityData();
-            WP_RecentFacility = facilityDataChartControl.CreateBarChart(WP_RecentFacility, data, "최근 10건 고장 모델", true);
+            WP_RecentFacility = facilityDataChartControl.CreateBarChart(WP_RecentFacility, data, "최근 10건 고장 장비", true);
             WP_RecentFacility.Refresh();
         }
 
@@ -259,6 +261,12 @@ namespace FFC_PDM
 
             DG_checkData.Items.Refresh();
         }
+
+        private void ViewDetailsTabChart_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
     }
 
 }

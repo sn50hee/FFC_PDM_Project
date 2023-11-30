@@ -29,6 +29,8 @@ namespace FFC_PDM
             Plot plt = chart.Plot;
             var bar = plt.AddBar(valuesAsDouble, positions, color: ColorTranslator.FromHtml("#0fa3b1"));
 
+            bar.BorderLineWidth = 0;
+
             bar.ShowValuesAboveBars = showValuesAboveBars;
             plt.XTicks(positions, keys);
             plt.SetAxisLimits(yMin: 0);
@@ -65,7 +67,7 @@ namespace FFC_PDM
             wpfPlot.Plot.PlotScatter(
                 chartData.Select(item => item.Item1.ToOADate()).ToArray(),
                 chartData.Select(item => item.Item2).ToArray(),
-                markerSize: 5,
+                markerSize: 2,
                 color: ColorTranslator.FromHtml("#0fa3b1")
             );
             wpfPlot.Plot.Title("장비 가동률");
@@ -82,6 +84,7 @@ namespace FFC_PDM
         // 기존 코드에서 double.TryParse로 변환할때 문자열 변환x
         // if문 제거 -> 데이터 필터링 제거함(101개) 대신 Take씀
         // FacilityDataControl클래스의 두 인스턴스 생성을 하나로 통합
+
         public WpfPlot CreateVoltageChart(WpfPlot chart, List<ParseTelemetry_1> chartData, string title, int selectedModelID, DateTime startDate, DateTime endDate)
         {
             Plot plt = chart.Plot;
@@ -96,8 +99,9 @@ namespace FFC_PDM
 
             var datetimeValues = dataSubset.Select(d => d.datetime.ToOADate()).ToArray();
             var volts = dataSubset.Select(d => d.volt).ToArray();
-
-            var scatter = plt.AddScatter(datetimeValues, volts);
+            //
+            var scatter = plt.AddScatter(datetimeValues, volts, color: ScottPlot.Palette.Frost.Colors[0]);
+            //var scatter = plt.AddScatter(datetimeValues, volts, color: ColorTranslator.FromHtml("#84A7A1"));
             scatter.MarkerSize = 5;
 
             plt.XAxis.DateTimeFormat(true);
@@ -124,8 +128,8 @@ namespace FFC_PDM
 
             var datetimeValues = dataSubset.Select(d => d.datetime.ToOADate()).ToArray();
             var rotates = dataSubset.Select(d => d.rotate).ToArray();
-
-            var scatter = plt.AddScatter(datetimeValues, rotates);
+            var scatter = plt.AddScatter(datetimeValues, rotates, color: ScottPlot.Palette.Frost.Colors[1]);
+            //var scatter = plt.AddScatter(datetimeValues, volts, color: ColorTranslator.FromHtml("#2E8A99"));
             scatter.MarkerSize = 5;
 
             plt.XAxis.DateTimeFormat(true);
@@ -152,8 +156,8 @@ namespace FFC_PDM
 
             var datetimeValues = dataSubset.Select(d => d.datetime.ToOADate()).ToArray();
             var pressures = dataSubset.Select(d => d.pressure).ToArray();
-
-            var scatter = plt.AddScatter(datetimeValues, pressures);
+            var scatter = plt.AddScatter(datetimeValues, pressures, color: ScottPlot.Palette.Frost.Colors[2]);
+            //var scatter = plt.AddScatter(datetimeValues, volts, color: ColorTranslator.FromHtml("#1F6E8C"));
             scatter.MarkerSize = 5;
 
             plt.XAxis.DateTimeFormat(true);
@@ -180,8 +184,8 @@ namespace FFC_PDM
 
             var datetimeValues = dataSubset.Select(d => d.datetime.ToOADate()).ToArray();
             var vibrations = dataSubset.Select(d => d.vibration).ToArray();
-
-            var scatter = plt.AddScatter(datetimeValues, vibrations);
+            var scatter = plt.AddScatter(datetimeValues, vibrations, color: ScottPlot.Palette.Frost.Colors[3]);
+            //var scatter = plt.AddScatter(datetimeValues, volts, color: ColorTranslator.FromHtml("#0E2954"));
             scatter.MarkerSize = 5;
 
             plt.XAxis.DateTimeFormat(true);
@@ -201,15 +205,17 @@ namespace FFC_PDM
             double[] valuesAsDouble = keys.OrderBy(key => key).Select(key => (double)chartData[key]).ToArray();
 
             Plot plt = chart.Plot;
-            var pie = plt.AddPie(valuesAsDouble);
+            plt.Palette = ScottPlot.Palette.Frost;
 
+            var pie = plt.AddPie(valuesAsDouble);
+            
             pie.SliceLabels = keys;
             pie.ShowPercentages = true;
             pie.ShowValues = true;
             pie.ShowLabels = true;
             plt.Legend();
             plt.Title(title);
-
+            
             return chart;
         }
 
@@ -219,15 +225,17 @@ namespace FFC_PDM
             double[] valuesAsDouble = keys.OrderBy(key => key).Select(key => (double)chartData[key]).ToArray();
 
             Plot plt = chart.Plot;
-            var pie = plt.AddPie(valuesAsDouble);
+            plt.Palette = ScottPlot.Palette.Frost;
 
+            var pie = plt.AddPie(valuesAsDouble);
+            
             pie.SliceLabels = keys;
             pie.ShowPercentages = true;
             pie.ShowValues = true;
             pie.ShowLabels = true;
             plt.Legend();
             plt.Title(title);
-
+            
             return chart;
         }
 
