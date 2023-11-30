@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 //using static ScottPlot.Plottable.PopulationPlot;
@@ -55,6 +56,28 @@ namespace FFC_PDM
             return chart;
         }
 
+
+        public WpfPlot CreatePlottingDateTimeChart(WpfPlot wpfPlot, List<(System.DateTime, double)> chartData)
+        {
+            List<DateTime> dateTimeList = chartData.Select(item => item.Item1).ToList();
+            List<double> doubleList = chartData.Select(item => item.Item2).ToList();
+
+            wpfPlot.Plot.PlotScatter(
+                chartData.Select(item => item.Item1.ToOADate()).ToArray(),
+                chartData.Select(item => item.Item2).ToArray(),
+                markerSize: 5
+            );
+            wpfPlot.Plot.Title("Voltage over Time");
+            wpfPlot.Plot.XAxis.DateTimeFormat(true);
+            wpfPlot.Plot.YAxis.SetBoundary(95, 100);
+
+            wpfPlot.Plot.Grid(enable: true);
+
+            return wpfPlot;
+        }
+
+
+
         // 김정관 추가 시작
         // 기존 코드에서 double.TryParse로 변환할때 문자열 변환x
         // if문 제거 -> 데이터 필터링 제거함(101개) 대신 Take씀
@@ -62,6 +85,7 @@ namespace FFC_PDM
         public WpfPlot CreateVoltageChart(WpfPlot chart, List<ParseTelemetry_1> chartData, string title, int selectedModelID, DateTime startDate, DateTime endDate)
         {
             Plot plt = chart.Plot;
+            plt.Clear();
 
             var dataSubset = chartData
                .Where(d => !double.IsNaN(d.machineID) && !double.IsNaN(d.volt) &&

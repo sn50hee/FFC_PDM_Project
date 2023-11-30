@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Windows.Controls;
 
 namespace FFC_PDM
 {
@@ -48,7 +50,7 @@ namespace FFC_PDM
             string filePath = "FFC_PDM.Resources.PdM_errors.csv";
             return ReadData(filePath, line => new Errors { datetime = line[0], machineID = line[1], errorID = line[2] });
         }
-
+        
         // 밑에 있는 클래스 -> 불러오는 데이터
         // return ReadData(filePath, line => new Machines {machineID = line[0], model = line[1], age = line[2]});
         // list => (machineID, model, age)
@@ -121,6 +123,33 @@ namespace FFC_PDM
 
             return errorsDictionary;
         }
+
+        public List<StatisticsTabGridData> GetLatestTelemetryData()
+        {
+            string filePath = "FFC_PDM.Resources.PdM_telemetry_latest.csv";
+            return ReadData(filePath, line => new StatisticsTabGridData { volt = double.Parse(line[0]), rotate= double.Parse(line[1]), pressure= double.Parse(line[2]), vibration= double.Parse(line[3]), modelId = int.Parse(line[5]), age= int.Parse(line[6]), failure=null });
+        }
+
+        public List<StatisticsTabGridData> GetLatestTelemetryData(double volt, double rotate, double pressure, double vibration)
+        {
+            string filePath = "FFC_PDM.Resources.PdM_telemetry_latest.csv";
+            List<StatisticsTabGridData> result = ReadData(filePath, line => new StatisticsTabGridData
+                {
+                    volt = double.Parse(line[0]),
+                    rotate = double.Parse(line[1]),
+                    pressure = double.Parse(line[2]),
+                    vibration = double.Parse(line[3]),
+                    modelId = int.Parse(line[5]),
+                    age = int.Parse(line[6]),
+                    failure = null
+                })
+                .Where(data => data.volt >= volt || data.rotate <= rotate || data.pressure >= pressure || data.vibration >= vibration)
+                .OrderBy(data => data.modelId)
+                .ToList();
+            return result;
+        }
+    }
+}
 
         //수정 중
         public Dictionary<string, int> GetParseMaintData()
@@ -203,3 +232,16 @@ public class Maint_1
 }
 
 // 김정관 끝
+}
+
+public class StatisticsTabGridData
+{
+    public int? modelId { get; set; }
+    public int? age { get; set; }
+    public double? volt { get; set; }
+    public double? rotate { get; set; }
+    public double? pressure { get; set; }
+    public double? vibration { get; set; }
+    public string failure { get; set; }
+}
+

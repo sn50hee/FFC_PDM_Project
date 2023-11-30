@@ -1,6 +1,7 @@
 ﻿using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,11 +29,16 @@ namespace FFC_PDM
         public MainWindow()
         {
             InitializeComponent();
-            GridDataView();
-            Col1View();
-            Col2View();
-            Col3View();
+
+            // 윤석희 추가
+            WP_RecentFacilityView();
+            WP_ErrorRateView();
+            WP_OperatingRatioView();
+            DG_FailuressListView();
+            // 윤석희끝
+
             GenerateCBModelName();
+            
 
             //김정관 추가
             UpdateWarningGraph();
@@ -41,40 +47,52 @@ namespace FFC_PDM
 
         }
 
-        public void GridDataView() // 샘플데이터 표시(김정관)
+        
+        public void WP_OperatingRatioView()
         {
-            List<GridData> list = new List<GridData>();
-            list.Add(new GridData { model_name = "1" });
-            list.Add(new GridData { model_name = "2" });
-            list.Add(new GridData { model_name = "3" });
-            list.Add(new GridData { model_name = "4" });
-            list.Add(new GridData { model_name = "5" });
+            StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
+            List<(System.DateTime, double)> data = statisticsTabChartData.TelemetryDataListToDict();
 
-            DG_Name.ItemsSource = list;
+            var timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Tick += (sender, e) => {
+                WP_OperatingRatio.Plot.Clear();
+                WP_OperatingRatio = statisticsTabChartData.GetPointsToPlot(WP_OperatingRatio, data, 10);
+                WP_OperatingRatio.Refresh();
+            };
+            timer.Interval = TimeSpan.FromSeconds(3); // 3초 주기로 업데이트
+            timer.Start();
         }
 
-        public void Col1View() // 차트 생성 및 초기화, Datagrid에 연결
+        ObservableCollection<StatisticsTabGridData> RiskOfFailuressData = new ObservableCollection<StatisticsTabGridData>();
+        public void DG_FailuressListView()
         {
-            FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
-            Dictionary<string, int> date = new StatisticsTabChartData().HindranceRateData();
-            col1 = facilityDataChartControl.CreatePieChart(col1, date, "부품별 고장", true, true, true);
-            col1.Refresh();
+            StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
+            List<StatisticsTabGridData> data = statisticsTabChartData.GetFailuressListViewData();
+
+            var timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Tick += (sender, e) => {
+                RiskOfFailuressData.Add(statisticsTabChartData.RiskOfFailuressDataPlot(DG_FailuressList, data, 1));
+                DG_FailuressList.ItemsSource = RiskOfFailuressData;
+            };
+            timer.Interval = TimeSpan.FromSeconds(1); // 3초 주기로 업데이트
+            timer.Start();
+
         }
 
-        public void Col2View()
+        public void WP_RecentFacilityView()
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
-            Dictionary<string, int> date = new StatisticsTabChartData().RecentErrorsData();
-            col2 = facilityDataChartControl.CreateBarChart(col2, date, "최근 10일 고장 모델", true);
-            col2.Refresh();
+            Dictionary<string, int> data = new StatisticsTabChartData().RecentFacilityData();
+            WP_RecentFacility = facilityDataChartControl.CreateBarChart(WP_RecentFacility, data, "최근 10건 고장 모델", true);
+            WP_RecentFacility.Refresh();
         }
 
-        public void Col3View()
+        public void WP_ErrorRateView()
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
-            Dictionary<string, int> date = new StatisticsTabChartData().ErrorRateData();
-            col3 = facilityDataChartControl.CreateBarChart(col3, date, "오류 횟수", true);
-            col3.Refresh();
+            Dictionary<string, int> data = new StatisticsTabChartData().ErrorRateData();
+            WP_ErrorRate = facilityDataChartControl.CreateBarChart(WP_ErrorRate, data, "오류 횟수", true);
+            WP_ErrorRate.Refresh();
         }
 
         public void GenerateCBModelName()
@@ -83,13 +101,6 @@ namespace FFC_PDM
             CB_ModelName = searchDataFilterl.MadeComboBox(CB_ModelName);
 
         }
-        /*
-        public void GenerateCBModelID()
-        {
-            SearchDataFilterl searchDataFilterl = new SearchDataFilterl();
-            CB_Model_ID = searchDataFilterl.MadeIDComboBox(CB_ModelName);
-        }
-        */
 
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -110,12 +121,10 @@ namespace FFC_PDM
 
                 CB_Model_ID.Items.Add((i).ToString());
             }
+
+
+
             // machineIDList를 콤보박스에 추가하기
-        }
-
-        private void CB_Model_ID_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         // 김정관 추가
@@ -189,11 +198,55 @@ namespace FFC_PDM
             UpdateGraph(selectedModelID, startDateValue, endDateValue);
         }
         // 김정관 끝
+
+        ObservableCollection<StatisticsTabGridData> gridDatas = new ObservableCollection<StatisticsTabGridData>();
+        
+        private void AddRowButton_Click(object sender, RoutedEventArgs e)
+        {
+            // + 버튼 클릭 시 새로운 행 추가
+            gridDatas.Add(new StatisticsTabGridData { age = null, modelId = null, pressure = null, rotate = null, vibration = null, volt = null, failure = null});
+            DG_checkData.ItemsSource = gridDatas;
+        }
+
+        private void RemoveRowButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DG_checkData.Items.Count > 0)
+            {
+                int lastIndex = DG_checkData.Items.Count - 1;
+                gridDatas.RemoveAt(lastIndex);
+            }
+        }
+
+        private void Btn_check_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> inputDataList = new List<string>();
+            foreach(StatisticsTabGridData data in gridDatas)
+            {
+                if(data.volt == null ||  data.rotate == null || data.pressure == null || data.vibration == null || data.modelId == null || data.age == null)
+                {
+                    MessageBox.Show("모든 값을 입력해야 합니다");
+                    break;
+                }
+
+                inputDataList.Add($"[[{data.modelId.ToString()},{data.age.ToString()},{data.volt.ToString()},{data.rotate.ToString()},{data.pressure.ToString()},{data.vibration.ToString()}]]");
+            }
+            GetPythonModel getPythonModel = new GetPythonModel();
+            List<string> outputDataList = getPythonModel.FailureCheck(inputDataList);
+
+            for(int i = 0; i < outputDataList.Count; i++)
+            {
+                if (outputDataList[i] == "[1]\r\n")
+                {
+                    gridDatas[i].failure = "고장 위험";
+                }
+                else
+                {
+                    gridDatas[i].failure = "안전";
+                }
+            }
+
+            DG_checkData.Items.Refresh();
+        }
     }
 
-
-    public class GridData
-    {
-        public string model_name { get; set; }
-    }
 }
