@@ -3,6 +3,7 @@ using ScottPlot.Drawing.Colormaps;
 using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace FFC_PDM
             double[] positions = Enumerable.Range(0, keys.Length).Select(index => (double)index).ToArray();
 
             Plot plt = chart.Plot;
-            var bar = plt.AddBar(valuesAsDouble, positions);
+            var bar = plt.AddBar(valuesAsDouble, positions, color: ColorTranslator.FromHtml("#0fa3b1"));
 
             bar.ShowValuesAboveBars = showValuesAboveBars;
             plt.XTicks(positions, keys);
@@ -64,12 +65,12 @@ namespace FFC_PDM
             wpfPlot.Plot.PlotScatter(
                 chartData.Select(item => item.Item1.ToOADate()).ToArray(),
                 chartData.Select(item => item.Item2).ToArray(),
-                markerSize: 5
+                markerSize: 5,
+                color: ColorTranslator.FromHtml("#0fa3b1")
             );
             wpfPlot.Plot.Title("장비 가동률");
             wpfPlot.Plot.XAxis.DateTimeFormat(true);
             wpfPlot.Plot.YAxis.SetBoundary(95, 100);
-
             wpfPlot.Plot.Grid(enable: true);
 
             return wpfPlot;
