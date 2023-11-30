@@ -99,47 +99,66 @@ namespace FFC_PDM
             string filePath = "FFC_PDM.Resources.PdM_telemetry_latest.csv";
             return ReadData(filePath, line => new StatisticsTabGridData { volt = double.Parse(line[0]), rotate= double.Parse(line[1]), pressure= double.Parse(line[2]), vibration= double.Parse(line[3]), modelId = int.Parse(line[5]), age= int.Parse(line[6]), failure=null });
         }
+
+        public List<StatisticsTabGridData> GetLatestTelemetryData(double volt, double rotate, double pressure, double vibration)
+        {
+            string filePath = "FFC_PDM.Resources.PdM_telemetry_latest.csv";
+            List<StatisticsTabGridData> result = ReadData(filePath, line => new StatisticsTabGridData
+                {
+                    volt = double.Parse(line[0]),
+                    rotate = double.Parse(line[1]),
+                    pressure = double.Parse(line[2]),
+                    vibration = double.Parse(line[3]),
+                    modelId = int.Parse(line[5]),
+                    age = int.Parse(line[6]),
+                    failure = null
+                })
+                .Where(data => data.volt >= volt || data.rotate <= rotate || data.pressure >= pressure || data.vibration >= vibration)
+                .OrderBy(data => data.modelId)
+                .ToList();
+            return result;
+        }
     }
 }
 
-    public class Failures
-    {
-        public string datetime { get; set; }
-        public string machineID { get; set; }
-        public string failure { get; set; }
-    }
+public class Failures
+{
+    public string datetime { get; set; }
+    public string machineID { get; set; }
+    public string failure { get; set; }
+}
 
-    public class Errors
-    {
-        public string datetime { get; set; }
-        public string machineID { get; set; }
-        public string errorID { get; set; }
-    }
+public class Errors
+{
+    public string datetime { get; set; }
+    public string machineID { get; set; }
+    public string errorID { get; set; }
+}
 
-    public class Machines
-    {
-        //받아오는 데이터 형식 {machineID ; 1}, {model ; 1}
-        public string machineID { get; set; }
-        public string model { get; set; }
-        public string age { get; set; }
-    }
+public class Machines
+{
+    //받아오는 데이터 형식 {machineID ; 1}, {model ; 1}
+    public string machineID { get; set; }
+    public string model { get; set; }
+    public string age { get; set; }
+}
 
-    public class Maint
-    {
-        public string datetime { get; set; }
-        public string machineID { get; set; }
-        public string comp { get; set; }
-    }
+public class Maint
+{
+    public string datetime { get; set; }
+    public string machineID { get; set; }
+    public string comp { get; set; }
+}
 
-    public class Telemetry
-    {
+public class Telemetry
+{
     public string datetime { get; set; }
     public string machineID { get; set; }
     public string volt { get; set; }
     public string rotate { get; set; }
     public string pressure { get; set; }
     public string vibration { get; set; }
-    }
+}
 
 public class ParseTelemetry_1
 {

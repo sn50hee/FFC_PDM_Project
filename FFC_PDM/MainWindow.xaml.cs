@@ -31,14 +31,10 @@ namespace FFC_PDM
             InitializeComponent();
 
             // 윤석희 추가
-            WP_HindranceRateView();
             WP_RecentFacilityView();
             WP_ErrorRateView();
-            /*
-             * 아래 코드는 통계 탭 고장 위험 장비 목록 보여주는 건데 주석 풀면 실행 시간 너무 오래 걸리니까 테스트 할 때는 주석 풀지 말아주세요
-             * DG_FailuressListView();
-             */
-
+            WP_OperatingRatioView();
+            DG_FailuressListView();
             // 윤석희끝
 
             GenerateCBModelName();
@@ -53,19 +49,36 @@ namespace FFC_PDM
 
         }
 
-        public void DG_FailuressListView()
+        
+        public void WP_OperatingRatioView()
         {
-            List<StatisticsTabGridData> data = new StatisticsTabChartData().GetFailuressListViewData();
-            DG_FailuressList.ItemsSource = data;
+            StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
+            List<(System.DateTime, double)> data = statisticsTabChartData.TelemetryDataListToDict();
 
+            var timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Tick += (sender, e) => {
+                WP_OperatingRatio.Plot.Clear();
+                WP_OperatingRatio = statisticsTabChartData.GetPointsToPlot(WP_OperatingRatio, data, 10);
+                WP_OperatingRatio.Refresh();
+            };
+            timer.Interval = TimeSpan.FromSeconds(3); // 3초 주기로 업데이트
+            timer.Start();
         }
 
-        public void WP_HindranceRateView() // 차트 생성 및 초기화, Datagrid에 연결
+        ObservableCollection<StatisticsTabGridData> RiskOfFailuressData = new ObservableCollection<StatisticsTabGridData>();
+        public void DG_FailuressListView()
         {
-            FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
-            Dictionary<string, int> data = new StatisticsTabChartData().HindranceRateData();
-            WP_HindranceRate = facilityDataChartControl.CreatePieChart(WP_HindranceRate, data, "부품별 고장", true, true, true);
-            WP_HindranceRate.Refresh();
+            StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
+            List<StatisticsTabGridData> data = statisticsTabChartData.GetFailuressListViewData();
+
+            var timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Tick += (sender, e) => {
+                RiskOfFailuressData.Add(statisticsTabChartData.RiskOfFailuressDataPlot(DG_FailuressList, data, 1));
+                DG_FailuressList.ItemsSource = RiskOfFailuressData;
+            };
+            timer.Interval = TimeSpan.FromSeconds(1); // 3초 주기로 업데이트
+            timer.Start();
+
         }
 
         public void WP_RecentFacilityView()
@@ -145,7 +158,7 @@ namespace FFC_PDM
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             List<ParseTelemetry_1> date = new FacilityDataControl().GetParseTelemetryData(); // 김정관 수정
             WP_Vibration = facilityDataChartControl.CreateVibrationChart(WP_Vibration, date, "VibrationGraph");
-            WP_Volt.Refresh();
+            WP_Vibration.Refresh();
 
         }
         // 김정관 끝
@@ -178,7 +191,8 @@ namespace FFC_PDM
                     MessageBox.Show("모든 값을 입력해야 합니다");
                     break;
                 }
-                inputDataList.Add($"[[{data.volt.ToString()},{data.rotate.ToString()},{data.pressure.ToString()},{data.vibration.ToString()},0,{data.modelId.ToString()},{data.age.ToString()}]]");
+
+                inputDataList.Add($"[[{data.modelId.ToString()},{data.age.ToString()},{data.volt.ToString()},{data.rotate.ToString()},{data.pressure.ToString()},{data.vibration.ToString()}]]");
             }
             GetPythonModel getPythonModel = new GetPythonModel();
             List<string> outputDataList = getPythonModel.FailureCheck(inputDataList);
