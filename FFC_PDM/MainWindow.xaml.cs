@@ -163,7 +163,7 @@ namespace FFC_PDM
             if (data.Any())
             {
                 // 파이 차트 업데이트
-                WP_Warning = facilityDataChartControl.CreateWarningPieChart(WP_Warning, data, "고장 모델 비율");
+                WP_Warning = facilityDataChartControl.CreateWarningPieChart(WP_Warning, data);
                 WP_Warning.Refresh();
             }
             else
@@ -184,7 +184,7 @@ namespace FFC_PDM
             WP_Maint.Plot.Clear();
             if (data.Any())
             {
-                WP_Maint = facilityDataChartControl.CreateMaintPieChart(WP_Maint, data, "유지 보수");
+                WP_Maint = facilityDataChartControl.CreateMaintPieChart(WP_Maint, data);
                 WP_Maint.Refresh();
             }
             else

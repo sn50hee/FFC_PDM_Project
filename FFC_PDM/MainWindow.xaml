@@ -160,11 +160,11 @@
 
                         <Grid Grid.Row="2" Grid.Column="1">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
                             <Grid Grid.Column="1">
@@ -173,7 +173,7 @@
                                     <RowDefinition Height="5*"/>
                                 </Grid.RowDefinitions>
 
-                                <Label Content="고장기록" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+                                <Label Content="고장 부품 비율" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
                                 <WpfPlot x:Name="WP_Warning" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
                             </Grid>
 
@@ -183,7 +183,7 @@
                                     <RowDefinition Height="5*"/>
                                 </Grid.RowDefinitions>
 
-                                <Label Content="유지보수 이력" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+                                <Label Content="부품 유지 보수 비율" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
                                 <WpfPlot x:Name="WP_Maint" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
                             </Grid>
                         </Grid>

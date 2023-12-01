@@ -28,9 +28,11 @@ namespace FFC_PDM
             double[] positions = Enumerable.Range(0, keys.Length).Select(index => (double)index).ToArray();
 
             Plot plt = chart.Plot;
-            var bar = plt.AddBar(valuesAsDouble, positions, color: ColorTranslator.FromHtml("#0fa3b1"));
+            var bar = plt.AddBar(valuesAsDouble, positions, color: System.Drawing.Color.FromArgb(150, 15, 163, 177));
+            // var bar = plt.AddBar(valuesAsDouble, positions, color: ColorTranslator.FromHtml("#0fa3b1"));
 
-            bar.BorderLineWidth = 0;
+            bar.BorderLineWidth = 1;
+            bar.BorderColor = System.Drawing.Color.FromArgb(200, 15, 163, 177);
 
             bar.ShowValuesAboveBars = showValuesAboveBars;
             plt.XTicks(positions, keys);
@@ -71,6 +73,8 @@ namespace FFC_PDM
                 markerSize: 2,
                 color: ColorTranslator.FromHtml("#0fa3b1")
             );
+            wpfPlot.Plot.AddFill(chartData.Select(item => item.Item1.ToOADate()).ToArray(),
+                chartData.Select(item => item.Item2).ToArray(), color: System.Drawing.Color.FromArgb(100,15,163,177));
             wpfPlot.Plot.Title("장비 가동률");
             wpfPlot.Plot.XAxis.DateTimeFormat(true);
             wpfPlot.Plot.YAxis.SetBoundary(95, 100);
@@ -384,7 +388,7 @@ namespace FFC_PDM
             }
             return plot;
         }
-        public WpfPlot CreateWarningPieChart(WpfPlot chart, Dictionary<string, int> chartData, string title)
+        public WpfPlot CreateWarningPieChart(WpfPlot chart, Dictionary<string, int> chartData)
         {
             string[] keys = chartData.Keys.OrderBy(key => key).ToArray();
             double[] valuesAsDouble = keys.OrderBy(key => key).Select(key => (double)chartData[key]).ToArray();
@@ -399,14 +403,13 @@ namespace FFC_PDM
             pie.ShowValues = true;
             pie.ShowLabels = true;
             plt.Legend();
-            plt.Title(title);
             chart.Configuration.ScrollWheelZoom= false;
 
             return chart;
         }
 
 
-        public WpfPlot CreateMaintPieChart(WpfPlot chart, Dictionary<string, int> chartData, string title)
+        public WpfPlot CreateMaintPieChart(WpfPlot chart, Dictionary<string, int> chartData)
         {
             string[] keys = chartData.Keys.OrderBy(key => key).ToArray();
             double[] valuesAsDouble = keys.OrderBy(key => key).Select(key => (double)chartData[key]).ToArray();
@@ -421,7 +424,6 @@ namespace FFC_PDM
             pie.ShowValues = true;
             pie.ShowLabels = true;
             plt.Legend();
-            plt.Title(title);
             chart.Configuration.ScrollWheelZoom = false;
 
             return chart;
