@@ -164,8 +164,7 @@ B. 상세 계획
 <details>
 <summary>C. 클래스 다이어그램</summary>
 
-![클래스 다이어그램](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/27bccb82-3e69-413a-9e9f-04ea0b955ba2)
-
+![png](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/fb31dadf-1d02-4d3b-8183-3a6e0dffbe5e)
 
 </details>
 
