@@ -211,7 +211,7 @@ B. 상세 계획
 ![슬라이드5](https://github.com/sn50hee/FFC_PDM/assets/139873815/1df1c89a-901a-4b63-9522-e2a121052c77)
 
 
-초기값 세팅
+초기값 세팅 탭
 
 ![프레젠테이션1](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/64665fca-176c-4a54-aaae-3af15463db3e)
 
