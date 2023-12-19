@@ -81,22 +81,33 @@
 <details>
 <summary>1-3) 데이터 분석 모델과 WPF 연결</summary>
 
-&nbsp;&nbsp;&nbsp;&nbsp;A. 구현체: IronPython3.4.1
+&nbsp;&nbsp;&nbsp;&nbsp;A. C# Process 클래스(네임스페이스: System.Diagnostics)
+
+</details>
+
+<details>
+<summary>1-4) PLC</summary>
+
+&nbsp;&nbsp;&nbsp;&nbsp;A. 언어: LD(Ladder Diagram)
+
+&nbsp;&nbsp;&nbsp;&nbsp;B. 라이브러리: XGCommLib
 
 </details>
 
 
 
 ## 2) 개발 계획
-A. 개발 기간: 2023.11.27(월) ~ 2023.11.30(목)
+A. 개발 기간: 2023.12.20(수) ~ 2023.12.28(목)
 <details>
 <summary>B. 상세 계획</summary>
 
-&nbsp;&nbsp;&nbsp;&nbsp;B) 2023.11.27(월): 데이터 분석 모듈 개발
+&nbsp;&nbsp;&nbsp;&nbsp;A) 2023.12.20(수): PLC-WPF 연결
 
-&nbsp;&nbsp;&nbsp;&nbsp;C) 2023.11.27(월) ~ 2023.11.28(화): UI 개발
+&nbsp;&nbsp;&nbsp;&nbsp;B) 2023.12.21(목) ~ 2023.12.22(금): UI 수정, PLC LD 프로그램 구현
 
-&nbsp;&nbsp;&nbsp;&nbsp;D) 2023.11.29(수) ~ 2023.11.30(목): 통합 테스트 및 버그 수정
+&nbsp;&nbsp;&nbsp;&nbsp;C) 2023.12.26(화) ~ 2023.12.27(수): WPF 구현
+
+&nbsp;&nbsp;&nbsp;&nbsp;D) 2023.12.28(목): 통합 테스트
 </details>
 
 <details>
@@ -123,6 +134,14 @@ A. 개발 기간: 2023.11.27(월) ~ 2023.11.30(목)
 &nbsp;&nbsp;&nbsp;&nbsp;F) 차트의 X축은 시간, Y축은 값으로 구성된다.
 
 &nbsp;&nbsp;&nbsp;&nbsp;G) 고장 횟수, 유지보수 횟수는 bar chart로 보여준다
+
+&nbsp;&nbsp;&nbsp;&nbsp;H) 초기값 세팅 탭에서는 장비의 자동화를 위한 초기값을 지정할 수 있다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;I) 자동화를 위한 초기값을 지정할 때 학습 시킨 머신러닝 모델을 사용하여 고장 위험을 알린다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;J) 고장 위험이 높은 값을 입력 시 메시지 박스를 사용하여 안정 범위의 초기값을 유도한다.
+
+
 
 
 ## 2) 화면 설계
