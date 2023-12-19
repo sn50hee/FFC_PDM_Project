@@ -161,3 +161,8 @@ A. 개발 기간: 2023.12.20(수) ~ 2023.12.28(목)
 ![슬라이드5](https://github.com/sn50hee/FFC_PDM/assets/139873815/1df1c89a-901a-4b63-9522-e2a121052c77)
 
 
+초기값 세팅
+
+![슬라이드1](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/1e6ce671-4224-415c-adef-126f101ccc4e)
+
+
