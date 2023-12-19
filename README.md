@@ -21,7 +21,7 @@ PLC를 사용하여 전압, 진동수, 압력, 회전수를 정상, 주의, 위�
 
 
 
-# 2. 사용 데이터 및 데이터 분석 기획
+# 2. 사용 데이터 및 데이터 분석
 - 사용 데이터
 
 &nbsp;&nbsp;&nbsp;&nbsp;[캐글의 xinjang(Predictive Maintenance)의 PdM 데이터 활용](https://www.kaggle.com/datasets/yuansaijie0604/xinjiang-pm/code)
@@ -53,7 +53,7 @@ PLC를 사용하여 전압, 진동수, 압력, 회전수를 정상, 주의, 위�
 
 
 
-- 데이터 분석 계획
+- 데이터 분석
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A. 장비 가동 데이터, 장비 정보, 설비 고장 이력 데이터, 경고 이력 데이터, 유지 보수 이력 데이터를 활용하여 고장에 위험을 주는 요소를 선별한다.
 
@@ -72,8 +72,20 @@ PLC를 사용하여 전압, 진동수, 압력, 회전수를 정상, 주의, 위�
   <img src="https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/20ac3f64-481f-4184-b6bf-e801e68faf3b" alt="임계값" width="50%" height="50%">
 </div>
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;F. 머신러닝 모델에 데이터를 학습시켜 고장 위험을 판별할 수 있게 해준다. 사용한 데이터셋에서 정상 데이터(875,382개)와 고장 데이터(761개)의 개수 차이가 크기 때문에 정확도만으로는 모델의 성능을 정확하게 평가하기 어렵다. 모든 데이터를 정상으로 예측한 경우 약99.91%의 정확도를 가지게 된다. 그렇기 때문에 4가지의 경우를 나누어서 모델의 성능을 평가하였다.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;F. 머신러닝 모델에 데이터를 학습시켜 고장과 위험을 판별할 수 있게 해준다.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 1행 1열 (왼쪽 위): True Negatives (TN) - 실제 정상이면서 모델이 정상으로 예측한 경우
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 1행 2열 (오른쪽 위): False Positives (FP) - 실제 정상이지만 모델이 고장으로 예측한 경우
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 2행 1열 (왼쪽 아래): False Negatives (FN) - 실제 고장이지만 모델이 정상으로 예측한 경우
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 2행 2열 (오른쪽 아래): True Positives (TP) - 실제 고장이면서 모델이 고장으로 예측한 경우
+
+<div align="center">
+  <img src="https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/071e316f-ed69-4cc9-95e5-048b8f8b84d4" alt="혼돈행렬" width="100%" height="100%">
+</div>
+
 
 # 3. 사용 기술 및 개발 계획
 ## 1) 사용 기술
