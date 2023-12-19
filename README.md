@@ -91,46 +91,39 @@ PLC를 사용하여 전압, 진동수, 압력, 회전수를 정상, 주의, 위�
 
 # 3. 사용 기술 및 개발 계획
 ## 1) 사용 기술
-<details>
-<summary>1-1) 데이터 분석</summary>
+
+1-1) 데이터 분석
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. 언어: python3.8
 
 &nbsp;&nbsp;&nbsp;&nbsp;B. 라이브러리: numpy1.24.3, pandas2.0.3, joblib
 
 &nbsp;&nbsp;&nbsp;&nbsp;C. 개발 툴: Visual Studio Code 1.84.2
-</details>
 
-<details>
-<summary>1-2) GUI</summary>
+
+1-2) GUI
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. 언어: C# 11.0
 
 &nbsp;&nbsp;&nbsp;&nbsp;B. Framework: .NET 7.0, WPF
 
 &nbsp;&nbsp;&nbsp;&nbsp;C. 라이브러리: scottplot 4.1.68, XGCommLib(PLC와 통신)
-</details>
 
-<details>
-<summary>1-3) 데이터 분석 모델과 WPF 연결</summary>
+
+1-3) 데이터 분석 모델과 WPF 연결
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. C# Process 클래스(네임스페이스: System.Diagnostics)
 
-</details>
-
-<details>
-<summary>1-4) PLC</summary>
+1-4) PLC
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. 언어: LD(Ladder Diagram)
-
-</details>
 
 
 
 ## 2) 개발 계획
 A. 개발 기간: 2023.12.20(수) ~ 2023.12.28(목)
-<details>
-<summary>B. 상세 계획</summary>
+
+B. 상세 계획
 
 &nbsp;&nbsp;&nbsp;&nbsp;A) 성민철: PLC-WPF 연결 및 양방향 통신, WPF 구현
 
@@ -139,7 +132,6 @@ A. 개발 기간: 2023.12.20(수) ~ 2023.12.28(목)
 &nbsp;&nbsp;&nbsp;&nbsp;C) 윤석희: UI 수정, 버그 수정
 
 &nbsp;&nbsp;&nbsp;&nbsp;D) 공통: 통합 테스트
-</details>
 
 <details>
 <summary>C. 클래스 다이어그램</summary>
