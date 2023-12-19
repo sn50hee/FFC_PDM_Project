@@ -58,13 +58,19 @@ PLC를 사용하여 전압, 진동수, 압력, 회전수를 정상, 주의, 위�
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A. 장비 가동 데이터, 장비 정보, 설비 고장 이력 데이터, 경고 이력 데이터, 유지 보수 이력 데이터를 활용하여 고장에 위험을 주는 요소를 선별한다.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B. 고장에 위험을 주는 요소는 결과에 얼마나 영향을 미치는지를 기준으로 선별하였다. 아래 사진을 통하여 장비ID(machineID), 회전 수(rotate), 설비 연식(age), 전압(volt), 압력(pressure), 진동 수(vibrationq) 순으로 결과에 영향을 미친다는 것을 확인할 수 있다.
-  
-![변수중요도](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/ca42622b-5fc8-44ff-8cba-569f5f137b9a){: width="100" height="100"}
+
+<div align="center">
+  <img src="https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/ca42622b-5fc8-44ff-8cba-569f5f137b9a" alt="변수중요도" width="500" height="500">
+</div>
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C. 각각의 고장 위험 요소에 대해 임계값을 설정하고, 해당 값들을 초과할 경우 위험 상태로 판단하도록 분석 기준을 수립한다. 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D. 임계값은 정상 데이터와 고장 데이터를 비교하여 정상 데이터 대비 고장 데이터의 비율이 높아지는 부분을 임계점으로 설정하였다.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D. 정상 데이터와 고장 데이터를 비교하여 정상 데이터 대비 고장 데이터의 비율이 높아지는 부분을 임계값으로 설정하였다.
+
+<div align="center">
+  <img src="https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/20ac3f64-481f-4184-b6bf-e801e68faf3b" alt="임계값" width="500" height="500">
+</div>
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;F. 머신러닝 모델에 데이터를 학습시켜 고장과 위험을 판별할 수 있게 해준다.
