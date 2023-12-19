@@ -69,7 +69,7 @@ PLC를 사용하여 전압, 진동수, 압력, 회전수를 정상, 주의, 위�
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D. 정상 데이터와 고장 데이터를 비교하여 정상 데이터 대비 고장 데이터의 비율이 높아지는 부분을 임계값으로 설정하였다.
 
 <div align="center">
-  <img src="https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/20ac3f64-481f-4184-b6bf-e801e68faf3b" alt="임계값" width="500" height="500">
+  <img src="https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/20ac3f64-481f-4184-b6bf-e801e68faf3b" alt="임계값" width="50%" height="50%">
 </div>
 
 
