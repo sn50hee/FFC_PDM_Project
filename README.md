@@ -125,13 +125,41 @@ A. 개발 기간: 2023.12.20(수) ~ 2023.12.28(목)
 
 B. 상세 계획
 
-&nbsp;&nbsp;&nbsp;&nbsp;A) 성민철: PLC-WPF 연결 및 양방향 통신, WPF 구현
-
-&nbsp;&nbsp;&nbsp;&nbsp;B) 김정관: PLC LD 프로그램 구현, WPF 구현
-
-&nbsp;&nbsp;&nbsp;&nbsp;C) 윤석희: UI 수정, 버그 수정
-
-&nbsp;&nbsp;&nbsp;&nbsp;D) 공통: 통합 테스트
+<table>
+  <tr>
+    <th>업무자</th>
+    <th>역할</th>
+    <th>기간</th>
+  </tr>
+  <tr>
+    <td rowspan="2">성민철</td>
+    <td>PLC-WPF 연결 및 양방향 통신</td>
+    <td>2023.12.20(수) ~ 2023.12.22(금)</td>
+  </tr>
+  <tr>
+    <td>WPF 구현</td>
+    <td>2023.12.26(화) ~ 2023.12.27(수)</td>
+  </tr>
+  <tr>
+    <td rowspan="2">김정관</td>
+    <td>PLC LD 프로그램 구현</td>
+    <td>2023.12.20(수) ~ 2023.12.22(금)</td>
+  </tr>
+  <tr>
+    <td>WPF 구현</td>
+    <td>2023.12.26(화) ~ 2023.12.27(수)</td>
+  </tr>
+  <tr>
+    <td>윤석희</td>
+    <td>UI 수정, 버그 수정</td>
+    <td>2023.12.20(수) ~ 2023.12.27(수)</td>
+  </tr>
+  <tr>
+    <td>공통</td>
+    <td>통합 테스트</td>
+    <td>2023.12.27(수) ~ 2023.12.28(목)</td>
+  </tr>
+</table>
 
 <details>
 <summary>C. 클래스 다이어그램</summary>
