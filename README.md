@@ -215,5 +215,6 @@ B. 상세 계획
 
 초기값 세팅 탭
 
-![프레젠테이션1](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/64665fca-176c-4a54-aaae-3af15463db3e)
+![image (2)](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/6da6bec4-c943-4bc7-b04f-6c97d02742bb)
+
 
