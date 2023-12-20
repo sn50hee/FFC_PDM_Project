@@ -125,7 +125,7 @@ namespace FFC_PDM
         // 김정관 추가
         private void UpdateGraph(int selectedModelID, DateTime startDate, DateTime endDate) // 회전 데이터 표시 차트 업데이트 메서드
         {
-            facilityDataChartControl = new FacilityDataChartControl();
+            viewDetailsTabChartDataControl = new ViewDetailsTabChartDataControl();
             List<ParseTelemetry_1> date = new FacilityDataControl().GetParseTelemetryData(); // 김정관 수정
 
             WP_Volt.Plot.Clear();
@@ -133,19 +133,19 @@ namespace FFC_PDM
             WP_Pressure.Plot.Clear();
             WP_Vibration.Plot.Clear();
 
-            WP_Volt = facilityDataChartControl.CreateVoltageChart(WP_Volt, date, "VoltageGraph", selectedModelID, startDate, endDate);
+            WP_Volt = viewDetailsTabChartDataControl.CreateVoltageChart(WP_Volt, date, "VoltageGraph", selectedModelID, startDate, endDate);
             WP_Volt.Plot.AddVerticalSpan(200, 10000);
             WP_Volt.Refresh();
 
-            WP_Rotate = facilityDataChartControl.CreateRotateChart(WP_Rotate, date, "RotateGraph", selectedModelID, startDate, endDate);
+            WP_Rotate = viewDetailsTabChartDataControl.CreateRotateChart(WP_Rotate, date, "RotateGraph", selectedModelID, startDate, endDate);
             WP_Rotate.Plot.AddVerticalSpan(360, -10000);
             WP_Rotate.Refresh();
 
-            WP_Pressure = facilityDataChartControl.CreatePressureChart(WP_Pressure, date, "PressureGraph", selectedModelID, startDate, endDate);
+            WP_Pressure = viewDetailsTabChartDataControl.CreatePressureChart(WP_Pressure, date, "PressureGraph", selectedModelID, startDate, endDate);
             WP_Pressure.Plot.AddVerticalSpan(120, 10000);
             WP_Pressure.Refresh();
 
-            WP_Vibration = facilityDataChartControl.CreateVibrationChart(WP_Vibration, date, "VibrationGraph", selectedModelID, startDate, endDate);
+            WP_Vibration = viewDetailsTabChartDataControl.CreateVibrationChart(WP_Vibration, date, "VibrationGraph", selectedModelID, startDate, endDate);
             WP_Vibration.Plot.AddVerticalSpan(50, 10000);
             WP_Vibration.Refresh();
         }
@@ -153,7 +153,6 @@ namespace FFC_PDM
         public void UpdateWarningGraph(double selectedModelID, DateTime startDate, DateTime endDate)
         {
             // FacilityDataChartControl 및 StatisticsTabChartData 인스턴스 생성
-            FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
 
             // 선택한 machineID에 대한 에러 데이터 가져오기
@@ -163,19 +162,15 @@ namespace FFC_PDM
             if (data.Any())
             {
                 // 파이 차트 업데이트
-                WP_Warning = facilityDataChartControl.CreateWarningPieChart(WP_Warning, data);
+                WP_Warning = viewDetailsTabChartDataControl.CreateWarningPieChart(WP_Warning, data);
                 WP_Warning.Refresh();
             }
-            else
-            {
 
-            }
         }
 
         public void UpdateMaintGraph(double selectedModelID, DateTime startDate, DateTime endDate)
         {
             // FacilityDataChartControl 및 StatisticsTabChartData 인스턴스 생성
-            FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
 
             // 통계 데이터 가져오기
@@ -184,12 +179,8 @@ namespace FFC_PDM
             WP_Maint.Plot.Clear();
             if (data.Any())
             {
-                WP_Maint = facilityDataChartControl.CreateMaintPieChart(WP_Maint, data);
+                WP_Maint = viewDetailsTabChartDataControl.CreateMaintPieChart(WP_Maint, data);
                 WP_Maint.Refresh();
-            }
-            else
-            {
-
             }
             
         }
@@ -277,71 +268,71 @@ namespace FFC_PDM
 
             DG_checkData.Items.Refresh();
         }
-        FacilityDataChartControl facilityDataChartControl;
+        ViewDetailsTabChartDataControl viewDetailsTabChartDataControl;
         private void WP_Volt_MouseMove(object sender, MouseEventArgs e)
         {
-            if (facilityDataChartControl != null)
+            if (viewDetailsTabChartDataControl != null)
             {
-                WP_Volt = facilityDataChartControl.Volt_MouseMove(WP_Volt, e);
+                WP_Volt = viewDetailsTabChartDataControl.Volt_MouseMove(WP_Volt, e);
                 WP_Volt.Refresh();
             }
         }
         private void WP_Volt_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (facilityDataChartControl != null)
+            if (viewDetailsTabChartDataControl != null)
             {
-                WP_Volt = facilityDataChartControl.Volt_MouseLeave(WP_Volt, e);
+                WP_Volt = viewDetailsTabChartDataControl.Volt_MouseLeave(WP_Volt, e);
                 WP_Volt.Refresh();
             }
         }
 
         private void WP_Rotate_MouseMove(object sender, MouseEventArgs e)
         {
-            if (facilityDataChartControl != null)
+            if (viewDetailsTabChartDataControl != null)
             {
-                WP_Rotate = facilityDataChartControl.Rotate_MouseMove(WP_Rotate, e);
+                WP_Rotate = viewDetailsTabChartDataControl.Rotate_MouseMove(WP_Rotate, e);
                 WP_Rotate.Refresh();
             }
         }
         private void WP_Rotate_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (facilityDataChartControl != null)
+            if (viewDetailsTabChartDataControl != null)
             {
-                WP_Rotate = facilityDataChartControl.Rotate_MouseLeave(WP_Rotate, e);
+                WP_Rotate = viewDetailsTabChartDataControl.Rotate_MouseLeave(WP_Rotate, e);
                 WP_Rotate.Refresh();
             }
         }
 
         private void WP_Pressure_MouseMove(object sender, MouseEventArgs e)
         {
-            if (facilityDataChartControl != null)
+            if (viewDetailsTabChartDataControl != null)
             {
-                WP_Pressure = facilityDataChartControl.Pressure_MouseMove(WP_Pressure, e);
+                WP_Pressure = viewDetailsTabChartDataControl.Pressure_MouseMove(WP_Pressure, e);
                 WP_Pressure.Refresh();
             }
         }
         private void WP_Pressure_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (facilityDataChartControl != null)
+            if (viewDetailsTabChartDataControl != null)
             {
-                WP_Pressure = facilityDataChartControl.Pressure_MouseLeave(WP_Pressure, e);
+                WP_Pressure = viewDetailsTabChartDataControl.Pressure_MouseLeave(WP_Pressure, e);
                 WP_Pressure.Refresh();
             }
         }
 
         private void WP_Vibration_MouseMove(object sender, MouseEventArgs e)
         {
-            if (facilityDataChartControl != null)
+            if (viewDetailsTabChartDataControl != null)
             {
-                WP_Vibration = facilityDataChartControl.Vibration_MouseMove(WP_Vibration, e);
+                WP_Vibration = viewDetailsTabChartDataControl.Vibration_MouseMove(WP_Vibration, e);
                 WP_Vibration.Refresh();
             }
         }
         private void WP_Vibration_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (facilityDataChartControl != null)
+            if (viewDetailsTabChartDataControl != null)
             {
-                WP_Vibration = facilityDataChartControl.Vibration_MouseLeave(WP_Vibration, e);
+                WP_Vibration = viewDetailsTabChartDataControl.Vibration_MouseLeave(WP_Vibration, e);
                 WP_Vibration.Refresh();
             }
         }
