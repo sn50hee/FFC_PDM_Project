@@ -9,7 +9,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TabControl>
-            <TabItem Header="통계">
+            <TabItem Header="현황 / 통계">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10*"/>
@@ -22,7 +22,7 @@
                         <RowDefinition Height="2*"/>
                     </Grid.RowDefinitions>
 
-                    <Label Content="고장 위험 모델" VerticalAlignment="Center" Grid.ColumnSpan="3" Margin="0,0,686,0"/>
+                    <Label Content="고장 위험 모델 현황" VerticalAlignment="Center" Grid.ColumnSpan="3" Margin="0,0,686,0"/>
                     <DataGrid x:Name="DG_FailuressList" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="3" Grid.Row="1">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="모델ID" Binding="{Binding Path=modelId}" Width="0.5*"/>
@@ -192,7 +192,7 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="고장 확인">
+            <TabItem Header="초기값 세팅">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="23*"/>
