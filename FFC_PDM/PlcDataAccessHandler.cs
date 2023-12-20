@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace FFC_PDM
 {
     internal class PlcDataAccessHandler
-    {
+    { 
     }
 }

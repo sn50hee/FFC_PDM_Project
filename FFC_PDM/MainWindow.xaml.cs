@@ -30,7 +30,7 @@ namespace FFC_PDM
         private List<ParseTelemetry> rawTelemetryData;
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent(); 
 
             // 윤석희 추가
             WP_RecentFacilityView();

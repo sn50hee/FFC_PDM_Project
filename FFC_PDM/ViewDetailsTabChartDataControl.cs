@@ -94,7 +94,7 @@ namespace FFC_PDM
 
         private ScatterPlot? rotateScatter;
         private MarkerPlot? rotateHighlightedPoint;
-        private ScottPlot.Plottable.Tooltip? rotateToolTip;
+        private ScottPlot.Plottable.Tooltip? rotateToolTip; 
         public WpfPlot CreateRotateChart(WpfPlot chart, List<ParseTelemetry_1> chartData, string title, int selectedModelID, DateTime startDate, DateTime endDate)
         {
             Plot plt = chart.Plot;

@@ -34,7 +34,7 @@ namespace FFC_PDM
             bar.BorderLineWidth = 1;
             bar.BorderColor = System.Drawing.Color.FromArgb(200, 15, 163, 177);
 
-            bar.ShowValuesAboveBars = showValuesAboveBars;
+            bar.ShowValuesAboveBars = showValuesAboveBars; 
             plt.XTicks(positions, keys);
             plt.SetAxisLimits(yMin: 0);
 
