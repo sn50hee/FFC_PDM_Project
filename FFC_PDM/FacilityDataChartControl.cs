@@ -37,9 +37,11 @@ namespace FFC_PDM
             bar.ShowValuesAboveBars = showValuesAboveBars; 
             plt.XTicks(positions, keys);
             plt.SetAxisLimits(yMin: 0);
+            plt.Grid(false);
+            plt.YAxis.Ticks(false);
 
             plt.Legend();
-            plt.Title(title);
+            // plt.Title(title);
 
             return chart;
         }

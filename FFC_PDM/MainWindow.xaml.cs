@@ -40,9 +40,11 @@ namespace FFC_PDM
             // 윤석희끝
 
             GenerateCBModelName();
+
+
         }
 
-        
+
         public void WP_OperatingRatioView()
         {
             StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
@@ -337,6 +339,10 @@ namespace FFC_PDM
             }
         }
 
+        private void TextBlock_ColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
+        {
+
+        }
     }
 
 }
