@@ -7,8 +7,10 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -80,7 +82,7 @@ namespace FFC_PDM
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             Dictionary<string, int> data = new StatisticsTabChartData().RecentFacilityData();
-            WP_RecentFacility = facilityDataChartControl.CreateBarChart(WP_RecentFacility, data, "최근 10건 고장 장비", true);
+            WP_RecentFacility = facilityDataChartControl.CreateBarChart(WP_RecentFacility, data, "최근 10건 고장 장비", true, false);
             WP_RecentFacility.Refresh();
         }
 
@@ -88,7 +90,7 @@ namespace FFC_PDM
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             Dictionary<string, int> data = new StatisticsTabChartData().ErrorRateData();
-            WP_ErrorRate = facilityDataChartControl.CreateBarChart(WP_ErrorRate, data, "오류 횟수", true);
+            WP_ErrorRate = facilityDataChartControl.CreateBarChart(WP_ErrorRate, data, "오류 횟수", true, true);
             WP_ErrorRate.Refresh();
         }
 
