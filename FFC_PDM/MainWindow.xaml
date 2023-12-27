@@ -406,14 +406,14 @@
                         </DataGrid.RowStyle>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="설비 번호" Binding="{Binding ModelId}" IsReadOnly="False" Width="0.7*"/>
-                            <DataGridTextColumn Header="volt_min" Binding="{Binding VoltMin}" IsReadOnly="False" Width="*"/>
-                            <DataGridTextColumn Header="volt_max" Binding="{Binding VoltMax}" IsReadOnly="False" Width="*"/>
-                            <DataGridTextColumn Header="rotate_min" Binding="{Binding RotateMin}" IsReadOnly="False" Width="*"/>
-                            <DataGridTextColumn Header="rotate_max" Binding="{Binding RotateMax}" IsReadOnly="False" Width="*"/>
-                            <DataGridTextColumn Header="pressure_min" Binding="{Binding PressureMin}" IsReadOnly="False" Width="*"/>
-                            <DataGridTextColumn Header="pressure_max" Binding="{Binding PressureMax}" IsReadOnly="False" Width="*"/>
-                            <DataGridTextColumn Header="vibration_min" Binding="{Binding VibrationMin}" IsReadOnly="False" Width="*"/>
-                            <DataGridTextColumn Header="vibration_max" Binding="{Binding VibrationMax}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="최소 VOLT" Binding="{Binding VoltMin}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="최대 VOLT" Binding="{Binding VoltMax}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="최소 ROTATE" Binding="{Binding RotateMin}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="최대 ROTATE" Binding="{Binding RotateMax}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="최소 PRESSURE" Binding="{Binding PressureMin}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="최대 PRESSURE" Binding="{Binding PressureMax}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="최소 VIBRATION" Binding="{Binding VibrationMin}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="최대 VIBRATION" Binding="{Binding VibrationMax}" IsReadOnly="False" Width="*"/>
                             <DataGridTextColumn Header="고장 판별" Binding="{Binding Failure}" IsReadOnly="True" Width="*"/>
                         </DataGrid.Columns>
                         <DataGrid.CellStyle>
