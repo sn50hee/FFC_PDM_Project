@@ -25,79 +25,170 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="16"/>
         </Style>
+
+        <Style x:Key="CustomizedOutlinedComboBox" TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignOutlinedComboBox}">
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush" Value="#2196F3" />
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="False">
+                    <Setter Property="BorderBrush" Value="#F9F9F9" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CustomizedOutlinedTextBox" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush" Value="#2196F3" />
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="False">
+                    <Setter Property="BorderBrush" Value="#F9F9F9" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="MaterialDesignDataGridRow" TargetType="{x:Type DataGridRow}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <Border x:Name="DGR_Border"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  SnapsToDevicePixels="True">
+                            <SelectiveScrollingGrid>
+                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                <SelectiveScrollingGrid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </SelectiveScrollingGrid.RowDefinitions>
+                                <DataGridCellsPresenter Grid.Column="1"
+                                      ItemsPanel="{TemplateBinding ItemsPanel}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <DataGridDetailsPresenter Grid.Row="1"
+                                        Grid.Column="1"
+                                        SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                        Visibility="{TemplateBinding DetailsVisibility}" />
+                                <DataGridRowHeader Grid.Row="0"
+                                 Grid.RowSpan="2"
+                                 Grid.Column="0"
+                                 SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                 Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                            </SelectiveScrollingGrid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+            <Setter Property="ValidationErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <TextBlock Margin="2,0,0,0"
+                     VerticalAlignment="Center"
+                     Foreground="#d50000"
+                     Text="!" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.DataGrid.Selected}" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <!-- 마우스 오버 효과를 파란색으로 변경 -->
+                    <Setter Property="Background" Value="#29ABE2" />
+                </Trigger>
+                <Trigger Property="IsNewItem" Value="True">
+                    <Setter Property="Margin" Value="{Binding NewItemMargin, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
-<Grid>
+    <Grid>
         <TabControl Style="{StaticResource MaterialDesignTabControl}" ItemContainerStyle="{StaticResource MaterialDesignTabItemStyle}">
-
             <TabItem Header="현황 / 통계" Padding="0" Height="60">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10*"/>
-                        <ColumnDefinition Width="55*"/>
-                        <ColumnDefinition Width="729*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="18"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="2*"/>
-                        <RowDefinition Height="30"/>
-                    </Grid.RowDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
 
-                    <Label Content="고장 위험 모델 현황" VerticalAlignment="Center" Grid.ColumnSpan="3" Margin="0,0,10,0" FontSize="20" Foreground="#DD333333" FontWeight="Bold"/>
-                    <DataGrid x:Name="DG_FailuressList" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="3" Grid.Row="1" CanUserSortColumns="False" FontSize="14">
-                        <DataGrid.ColumnHeaderStyle>
-                            <!-- 새로운 스타일을 적용 -->
-                            <StaticResource ResourceKey="CustomMaterialDesignDataGridColumnHeader" />
-                        </DataGrid.ColumnHeaderStyle>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="모델ID" Binding="{Binding Path=modelId}" Width="0.5*"/>
-                            <DataGridTextColumn Header="VOLT" Binding="{Binding Path=volt}" Width="*"/>
-                            <DataGridTextColumn Header="ROTATE" Binding="{Binding Path=rotate}" Width="*"/>
-                            <DataGridTextColumn Header="PRESSURE" Binding="{Binding Path=pressure}" Width="*"/>
-                            <DataGridTextColumn Header="VIBRATION" Binding="{Binding Path=vibration}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                        <Label Content="고장 위험 설비 현황" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="20" Foreground="#DD333333" FontWeight="Bold"/>
+                        <DataGrid x:Name="DG_FailuressList" AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="1" CanUserSortColumns="False" FontSize="14">
+                            <DataGrid.ColumnHeaderStyle>
+                                <StaticResource ResourceKey="CustomMaterialDesignDataGridColumnHeader" />
+                            </DataGrid.ColumnHeaderStyle>
+                            <DataGrid.RowStyle>
+                                <Style BasedOn="{StaticResource MaterialDesignDataGridRow}" TargetType="{x:Type DataGridRow}" />
+                            </DataGrid.RowStyle>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="설비 번호" Binding="{Binding Path=modelId}" Width="0.5*"/>
+                                <DataGridTextColumn Header="VOLT" Binding="{Binding Path=volt}" Width="*"/>
+                                <DataGridTextColumn Header="ROTATE" Binding="{Binding Path=rotate}" Width="*"/>
+                                <DataGridTextColumn Header="PRESSURE" Binding="{Binding Path=pressure}" Width="*"/>
+                                <DataGridTextColumn Header="VIBRATION" Binding="{Binding Path=vibration}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
 
-                    <Grid Grid.Row="2" Grid.ColumnSpan="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="0.1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="0.1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="0.1*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border BorderBrush="White" Grid.Column="1" BorderThickness="2">
-                            <WpfPlot x:Name="WP_OperatingRatio" Height="Auto" Width="Auto"/>
-                        </Border>
-                        <Border BorderBrush="White"  Grid.Column="3" BorderThickness="2">
-                            <WpfPlot x:Name="WP_RecentFacility" Height="Auto" Width="Auto"/>
-                        </Border>
-                        <Border BorderBrush="White" Grid.Column="5" BorderThickness="2">
-                            <WpfPlot x:Name="WP_ErrorRate" Height="Auto" Width="Auto"/>
-                        </Border>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="0.1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="0.1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="0.1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border BorderBrush="White" Grid.Column="1" BorderThickness="2">
+                                <WpfPlot x:Name="WP_OperatingRatio" Height="Auto" Width="Auto"/>
+                            </Border>
+                            <Border BorderBrush="White"  Grid.Column="3" BorderThickness="2">
+                                <WpfPlot x:Name="WP_RecentFacility" Height="Auto" Width="Auto"/>
+                            </Border>
+                            <Border BorderBrush="White" Grid.Column="5" BorderThickness="2">
+                                <WpfPlot x:Name="WP_ErrorRate" Height="Auto" Width="Auto"/>
+                            </Border>
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="0.1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="0.1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="0.1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="1" BorderThickness="2" Background="Gray" CornerRadius="20" Width="150" Height="40" VerticalAlignment="Top" Margin="0, -20, 0, 0">
+                                <TextBox Text="장비 가동률" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold" BorderThickness="0"/>
+                            </Border>
+                            <Border Grid.Column="3" BorderThickness="2" Background="Gray" CornerRadius="20" Width="170" Height="40" VerticalAlignment="Top" Margin="0, -20, 0, 0">
+                                <TextBox Text="최근 10건 고장 장비" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold" BorderThickness="0"/>
+                            </Border>
+                            <Border Grid.Column="5" BorderThickness="2" Background="Gray" CornerRadius="20" Width="150" Height="40" VerticalAlignment="Top" Margin="0, -20, 0, 0">
+                                <TextBox Text="오류 횟수" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold" BorderThickness="0"/>
+                            </Border>
+                        </Grid>
                     </Grid>
-                    <Grid Grid.Row="3" Grid.ColumnSpan="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="0.1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="0.1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="0.1*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border Grid.Column="1" BorderThickness="2" Background="Gray" CornerRadius="20" Width="150" Height="40" VerticalAlignment="Top" Margin="0, -20, 0, 0">
-                            <TextBox Text="장비 가동률" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold" BorderThickness="0"/>
-                        </Border>
-                        <Border Grid.Column="3" BorderThickness="2" Background="Gray" CornerRadius="20" Width="170" Height="40" VerticalAlignment="Top" Margin="0, -20, 0, 0">
-                            <TextBox Text="최근 10건 고장 장비" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold" BorderThickness="0"/>
-                        </Border>
-                        <Border Grid.Column="5" BorderThickness="2" Background="Gray" CornerRadius="20" Width="150" Height="40" VerticalAlignment="Top" Margin="0, -20, 0, 0">
-                            <TextBox Text="오류 횟수" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold" BorderThickness="0"/>
-                        </Border>
+                    <Grid Grid.Column="1">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" IsEnabled="False">
+                            
+                        </ScrollViewer>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -105,121 +196,150 @@
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">
                     <Grid Height="1080">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="0.1*"/>
+                            <RowDefinition Height="1.5*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="10*"/>
+                            <RowDefinition Height="0.3*"/>
+                            <RowDefinition Height="*"/>
                             <RowDefinition Height="10*"/>
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" Grid.Column="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.5*"/>
-                                <ColumnDefinition Width="1.5*"/>
-                                <ColumnDefinition Width="0.5*"/>
-                                <ColumnDefinition Width="1.5*"/>
-                                <ColumnDefinition Width="0.5*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="0.5*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1.5*"/>
-
-                            </Grid.ColumnDefinitions>
-
-                            <Label Content="모델명" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
-                            <ComboBox x:Name="CB_ModelName" HorizontalAlignment="Stretch"  Grid.Row="0" Grid.Column="1" Margin="0,0,0,0" VerticalAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>
-                            <Label Content="모델ID" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
-                            <ComboBox x:Name="CB_Model_ID" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="3" Margin="0,0,0,0" VerticalAlignment="Center"/>
-
-                            <Label Content="시작일" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
-                            <DatePicker x:Name="startDate" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Center"/>
-                            <Label Content="종료일" Grid.Row="0" Grid.Column="6" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
-                            <DatePicker x:Name="endDate" Grid.Row="0" Grid.Column="7" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Center"/>
-                            <Button x:Name="Search" Grid.Row="0" Grid.Column="8" Content="검색" HorizontalAlignment="Stretch" Margin="10,0,10,0" VerticalAlignment="Center" Click="Search_Click">
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="2"></Setter>
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
-                        </Grid>
                         <Grid Grid.Row="1" Grid.Column="1">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="0.1*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="0.1*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="0.1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="0.1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+
                             </Grid.ColumnDefinitions>
-                            <Border BorderBrush="White" BorderThickness="0.5" Margin="10,0,10,0" Grid.Column="0" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="0.5*"/>
-                                        <RowDefinition Height="0.5*"/>
-                                        <RowDefinition Height="6*"/>
-                                    </Grid.RowDefinitions>
 
-                                    <Label x:Name="Voltage" Content="  Voltage" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
-                                    <Label Content="  안정 범위: 200 미만" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <WpfPlot x:Name="WP_Volt" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch" MouseMove="WP_Volt_MouseMove" MouseLeave="WP_Volt_MouseLeave"/>
+                            <ComboBox x:Name="CB_ModelName" Style="{StaticResource CustomizedOutlinedComboBox}" materialDesign:HintAssist.Hint="설비 제조사" materialDesign:TextFieldAssist.TextFieldCornerRadius="17" materialDesign:HintAssist.HintOpacity=".26"  Foreground="#999999" Padding="10,10,10,10" HorizontalAlignment="Stretch"  Grid.Row="0" Grid.Column="1" Margin="0,0,0,0" VerticalAlignment="Center" SelectionChanged="ComboBox_SelectionChanged" FontWeight="ExtraBold" FontSize="16"/>
+                            <ComboBox x:Name="CB_Model_ID" Style="{StaticResource CustomizedOutlinedComboBox}" materialDesign:HintAssist.Hint="설비 번호" materialDesign:TextFieldAssist.TextFieldCornerRadius="17" materialDesign:HintAssist.HintOpacity=".26"  Foreground="#999999" Padding="10,10,10,10" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="3" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="ExtraBold" FontSize="16"/>
 
-                                </Grid>
-                            </Border>
-                            <Border BorderBrush="White" BorderThickness="0.5" Margin="10,0,10,0" Grid.Column="1" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="0.5*"/>
-                                        <RowDefinition Height="0.5*"/>
-                                        <RowDefinition Height="6*"/>
-                                    </Grid.RowDefinitions>
-
-                                    <Label x:Name="Rotate" Content="Rotate" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
-                                    <Label Content="안정 범위: 360 초과" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <WpfPlot x:Name="WP_Rotate" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch" MouseMove="WP_Rotate_MouseMove" MouseLeave="WP_Rotate_MouseLeave"/>
-                                </Grid>
-                            </Border>
-
-                            <Border BorderBrush="White" BorderThickness="0.5" Margin="10,0,10,0" Grid.Column="2" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="0.5*"/>
-                                        <RowDefinition Height="0.5*"/>
-                                        <RowDefinition Height="6*"/>
-                                    </Grid.RowDefinitions>
-
-                                    <Label x:Name="Pressure" Content="Pressure" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
-                                    <Label Content="안정 범위: 120 미만" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <WpfPlot x:Name="WP_Pressure" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch" MouseMove="WP_Pressure_MouseMove" MouseLeave="WP_Pressure_MouseLeave"/>
-                                </Grid>
-                            </Border>
-                            <Border BorderBrush="White" BorderThickness="0.5" Margin="10,0,10,0" Grid.Column="3" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="0.5*"/>
-                                        <RowDefinition Height="0.5*"/>
-                                        <RowDefinition Height="6*"/>
-                                    </Grid.RowDefinitions>
-
-                                    <Label Content="Vibration" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
-                                    <Label Content="안정 범위: 50 미만" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <Label Content="위험 장비: " Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <WpfPlot x:Name="WP_Vibration" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Stretch" MouseMove="WP_Vibration_MouseMove" MouseLeave="WP_Vibration_MouseLeave"/>
-                                </Grid>
-                            </Border>
+                            <DatePicker x:Name="startDate" Style="{StaticResource MaterialDesignOutlinedDatePicker}" materialDesign:HintAssist.Hint="시작일" materialDesign:TextFieldAssist.TextFieldCornerRadius="17" materialDesign:HintAssist.HintOpacity=".26"  Foreground="#999999" BorderBrush="#F9F9F9" Padding="10,10,10,10" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="ExtraBold" FontSize="16" />
+                            <DatePicker x:Name="endDate" Style="{StaticResource MaterialDesignOutlinedDatePicker}" materialDesign:HintAssist.Hint="종료일" materialDesign:TextFieldAssist.TextFieldCornerRadius="17" materialDesign:HintAssist.HintOpacity=".26"  Foreground="#999999" BorderBrush="#F9F9F9" Padding="10,10,10,10" Grid.Row="0" Grid.Column="7" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="ExtraBold" FontSize="16" />
+                            <Button x:Name="Search" Grid.Row="0" Grid.Column="8" Content="검색" HorizontalAlignment="Stretch" Margin="10,0,10,0" VerticalAlignment="Center" Click="Search_Click" materialDesign:ButtonAssist.CornerRadius="18" FontWeight="ExtraBold" FontSize="16" Height="40" Background="#2196F3"/>
                         </Grid>
 
-                        <Grid Grid.Row="2" Grid.Column="1">
+                        <Grid Grid.Row="2" Grid.Column="1" Background="#E6E6E6">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.05*"/>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="0.05*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0" Background="White"></Grid>
+                            <Label Grid.Column="2" Content="장치 정보" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#707070" FontWeight="ExtraBold" FontSize="23"/>
+                            <Grid Grid.Column="4" Background="White"></Grid>
+                        </Grid>
+                        <Grid Grid.Row="3" Grid.Column="1" Background="#FBFBFB">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.05*"/>
                                 <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="0.05*"/>
                             </Grid.ColumnDefinitions>
 
+                            <Grid Grid.Column="0" Background="White"></Grid>
+                            <Border BorderBrush="#707070" BorderThickness="0" Margin="5,0,5,0" Grid.Column="1" >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.2*"/>
+                                        <RowDefinition Height="0.5*"/>
+                                        <RowDefinition Height="0.4*"/>
+                                        <RowDefinition Height="6*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label x:Name="Voltage" Content="VOLTAGE" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="22" Foreground="#707070" Margin="30,0"/>
+                                    <Label Content="안정 범위: 200 미만" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12" Foreground="#707070" Margin="30,0"/>
+                                    <WpfPlot x:Name="WP_Volt" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch" MouseMove="WP_Volt_MouseMove" MouseLeave="WP_Volt_MouseLeave"/>
+
+                                </Grid>
+                            </Border>
+                            <Border BorderBrush="#707070" BorderThickness="0" Margin="5,0,5,0" Grid.Column="2" >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.2*"/>
+                                        <RowDefinition Height="0.5*"/>
+                                        <RowDefinition Height="0.4*"/>
+                                        <RowDefinition Height="6*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label x:Name="Rotate" Content="ROTATE" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="22" Foreground="#707070" Margin="30,0"/>
+                                    <Label Content="안정 범위: 360 초과" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12" Foreground="#707070" Margin="30,0"/>
+                                    <WpfPlot x:Name="WP_Rotate" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch" MouseMove="WP_Rotate_MouseMove" MouseLeave="WP_Rotate_MouseLeave"/>
+                                </Grid>
+                            </Border>
+
+                            <Border BorderBrush="#707070" BorderThickness="0" Margin="5,0,5,0" Grid.Column="3" >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.2*"/>
+                                        <RowDefinition Height="0.5*"/>
+                                        <RowDefinition Height="0.4*"/>
+                                        <RowDefinition Height="6*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label x:Name="Pressure" Content="PRESSURE" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="22" Foreground="#707070" Margin="30,0"/>
+                                    <Label Content="안정 범위: 120 미만" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12" Foreground="#707070" Margin="30,0"/>
+                                    <WpfPlot x:Name="WP_Pressure" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch" MouseMove="WP_Pressure_MouseMove" MouseLeave="WP_Pressure_MouseLeave"/>
+                                </Grid>
+                            </Border>
+                            <Border BorderBrush="#707070" BorderThickness="0" Margin="5,0,5,0" Grid.Column="4" >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.2*"/>
+                                        <RowDefinition Height="0.5*"/>
+                                        <RowDefinition Height="0.4*"/>
+                                        <RowDefinition Height="6*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Content="VIBRATION" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="22" Foreground="#707070" Margin="30,0"/>
+                                    <Label Content="안정 범위: 50 미만" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12" Foreground="#707070" Margin="30,0"/>
+                                    <WpfPlot x:Name="WP_Vibration" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch" MouseMove="WP_Vibration_MouseMove" MouseLeave="WP_Vibration_MouseLeave"/>
+                                </Grid>
+                            </Border>
+                            <Grid Grid.Column="5" Background="White"></Grid>
+                        </Grid>
+
+                        <Grid Grid.Row="5" Grid.Column="1" Background="#E6E6E6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.05*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="0.05*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0" Background="White"></Grid>
+                            <Label Grid.Column="2" Content="부품 정보" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#707070" FontWeight="ExtraBold" FontSize="23"/>
+                            <Grid Grid.Column="4" Background="White"></Grid>
+                        </Grid>
+                        <Grid Grid.Row="6" Grid.Column="1" Background="#FBFBFB">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.07*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="0.07*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Column="0" Background="White"/>
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="0.5*"/>
                                     <RowDefinition Height="5*"/>
                                 </Grid.RowDefinitions>
 
-                                <Label Content="고장 부품 비율" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+                                <Label Content="고장 부품 비율" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" FontSize="22" Foreground="#707070" Margin="30,0"/>
                                 <WpfPlot x:Name="WP_Warning" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
                             </Grid>
 
@@ -229,53 +349,95 @@
                                     <RowDefinition Height="5*"/>
                                 </Grid.RowDefinitions>
 
-                                <Label Content="부품 유지 보수 비율" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
-                                <WpfPlot x:Name="WP_Maint" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch"/>
+                                <Label Content="부품 유지 보수 비율" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" FontSize="22" Foreground="#707070" Margin="30,0"/>
+                                <WpfPlot x:Name="WP_Maint" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch" />
                             </Grid>
+                            <Grid Grid.Column="5" Background="White"/>
                         </Grid>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="초기값 세팅" Padding="0" Height="60">
+            <TabItem Header="자동화 값 설정" Padding="0" Height="60">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="23*"/>
-                        <ColumnDefinition Width="771*"/>
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="2.8*"/>
                         <RowDefinition Height="6*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="2*"/>
                     </Grid.RowDefinitions>
-                    <DataGrid x:Name="DG_checkData" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,50" Grid.RowSpan="2">
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1.3*"/>
+                                <RowDefinition Height="0.1*"/>
+                                <RowDefinition Height="1.3*"/>
+                                <RowDefinition Height="0.3*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="volt_min" Grid.Column="0" Style="{StaticResource CustomizedOutlinedTextBox}" materialDesign:HintAssist.Hint="최소 VOLT값" materialDesign:TextFieldAssist.TextFieldCornerRadius="17" HorizontalAlignment="Stretch" materialDesign:HintAssist.HintOpacity=".26"  Foreground="#999999" VerticalAlignment="Center" FontWeight="ExtraBold" FontSize="16" Margin="15,0"/>
+                            <TextBox x:Name="rot_min" Grid.Column="1" Style="{StaticResource CustomizedOutlinedTextBox}" materialDesign:HintAssist.Hint="최소 ROTATE값" materialDesign:TextFieldAssist.TextFieldCornerRadius="17" HorizontalAlignment="Stretch" materialDesign:HintAssist.HintOpacity=".26"  Foreground="#999999" VerticalAlignment="Center" FontWeight="ExtraBold" FontSize="16" Margin="15,0"/>
+                            <TextBox x:Name="press_min" Grid.Column="2" Style="{StaticResource CustomizedOutlinedTextBox}" materialDesign:HintAssist.Hint="최소 PRESSURE값" materialDesign:TextFieldAssist.TextFieldCornerRadius="17" HorizontalAlignment="Stretch" materialDesign:HintAssist.HintOpacity=".26"  Foreground="#999999" VerticalAlignment="Center" FontWeight="ExtraBold" FontSize="16" Margin="15,0"/>
+                            <TextBox x:Name="vibe_min" Grid.Column="3" Style="{StaticResource CustomizedOutlinedTextBox}" materialDesign:HintAssist.Hint="최소 VIBRATION값" materialDesign:TextFieldAssist.TextFieldCornerRadius="17" HorizontalAlignment="Stretch" materialDesign:HintAssist.HintOpacity=".26"  Foreground="#999999" VerticalAlignment="Center" FontWeight="ExtraBold" FontSize="16" Margin="15,0"/>
+
+                            <TextBox x:Name="volt_max" Grid.Column="0" Grid.Row="2" Style="{StaticResource CustomizedOutlinedTextBox}" materialDesign:HintAssist.Hint="최대 VOLT값" materialDesign:TextFieldAssist.TextFieldCornerRadius="17" HorizontalAlignment="Stretch" materialDesign:HintAssist.HintOpacity=".26"  Foreground="#999999" VerticalAlignment="Center" FontWeight="ExtraBold" FontSize="16" Margin="15,0"/>
+                            <TextBox x:Name="rot_max" Grid.Column="1" Grid.Row="2" Style="{StaticResource CustomizedOutlinedTextBox}" materialDesign:HintAssist.Hint="최대 ROTATE값" materialDesign:TextFieldAssist.TextFieldCornerRadius="17" HorizontalAlignment="Stretch" materialDesign:HintAssist.HintOpacity=".26"  Foreground="#999999" VerticalAlignment="Center" FontWeight="ExtraBold" FontSize="16" Margin="15,0"/>
+                            <TextBox x:Name="press_max" Grid.Column="2" Grid.Row="2" Style="{StaticResource CustomizedOutlinedTextBox}" materialDesign:HintAssist.Hint="최대 PRESSURE값" materialDesign:TextFieldAssist.TextFieldCornerRadius="17" HorizontalAlignment="Stretch" materialDesign:HintAssist.HintOpacity=".26"  Foreground="#999999" VerticalAlignment="Center" FontWeight="ExtraBold" FontSize="16" Margin="15,0"/>
+                            <TextBox x:Name="vibe_max" Grid.Column="3" Grid.Row="2" Style="{StaticResource CustomizedOutlinedTextBox}" materialDesign:HintAssist.Hint="최대 VIBRATION값" materialDesign:TextFieldAssist.TextFieldCornerRadius="17" HorizontalAlignment="Stretch" materialDesign:HintAssist.HintOpacity=".26"  Foreground="#999999" VerticalAlignment="Center" FontWeight="ExtraBold" FontSize="16" Margin="15,0"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Button x:Name="Btn_apply" Content="일괄 적용" HorizontalAlignment="Stretch" Margin="10,0,10,0" VerticalAlignment="Center" Click="Btn_apply_Click" materialDesign:ButtonAssist.CornerRadius="18" FontWeight="ExtraBold" FontSize="16" Height="40" Background="#2196F3"/>
+                        </Grid>
+                    </Grid>
+
+                    <DataGrid x:Name="DG_checkData" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Grid.Row="1" Margin="0,0,0,0" FontSize="20" >
+                        <DataGrid.ColumnHeaderStyle>
+                            <StaticResource ResourceKey="CustomMaterialDesignDataGridColumnHeader" />
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.RowStyle>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridRow}" TargetType="{x:Type DataGridRow}" />
+                        </DataGrid.RowStyle>
                         <DataGrid.Columns>
-                            <!-- 7개의 빈 컬럼 생성 -->
-                            <DataGridTextColumn Header="모델ID" Binding="{Binding modelId, ValidatesOnExceptions=True}" IsReadOnly="False" Width="0.7*"/>
-                            <DataGridTextColumn Header="age" Binding="{Binding age}" IsReadOnly="False" Width="0.5*"/>
-                            <!--<DataGridTextColumn Header="오류 여부" Binding="{Binding errorID}" Width="*"/>-->
-                            <DataGridTextColumn Header="volt" Binding="{Binding volt}" IsReadOnly="False" Width="*"/>
-                            <DataGridTextColumn Header="rotate" Binding="{Binding rotate}" IsReadOnly="False" Width="*"/>
-                            <DataGridTextColumn Header="pressure" Binding="{Binding pressure}" IsReadOnly="False" Width="*"/>
-                            <DataGridTextColumn Header="vibration" Binding="{Binding vibration}" IsReadOnly="False" Width="*"/>
-                            <DataGridTextColumn Header="고장 판별" Binding="{Binding failure}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="설비 번호" Binding="{Binding ModelId}" IsReadOnly="False" Width="0.7*"/>
+                            <DataGridTextColumn Header="volt_min" Binding="{Binding VoltMin}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="volt_max" Binding="{Binding VoltMax}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="rotate_min" Binding="{Binding RotateMin}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="rotate_max" Binding="{Binding RotateMax}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="pressure_min" Binding="{Binding PressureMin}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="pressure_max" Binding="{Binding PressureMax}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="vibration_min" Binding="{Binding VibrationMin}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="vibration_max" Binding="{Binding VibrationMax}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="고장 판별" Binding="{Binding Failure}" IsReadOnly="True" Width="*"/>
                         </DataGrid.Columns>
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding failure}" Value="고장 위험">
+                                    <DataTrigger Binding="{Binding Failure}" Value="고장 위험">
                                         <Setter Property="Foreground" Value="Red"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding failure}" Value="안전">
+                                    <DataTrigger Binding="{Binding Failure}" Value="안전">
                                         <Setter Property="Foreground" Value="Green"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.CellStyle>
                     </DataGrid>
-                    <Button x:Name="Btn_addRow" Content="+" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,70,0" Grid.Row="1" Width="50" Click="AddRowButton_Click" Grid.Column="1"/>
-                    <Button x:Name="Btn_removeRow" Content="-" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Grid.Row="1" Width="50" Click="RemoveRowButton_Click" Grid.Column="1"/>
-                    <Button x:Name="Btn_check" Content="고장 확인하기" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Row="2" Click="Btn_check_Click" Grid.Column="1" />
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="Btn_check" Content="고장 예측" HorizontalAlignment="Left" materialDesign:ButtonAssist.CornerRadius="18" FontWeight="ExtraBold" FontSize="16" Height="40" Background="#2196F3" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Column="1" Click="Btn_check_Click"/>
+                        <Button x:Name="Btn_plc" Content="PLC 쓰기" HorizontalAlignment="Right" materialDesign:ButtonAssist.CornerRadius="18" FontWeight="ExtraBold" FontSize="16" Height="40" Background="#2196F3" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Column="1" Click="Btn_plc_Click"/>
+                    </Grid>
                 </Grid>
             </TabItem>
         </TabControl>

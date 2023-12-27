@@ -19,13 +19,10 @@ using static ScottPlot.Plottable.PopulationPlot;
 namespace FFC_PDM
 {
     internal class FacilityDataChartControl
-    // 김정관
-    // 클래스 내에서 세 가지 메서드에서 각각 막대차트, 원형차트, 사용자 정의차트 생성 및 옵션 설정해 데이터 시각화
+
     {
         public WpfPlot CreateBarChart(WpfPlot chart, Dictionary<string, int> chartData, string title, bool showValuesAboveBars, bool sortFlag)
         {
-            //OrderBy -> 정렬(Sort)같은애
-            
             string[] keys;
             double[] valuesAsDouble;
             double[] positions;
@@ -133,6 +130,7 @@ namespace FFC_PDM
             //wpfPlot.Plot.Title("장비 가동률");
             wpfPlot.Plot.XAxis.DateTimeFormat(true);
             wpfPlot.Plot.YAxis.SetBoundary(95, 100);
+            wpfPlot.Plot.YLabel("단위: %");
             wpfPlot.Plot.Grid(enable: true);
 
             return wpfPlot;

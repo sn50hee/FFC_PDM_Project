@@ -3,6 +3,7 @@ using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
@@ -39,10 +40,23 @@ namespace FFC_PDM
             WP_ErrorRateView();
             WP_OperatingRatioView();
             DG_FailuressListView();
+            WP_BackgroundAlpha();
             // 윤석희끝
 
             GenerateCBModelName();
 
+        }
+
+        public void WP_BackgroundAlpha()
+        {
+            WpfPlot[] wpfPlots = { WP_Volt, WP_Rotate, WP_Pressure, WP_Vibration, WP_Warning, WP_Maint };
+            foreach(WpfPlot chart in wpfPlots)
+            {
+                Plot plt = chart.Plot;
+                plt.Style(
+                    figureBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0),
+                    dataBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0));
+            }
 
         }
 
@@ -118,7 +132,7 @@ namespace FFC_PDM
             foreach (double i in machines[CB_ModelName.SelectedItem.ToString()])
             {
 
-                CB_Model_ID.Items.Add((i).ToString());
+                CB_Model_ID.Items.Add((i).ToString()+"번 설비");
             }
 
 
@@ -138,19 +152,23 @@ namespace FFC_PDM
             WP_Vibration.Plot.Clear();
 
             WP_Volt = viewDetailsTabChartDataControl.CreateVoltageChart(WP_Volt, date, "VoltageGraph", selectedModelID, startDate, endDate);
-            WP_Volt.Plot.AddVerticalSpan(200, 10000);
+            var voltSpan = WP_Volt.Plot.AddVerticalSpan(200, 10000);
+            voltSpan.Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
             WP_Volt.Refresh();
 
             WP_Rotate = viewDetailsTabChartDataControl.CreateRotateChart(WP_Rotate, date, "RotateGraph", selectedModelID, startDate, endDate);
-            WP_Rotate.Plot.AddVerticalSpan(360, -10000);
+            var rotateSpan = WP_Rotate.Plot.AddVerticalSpan(360, -10000);
+            rotateSpan.Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
             WP_Rotate.Refresh();
 
             WP_Pressure = viewDetailsTabChartDataControl.CreatePressureChart(WP_Pressure, date, "PressureGraph", selectedModelID, startDate, endDate);
-            WP_Pressure.Plot.AddVerticalSpan(120, 10000);
+            var pressureSpan = WP_Pressure.Plot.AddVerticalSpan(120, 10000);
+            pressureSpan.Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
             WP_Pressure.Refresh();
 
             WP_Vibration = viewDetailsTabChartDataControl.CreateVibrationChart(WP_Vibration, date, "VibrationGraph", selectedModelID, startDate, endDate);
-            WP_Vibration.Plot.AddVerticalSpan(50, 10000);
+            var vibrationSpan = WP_Vibration.Plot.AddVerticalSpan(50, 10000);
+            vibrationSpan.Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
             WP_Vibration.Refresh();
         }
 
@@ -197,8 +215,9 @@ namespace FFC_PDM
             }
             else
             {
+                string selectedValue = CB_Model_ID.SelectedValue.ToString();
                 // CB_Model_ID에서 선택된 값 가져오기
-                int? selectedModelIDNullable = int.Parse(CB_Model_ID.SelectedValue.ToString());
+                int? selectedModelIDNullable = int.Parse(selectedValue.Substring(0, selectedValue.Length - 4));
                 // 만약 선택된 값이 null이면 기본값인 0으로 대체
                 int selectedModelID = selectedModelIDNullable ?? 0; // null이면 0으로 처리
                                                                     // DatePicker에서 선택된 시작 날짜 가져오기 --> 00시부터하고
@@ -242,36 +261,36 @@ namespace FFC_PDM
             }
         }
 
-        private void Btn_check_Click(object sender, RoutedEventArgs e)
-        {
-            List<string> inputDataList = new List<string>();
-            foreach(StatisticsTabGridData data in gridDatas)
-            {
-                if(data.volt == null ||  data.rotate == null || data.pressure == null || data.vibration == null || data.modelId == null || data.age == null)
-                {
-                    MessageBox.Show("모든 값을 입력해야 합니다");
-                    break;
-                }
+        //private void Btn_check_Click(object sender, RoutedEventArgs e)
+        //{
+        //    List<string> inputDataList = new List<string>();
+        //    foreach(StatisticsTabGridData data in gridDatas)
+        //    {
+        //        if(data.volt == null ||  data.rotate == null || data.pressure == null || data.vibration == null || data.modelId == null || data.age == null)
+        //        {
+        //            MessageBox.Show("모든 값을 입력해야 합니다");
+        //            break;
+        //        }
 
-                inputDataList.Add($"[[{data.modelId.ToString()},{data.age.ToString()},{data.volt.ToString()},{data.rotate.ToString()},{data.pressure.ToString()},{data.vibration.ToString()}]]");
-            }
-            GetPythonModel getPythonModel = new GetPythonModel();
-            List<string> outputDataList = getPythonModel.FailureCheck(inputDataList);
+        //        inputDataList.Add($"[[{data.modelId.ToString()},{data.age.ToString()},{data.volt.ToString()},{data.rotate.ToString()},{data.pressure.ToString()},{data.vibration.ToString()}]]");
+        //    }
+        //    GetPythonModel getPythonModel = new GetPythonModel();
+        //    List<string> outputDataList = getPythonModel.FailureCheck(inputDataList);
 
-            for(int i = 0; i < outputDataList.Count; i++)
-            {
-                if (outputDataList[i] == "[1]\r\n")
-                {
-                    gridDatas[i].failure = "고장 위험";
-                }
-                else
-                {
-                    gridDatas[i].failure = "안전";
-                }
-            }
+        //    for(int i = 0; i < outputDataList.Count; i++)
+        //    {
+        //        if (outputDataList[i] == "[1]\r\n")
+        //        {
+        //            gridDatas[i].failure = "고장 위험";
+        //        }
+        //        else
+        //        {
+        //            gridDatas[i].failure = "안전";
+        //        }
+        //    }
 
-            DG_checkData.Items.Refresh();
-        }
+        //    DG_checkData.Items.Refresh();
+        //}
         ViewDetailsTabChartDataControl viewDetailsTabChartDataControl;
         private void WP_Volt_MouseMove(object sender, MouseEventArgs e)
         {
@@ -341,10 +360,6 @@ namespace FFC_PDM
             }
         }
 
-        private void TextBlock_ColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
-        {
-
-        }
     }
 
 }
