@@ -95,6 +95,7 @@ namespace FFC_PDM
             return telemetryData;
         }
 
+
         public List<ParseTelemetry_1> GetcleanParseTelemetryData()
         {
             string filePath = "FFC_PDM.Resources.PdM_telemetry_no_duplicates_cleaned.csv";
@@ -184,6 +185,21 @@ namespace FFC_PDM
             return result;
         }
 
+        public List<ParseTelemetry_PLC> GetPLC_ParseTelemetryData()
+        {
+            string filePath = "FFC_PDM.Resources.PdM_PLC.csv";
+            List<ParseTelemetry_PLC> telemetryData = ReadData(filePath, line => new ParseTelemetry_PLC
+            { 
+                machineID = int.Parse(line[0]),
+                volt = int.Parse(line[1]),
+                rotate = int.Parse(line[2]),
+                pressure = int.Parse(line[3]),
+                vibration = int.Parse(line[4])
+            });
+
+            return telemetryData;
+        }
+
     }
 }
 
@@ -264,3 +280,12 @@ public class StatisticsTabGridData
     public string failure { get; set; }
 }
 
+public class ParseTelemetry_PLC
+{
+ 
+    public double machineID { get; set; }
+    public int volt { get; set; }
+    public int rotate { get; set; }
+    public int pressure { get; set; }
+    public int vibration { get; set; }
+}
