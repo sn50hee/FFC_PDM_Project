@@ -39,6 +39,10 @@ namespace FFC_PDM
             DG_FailuressListView();
             // 윤석희끝
 
+            // 김정관 추가
+
+            // 김정관 끝
+
             GenerateCBModelName();
         }
 
@@ -220,54 +224,59 @@ namespace FFC_PDM
         }
         // 김정관 끝
 
-        ObservableCollection<StatisticsTabGridData> gridDatas = new ObservableCollection<StatisticsTabGridData>();
-        
-        private void AddRowButton_Click(object sender, RoutedEventArgs e)
-        {
-            // + 버튼 클릭 시 새로운 행 추가
-            gridDatas.Add(new StatisticsTabGridData { age = null, modelId = null, pressure = null, rotate = null, vibration = null, volt = null, failure = null});
-            DG_checkData.ItemsSource = gridDatas;
-        }
+        //ObservableCollection<StatisticsTabGridData> gridDatas = new ObservableCollection<StatisticsTabGridData>();
 
-        private void RemoveRowButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (DG_checkData.Items.Count > 0)
-            {
-                int lastIndex = DG_checkData.Items.Count - 1;
-                gridDatas.RemoveAt(lastIndex);
-            }
-        }
+        //private void AddRowButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // + 버튼 클릭 시 새로운 행 추가
+        //    gridDatas.Add(new StatisticsTabGridData { age = null, modelId = null, pressure = null, rotate = null, vibration = null, volt = null, failure = null});
+        //    DG_checkData.ItemsSource = gridDatas;
+        //}
 
+        //private void RemoveRowButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (DG_checkData.Items.Count > 0)
+        //    {
+        //        int lastIndex = DG_checkData.Items.Count - 1;
+        //        gridDatas.RemoveAt(lastIndex);
+        //    }
+        //}
+        ObservableCollection<CheckData> gridDatas = new ObservableCollection<CheckData>();
         private void Btn_check_Click(object sender, RoutedEventArgs e)
         {
-            List<string> inputDataList = new List<string>();
-            foreach(StatisticsTabGridData data in gridDatas)
+            List<string> inputDataList1 = new List<string>();
+            List<string> inputDataList2 = new List<string>();
+            //List<CheckData> gridDatas = DG_checkData.ItemsSource;
+            foreach (CheckData data in DG_checkData.ItemsSource)
             {
-                if(data.volt == null ||  data.rotate == null || data.pressure == null || data.vibration == null || data.modelId == null || data.age == null)
+                if (data.VoltMin == null || data.VoltMax == null || data.RotateMax == null || data.RotateMin == null || data.PressureMin == null || data.PressureMax == null || data.VibrationMin == null || data.VibrationMax == null || data.Age == null)
                 {
                     MessageBox.Show("모든 값을 입력해야 합니다");
                     break;
                 }
 
-                inputDataList.Add($"[[{data.modelId.ToString()},{data.age.ToString()},{data.volt.ToString()},{data.rotate.ToString()},{data.pressure.ToString()},{data.vibration.ToString()}]]");
+                inputDataList1.Add($"[[{data.ModelId.ToString()},{data.Age.ToString()}, {data.VoltMin.ToString()}, {data.RotateMin.ToString()}, {data.PressureMin.ToString()}, {data.VibrationMin.ToString()}]]");
+                inputDataList2.Add($"[[{data.ModelId.ToString()},{data.Age.ToString()}, {data.VoltMax.ToString()}, {data.RotateMax.ToString()}, {data.PressureMax.ToString()}, {data.VibrationMax.ToString()}]]");
             }
             GetPythonModel getPythonModel = new GetPythonModel();
-            List<string> outputDataList = getPythonModel.FailureCheck(inputDataList);
+            List<string> outputDataList1 = getPythonModel.FailureCheck(inputDataList1);
+            List<string> outputDataList2 = getPythonModel.FailureCheck(inputDataList2);
 
-            for(int i = 0; i < outputDataList.Count; i++)
+            for (int i = 0; i < outputDataList1.Count; i++)
             {
-                if (outputDataList[i] == "[1]\r\n")
+                if (outputDataList1[i] == "[1]\r\n" && outputDataList2[i] == "[1]\r\n")
                 {
-                    gridDatas[i].failure = "고장 위험";
+                    gridDatas[0].Failure = "고장 위험";
                 }
                 else
                 {
-                    gridDatas[i].failure = "안전";
+                    gridDatas[0].Failure = "안전";
                 }
             }
 
             DG_checkData.Items.Refresh();
         }
+
         ViewDetailsTabChartDataControl viewDetailsTabChartDataControl;
         private void WP_Volt_MouseMove(object sender, MouseEventArgs e)
         {
@@ -337,6 +346,69 @@ namespace FFC_PDM
             }
         }
 
+        private int GetAgeForModel(int modelId)
+        {
+            // 실제로는 각 모델에 대한 적절한 나이를 반환하는 로직을 구현
+            // 예시로 모델에 따라 다른 나이를 반환하도록 함
+            switch (modelId)
+            {
+                case 1:
+                    return 18;
+                case 2:
+                    return 7;
+                case 3:
+                    return 8;
+                case 4:
+                    return 7;
+                case 5:
+                    return 2;
+                case 6:
+                    return 7;
+                case 7:
+                    return 20;
+                case 8:
+                    return 16;
+                default:
+                    return 0;
+            }
+        }
+
+        List<CheckData> CheckDataList = new List<CheckData>();
+        private void Btn_apply_Click(object sender, RoutedEventArgs e)
+        {
+            for (int modelId = 1; modelId <= 8; modelId++)
+            {
+                int ageForModel = GetAgeForModel(modelId);
+                CheckData newData = new CheckData
+                {
+                    ModelId = modelId.ToString(),
+                    Age = 0, // 적절한 값을 할당해야 함
+
+                    // 텍스트 박스의 값을 읽어와서 적절한 형태로 변환하여 할당
+                    VoltMin = double.Parse(volt_min.Text),
+                    VoltMax = double.Parse(volt_max.Text),
+                    RotateMin = double.Parse(rot_min.Text),
+                    RotateMax = double.Parse(rot_max.Text),
+                    PressureMin = double.Parse(press_min.Text),
+                    PressureMax = double.Parse(press_max.Text),
+                    VibrationMin = double.Parse(vibe_min.Text),
+                    VibrationMax = double.Parse(vibe_max.Text),
+                    Failure = "고장 판별"
+                };
+
+                // List에 데이터 추가
+                CheckDataList.Add(newData);
+            }
+
+            // 데이터 그리드 업데이트
+            DG_checkData.ItemsSource = CheckDataList;
+            DG_checkData.Items.Refresh();  // Refresh 호출이 필요할 수 있습니다.
+        }
+
+        private void Btn_plc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 }
