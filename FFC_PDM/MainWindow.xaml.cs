@@ -3,12 +3,15 @@ using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -37,16 +40,27 @@ namespace FFC_PDM
             WP_ErrorRateView();
             WP_OperatingRatioView();
             DG_FailuressListView();
+            WP_BackgroundAlpha();
             // 윤석희끝
 
-            // 김정관 추가
-
-            // 김정관 끝
-
             GenerateCBModelName();
+
         }
 
-        
+        public void WP_BackgroundAlpha()
+        {
+            WpfPlot[] wpfPlots = { WP_Volt, WP_Rotate, WP_Pressure, WP_Vibration, WP_Warning, WP_Maint };
+            foreach(WpfPlot chart in wpfPlots)
+            {
+                Plot plt = chart.Plot;
+                plt.Style(
+                    figureBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0),
+                    dataBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0));
+            }
+
+        }
+
+
         public void WP_OperatingRatioView()
         {
             StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
@@ -82,7 +96,7 @@ namespace FFC_PDM
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             Dictionary<string, int> data = new StatisticsTabChartData().RecentFacilityData();
-            WP_RecentFacility = facilityDataChartControl.CreateBarChart(WP_RecentFacility, data, "최근 10건 고장 장비", true);
+            WP_RecentFacility = facilityDataChartControl.CreateBarChart(WP_RecentFacility, data, "최근 10건 고장 장비", true, false);
             WP_RecentFacility.Refresh();
         }
 
@@ -90,7 +104,7 @@ namespace FFC_PDM
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             Dictionary<string, int> data = new StatisticsTabChartData().ErrorRateData();
-            WP_ErrorRate = facilityDataChartControl.CreateBarChart(WP_ErrorRate, data, "오류 횟수", true);
+            WP_ErrorRate = facilityDataChartControl.CreateBarChart(WP_ErrorRate, data, "오류 횟수", true, true);
             WP_ErrorRate.Refresh();
         }
 
@@ -118,7 +132,7 @@ namespace FFC_PDM
             foreach (double i in machines[CB_ModelName.SelectedItem.ToString()])
             {
 
-                CB_Model_ID.Items.Add((i).ToString());
+                CB_Model_ID.Items.Add((i).ToString()+"번 설비");
             }
 
 
@@ -138,19 +152,23 @@ namespace FFC_PDM
             WP_Vibration.Plot.Clear();
 
             WP_Volt = viewDetailsTabChartDataControl.CreateVoltageChart(WP_Volt, date, "VoltageGraph", selectedModelID, startDate, endDate);
-            WP_Volt.Plot.AddVerticalSpan(200, 10000);
+            var voltSpan = WP_Volt.Plot.AddVerticalSpan(200, 10000);
+            voltSpan.Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
             WP_Volt.Refresh();
 
             WP_Rotate = viewDetailsTabChartDataControl.CreateRotateChart(WP_Rotate, date, "RotateGraph", selectedModelID, startDate, endDate);
-            WP_Rotate.Plot.AddVerticalSpan(360, -10000);
+            var rotateSpan = WP_Rotate.Plot.AddVerticalSpan(360, -10000);
+            rotateSpan.Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
             WP_Rotate.Refresh();
 
             WP_Pressure = viewDetailsTabChartDataControl.CreatePressureChart(WP_Pressure, date, "PressureGraph", selectedModelID, startDate, endDate);
-            WP_Pressure.Plot.AddVerticalSpan(120, 10000);
+            var pressureSpan = WP_Pressure.Plot.AddVerticalSpan(120, 10000);
+            pressureSpan.Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
             WP_Pressure.Refresh();
 
             WP_Vibration = viewDetailsTabChartDataControl.CreateVibrationChart(WP_Vibration, date, "VibrationGraph", selectedModelID, startDate, endDate);
-            WP_Vibration.Plot.AddVerticalSpan(50, 10000);
+            var vibrationSpan = WP_Vibration.Plot.AddVerticalSpan(50, 10000);
+            vibrationSpan.Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
             WP_Vibration.Refresh();
         }
 
@@ -197,8 +215,9 @@ namespace FFC_PDM
             }
             else
             {
+                string selectedValue = CB_Model_ID.SelectedValue.ToString();
                 // CB_Model_ID에서 선택된 값 가져오기
-                int? selectedModelIDNullable = int.Parse(CB_Model_ID.SelectedValue.ToString());
+                int? selectedModelIDNullable = int.Parse(selectedValue.Substring(0, selectedValue.Length - 4));
                 // 만약 선택된 값이 null이면 기본값인 0으로 대체
                 int selectedModelID = selectedModelIDNullable ?? 0; // null이면 0으로 처리
                                                                     // DatePicker에서 선택된 시작 날짜 가져오기 --> 00시부터하고

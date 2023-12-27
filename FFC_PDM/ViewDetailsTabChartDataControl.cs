@@ -42,9 +42,13 @@ namespace FFC_PDM
 
             plt.AxisAuto(); // 축 범위 자동 조정
 
-            plt.Title(title);
+            //plt.Title(title);
             plt.XLabel("Date");
             plt.YLabel("Voltage");
+
+            plt.Style(
+                figureBackground: System.Drawing.Color.FromArgb(0,0,0,0),
+                dataBackground: System.Drawing.Color.FromArgb(0,0,0,0));
 
             voltHighlightedPoint = chart.Plot.AddPoint(0, 0);
             voltHighlightedPoint.Color = System.Drawing.Color.Red;
@@ -116,9 +120,13 @@ namespace FFC_PDM
 
             plt.AxisAuto(); // 축 범위 자동 조정
 
-            plt.Title(title);
+            //plt.Title(title);
             plt.XLabel("Date");
             plt.YLabel("Rotate");
+
+            plt.Style(
+                figureBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0),
+                dataBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0));
 
             rotateHighlightedPoint = chart.Plot.AddPoint(0, 0);
             rotateHighlightedPoint.Color = System.Drawing.Color.Red;
@@ -190,9 +198,13 @@ namespace FFC_PDM
 
             plt.AxisAuto(); // 축 범위 자동 조정
 
-            plt.Title(title);
+            //plt.Title(title);
             plt.XLabel("Date");
             plt.YLabel("Pressure");
+
+            plt.Style(
+                figureBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0),
+                dataBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0));
 
             pressureHighlightedPoint = chart.Plot.AddPoint(0, 0);
             pressureHighlightedPoint.Color = System.Drawing.Color.Red;
@@ -265,9 +277,13 @@ namespace FFC_PDM
 
             plt.AxisAuto(); // 축 범위 자동 조정
 
-            plt.Title(title);
+            //plt.Title(title);
             plt.XLabel("Date");
             plt.YLabel("Vibration");
+
+            plt.Style(
+                figureBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0),
+                dataBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0));
 
             vibrationHighlightedPoint = chart.Plot.AddPoint(0, 0);
             vibrationHighlightedPoint.Color = System.Drawing.Color.Red;
@@ -328,6 +344,10 @@ namespace FFC_PDM
             pie.ShowPercentages = true;
             pie.ShowValues = true;
             pie.ShowLabels = true;
+
+            plt.Style(
+                figureBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0),
+                dataBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0));
             plt.Legend();
             chart.Configuration.ScrollWheelZoom = false;
 
@@ -349,6 +369,10 @@ namespace FFC_PDM
             pie.ShowPercentages = true;
             pie.ShowValues = true;
             pie.ShowLabels = true;
+
+            plt.Style(
+                figureBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0),
+                dataBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0));
             plt.Legend();
             chart.Configuration.ScrollWheelZoom = false;
 
