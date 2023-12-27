@@ -3,12 +3,15 @@ using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -37,12 +40,27 @@ namespace FFC_PDM
             WP_ErrorRateView();
             WP_OperatingRatioView();
             DG_FailuressListView();
+            WP_BackgroundAlpha();
             // 윤석희끝
 
             GenerateCBModelName();
+
         }
 
-        
+        public void WP_BackgroundAlpha()
+        {
+            WpfPlot[] wpfPlots = { WP_Volt, WP_Rotate, WP_Pressure, WP_Vibration, WP_Warning, WP_Maint };
+            foreach(WpfPlot chart in wpfPlots)
+            {
+                Plot plt = chart.Plot;
+                plt.Style(
+                    figureBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0),
+                    dataBackground: System.Drawing.Color.FromArgb(0, 0, 0, 0));
+            }
+
+        }
+
+
         public void WP_OperatingRatioView()
         {
             StatisticsTabChartData statisticsTabChartData = new StatisticsTabChartData();
@@ -78,7 +96,7 @@ namespace FFC_PDM
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             Dictionary<string, int> data = new StatisticsTabChartData().RecentFacilityData();
-            WP_RecentFacility = facilityDataChartControl.CreateBarChart(WP_RecentFacility, data, "최근 10건 고장 장비", true);
+            WP_RecentFacility = facilityDataChartControl.CreateBarChart(WP_RecentFacility, data, "최근 10건 고장 장비", true, false);
             WP_RecentFacility.Refresh();
         }
 
@@ -86,7 +104,7 @@ namespace FFC_PDM
         {
             FacilityDataChartControl facilityDataChartControl = new FacilityDataChartControl();
             Dictionary<string, int> data = new StatisticsTabChartData().ErrorRateData();
-            WP_ErrorRate = facilityDataChartControl.CreateBarChart(WP_ErrorRate, data, "오류 횟수", true);
+            WP_ErrorRate = facilityDataChartControl.CreateBarChart(WP_ErrorRate, data, "오류 횟수", true, true);
             WP_ErrorRate.Refresh();
         }
 
@@ -114,7 +132,7 @@ namespace FFC_PDM
             foreach (double i in machines[CB_ModelName.SelectedItem.ToString()])
             {
 
-                CB_Model_ID.Items.Add((i).ToString());
+                CB_Model_ID.Items.Add((i).ToString()+"번 설비");
             }
 
 
@@ -134,19 +152,23 @@ namespace FFC_PDM
             WP_Vibration.Plot.Clear();
 
             WP_Volt = viewDetailsTabChartDataControl.CreateVoltageChart(WP_Volt, date, "VoltageGraph", selectedModelID, startDate, endDate);
-            WP_Volt.Plot.AddVerticalSpan(200, 10000);
+            var voltSpan = WP_Volt.Plot.AddVerticalSpan(200, 10000);
+            voltSpan.Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
             WP_Volt.Refresh();
 
             WP_Rotate = viewDetailsTabChartDataControl.CreateRotateChart(WP_Rotate, date, "RotateGraph", selectedModelID, startDate, endDate);
-            WP_Rotate.Plot.AddVerticalSpan(360, -10000);
+            var rotateSpan = WP_Rotate.Plot.AddVerticalSpan(360, -10000);
+            rotateSpan.Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
             WP_Rotate.Refresh();
 
             WP_Pressure = viewDetailsTabChartDataControl.CreatePressureChart(WP_Pressure, date, "PressureGraph", selectedModelID, startDate, endDate);
-            WP_Pressure.Plot.AddVerticalSpan(120, 10000);
+            var pressureSpan = WP_Pressure.Plot.AddVerticalSpan(120, 10000);
+            pressureSpan.Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
             WP_Pressure.Refresh();
 
             WP_Vibration = viewDetailsTabChartDataControl.CreateVibrationChart(WP_Vibration, date, "VibrationGraph", selectedModelID, startDate, endDate);
-            WP_Vibration.Plot.AddVerticalSpan(50, 10000);
+            var vibrationSpan = WP_Vibration.Plot.AddVerticalSpan(50, 10000);
+            vibrationSpan.Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
             WP_Vibration.Refresh();
         }
 
@@ -193,8 +215,9 @@ namespace FFC_PDM
             }
             else
             {
+                string selectedValue = CB_Model_ID.SelectedValue.ToString();
                 // CB_Model_ID에서 선택된 값 가져오기
-                int? selectedModelIDNullable = int.Parse(CB_Model_ID.SelectedValue.ToString());
+                int? selectedModelIDNullable = int.Parse(selectedValue.Substring(0, selectedValue.Length - 4));
                 // 만약 선택된 값이 null이면 기본값인 0으로 대체
                 int selectedModelID = selectedModelIDNullable ?? 0; // null이면 0으로 처리
                                                                     // DatePicker에서 선택된 시작 날짜 가져오기 --> 00시부터하고
@@ -220,54 +243,59 @@ namespace FFC_PDM
         }
         // 김정관 끝
 
-        ObservableCollection<StatisticsTabGridData> gridDatas = new ObservableCollection<StatisticsTabGridData>();
-        
-        private void AddRowButton_Click(object sender, RoutedEventArgs e)
-        {
-            // + 버튼 클릭 시 새로운 행 추가
-            gridDatas.Add(new StatisticsTabGridData { age = null, modelId = null, pressure = null, rotate = null, vibration = null, volt = null, failure = null});
-            DG_checkData.ItemsSource = gridDatas;
-        }
+        //ObservableCollection<StatisticsTabGridData> gridDatas = new ObservableCollection<StatisticsTabGridData>();
 
-        private void RemoveRowButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (DG_checkData.Items.Count > 0)
-            {
-                int lastIndex = DG_checkData.Items.Count - 1;
-                gridDatas.RemoveAt(lastIndex);
-            }
-        }
+        //private void AddRowButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // + 버튼 클릭 시 새로운 행 추가
+        //    gridDatas.Add(new StatisticsTabGridData { age = null, modelId = null, pressure = null, rotate = null, vibration = null, volt = null, failure = null});
+        //    DG_checkData.ItemsSource = gridDatas;
+        //}
 
+        //private void RemoveRowButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (DG_checkData.Items.Count > 0)
+        //    {
+        //        int lastIndex = DG_checkData.Items.Count - 1;
+        //        gridDatas.RemoveAt(lastIndex);
+        //    }
+        //}
+        ObservableCollection<CheckData> gridDatas = new ObservableCollection<CheckData>();
         private void Btn_check_Click(object sender, RoutedEventArgs e)
         {
-            List<string> inputDataList = new List<string>();
-            foreach(StatisticsTabGridData data in gridDatas)
+            List<string> inputDataList1 = new List<string>();
+            List<string> inputDataList2 = new List<string>();
+            //List<CheckData> gridDatas = DG_checkData.ItemsSource;
+            foreach (CheckData data in DG_checkData.ItemsSource)
             {
-                if(data.volt == null ||  data.rotate == null || data.pressure == null || data.vibration == null || data.modelId == null || data.age == null)
+                if (data.VoltMin == null || data.VoltMax == null || data.RotateMax == null || data.RotateMin == null || data.PressureMin == null || data.PressureMax == null || data.VibrationMin == null || data.VibrationMax == null || data.Age == null)
                 {
                     MessageBox.Show("모든 값을 입력해야 합니다");
                     break;
                 }
 
-                inputDataList.Add($"[[{data.modelId.ToString()},{data.age.ToString()},{data.volt.ToString()},{data.rotate.ToString()},{data.pressure.ToString()},{data.vibration.ToString()}]]");
+                inputDataList1.Add($"[[{data.ModelId.ToString()},{data.Age.ToString()}, {data.VoltMin.ToString()}, {data.RotateMin.ToString()}, {data.PressureMin.ToString()}, {data.VibrationMin.ToString()}]]");
+                inputDataList2.Add($"[[{data.ModelId.ToString()},{data.Age.ToString()}, {data.VoltMax.ToString()}, {data.RotateMax.ToString()}, {data.PressureMax.ToString()}, {data.VibrationMax.ToString()}]]");
             }
             GetPythonModel getPythonModel = new GetPythonModel();
-            List<string> outputDataList = getPythonModel.FailureCheck(inputDataList);
+            List<string> outputDataList1 = getPythonModel.FailureCheck(inputDataList1);
+            List<string> outputDataList2 = getPythonModel.FailureCheck(inputDataList2);
 
-            for(int i = 0; i < outputDataList.Count; i++)
+            for (int i = 0; i < outputDataList1.Count; i++)
             {
-                if (outputDataList[i] == "[1]\r\n")
+                if (outputDataList1[i] == "[1]\r\n" && outputDataList2[i] == "[1]\r\n")
                 {
-                    gridDatas[i].failure = "고장 위험";
+                    gridDatas[0].Failure = "고장 위험";
                 }
                 else
                 {
-                    gridDatas[i].failure = "안전";
+                    gridDatas[0].Failure = "안전";
                 }
             }
 
             DG_checkData.Items.Refresh();
         }
+
         ViewDetailsTabChartDataControl viewDetailsTabChartDataControl;
         private void WP_Volt_MouseMove(object sender, MouseEventArgs e)
         {
@@ -337,6 +365,69 @@ namespace FFC_PDM
             }
         }
 
+        private int GetAgeForModel(int modelId)
+        {
+            // 실제로는 각 모델에 대한 적절한 나이를 반환하는 로직을 구현
+            // 예시로 모델에 따라 다른 나이를 반환하도록 함
+            switch (modelId)
+            {
+                case 1:
+                    return 18;
+                case 2:
+                    return 7;
+                case 3:
+                    return 8;
+                case 4:
+                    return 7;
+                case 5:
+                    return 2;
+                case 6:
+                    return 7;
+                case 7:
+                    return 20;
+                case 8:
+                    return 16;
+                default:
+                    return 0;
+            }
+        }
+
+        List<CheckData> CheckDataList = new List<CheckData>();
+        private void Btn_apply_Click(object sender, RoutedEventArgs e)
+        {
+            for (int modelId = 1; modelId <= 8; modelId++)
+            {
+                int ageForModel = GetAgeForModel(modelId);
+                CheckData newData = new CheckData
+                {
+                    ModelId = modelId.ToString(),
+                    Age = 0, // 적절한 값을 할당해야 함
+
+                    // 텍스트 박스의 값을 읽어와서 적절한 형태로 변환하여 할당
+                    VoltMin = double.Parse(volt_min.Text),
+                    VoltMax = double.Parse(volt_max.Text),
+                    RotateMin = double.Parse(rot_min.Text),
+                    RotateMax = double.Parse(rot_max.Text),
+                    PressureMin = double.Parse(press_min.Text),
+                    PressureMax = double.Parse(press_max.Text),
+                    VibrationMin = double.Parse(vibe_min.Text),
+                    VibrationMax = double.Parse(vibe_max.Text),
+                    Failure = "고장 판별"
+                };
+
+                // List에 데이터 추가
+                CheckDataList.Add(newData);
+            }
+
+            // 데이터 그리드 업데이트
+            DG_checkData.ItemsSource = CheckDataList;
+            DG_checkData.Items.Refresh();  // Refresh 호출이 필요할 수 있습니다.
+        }
+
+        private void Btn_plc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 }
