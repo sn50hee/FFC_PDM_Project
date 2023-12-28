@@ -185,16 +185,19 @@ namespace FFC_PDM
             return result;
         }
 
+        // 성민철
+        // 1~8까지 정렬시킨 데이터로 체인지 (PdM_PLC -> PdM_PLC__edit)
+        // csv 파일과 경로 바꿔주세요!
         public List<ParseTelemetry_PLC> GetPLC_ParseTelemetryData()
         {
-            string filePath = "FFC_PDM.Resources.PdM_PLC.csv";
+            string filePath = "FFC_PDM.Resources.PdM_PLC__aedit.csv";
             List<ParseTelemetry_PLC> telemetryData = ReadData(filePath, line => new ParseTelemetry_PLC
             { 
-                machineID = int.Parse(line[0]),
-                volt = int.Parse(line[1]),
-                rotate = int.Parse(line[2]),
-                pressure = int.Parse(line[3]),
-                vibration = int.Parse(line[4])
+              
+                volt = int.Parse(line[0]),
+                rotate = int.Parse(line[1]),
+                pressure = int.Parse(line[2]),
+                vibration = int.Parse(line[3])
             });
 
             return telemetryData;
@@ -267,6 +270,21 @@ public class Maint_1
     public string comp { get; set; }
 }
 
+public class CheckData
+{
+    public string ModelId { get; set; }
+    public int Age { get; set; }
+    public double VoltMin { get; set; }
+    public double VoltMax { get; set; }
+    public double RotateMin { get; set; }
+    public double RotateMax { get; set; }
+    public double PressureMin { get; set; }
+    public double PressureMax { get; set; }
+    public double VibrationMin { get; set; }
+    public double VibrationMax { get; set; }
+    public string Failure { get; set; } = "고장 판별전"; // 기본값 설정
+}
+
 // 김정관 끝
 
 public class StatisticsTabGridData
@@ -283,7 +301,6 @@ public class StatisticsTabGridData
 public class ParseTelemetry_PLC
 {
  
-    public double machineID { get; set; }
     public int volt { get; set; }
     public int rotate { get; set; }
     public int pressure { get; set; }
