@@ -1,4 +1,5 @@
-﻿using ScottPlot;
+﻿using MaterialDesignThemes.Wpf;
+using ScottPlot;
 using ScottPlot.Drawing.Colormaps;
 using ScottPlot.Plottable;
 using System;
@@ -12,34 +13,85 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using static ScottPlot.Plottable.PopulationPlot;
 //using static ScottPlot.Plottable.PopulationPlot;
 
 namespace FFC_PDM
 {
     internal class FacilityDataChartControl
-    // 김정관
-    // 클래스 내에서 세 가지 메서드에서 각각 막대차트, 원형차트, 사용자 정의차트 생성 및 옵션 설정해 데이터 시각화
+
     {
-        public WpfPlot CreateBarChart(WpfPlot chart, Dictionary<string, int> chartData, string title, bool showValuesAboveBars)
+        public WpfPlot CreateBarChart(WpfPlot chart, Dictionary<string, int> chartData, string title, bool showValuesAboveBars, bool sortFlag)
         {
-            //OrderBy -> 정렬(Sort)같은애
-            string[] keys = chartData.Keys.OrderBy(key => key).ToArray();
-            double[] valuesAsDouble = keys.OrderBy(key => key).Select(key => (double)chartData[key]).ToArray();
-            double[] positions = Enumerable.Range(0, keys.Length).Select(index => (double)index).ToArray();
+            string[] keys;
+            double[] valuesAsDouble;
+            double[] positions;
+
+            if (sortFlag)
+            {
+                keys = chartData.Keys.OrderBy(key => key).ToArray();
+                valuesAsDouble = keys.OrderBy(key => key).Select(key => (double)chartData[key]).ToArray();
+                positions = Enumerable.Range(0, keys.Length).Select(index => (double)index).ToArray();
+            }
+            else
+            {
+                keys = chartData.Keys.ToArray();
+                valuesAsDouble = keys.Select(key => (double)chartData[key]).ToArray();
+                positions = Enumerable.Range(0, keys.Length).Select(index => (double)index).ToArray();
+            }
 
             Plot plt = chart.Plot;
-            var bar = plt.AddBar(valuesAsDouble, positions, color: System.Drawing.Color.FromArgb(150, 15, 163, 177));
-            // var bar = plt.AddBar(valuesAsDouble, positions, color: ColorTranslator.FromHtml("#0fa3b1"));
+            List<ScottPlot.Plottable.Bar> bars = new();
+            for (int i = 0; i < valuesAsDouble.Length; i++)
+            {
+                if (valuesAsDouble[i]== valuesAsDouble.Max())
+                {
+                    ScottPlot.Plottable.Bar bar = new()
+                    {
+                        Value = valuesAsDouble[i],
+                        Position = positions[i],
+                        FillColor = System.Drawing.Color.FromArgb(148, 213, 240)
+                    };
+                    bars.Add(bar);
+                    var txt = plt.AddText(valuesAsDouble[i].ToString(), i, valuesAsDouble[i]);
+                    txt.Color = System.Drawing.Color.FromArgb(148, 213, 240);
+                    txt.Font.Alignment = Alignment.LowerCenter;
+                    txt.Font.Size = 16;
+                    txt.Font.Bold = true;
+                }
+                else
+                {
+                    ScottPlot.Plottable.Bar bar = new()
+                    {
+                        Value = valuesAsDouble[i],
+                        Position = positions[i],
+                        FillColor = System.Drawing.Color.FromArgb(204, 204, 204)
+                    };
+                    bars.Add(bar);
 
-            bar.BorderLineWidth = 1;
-            bar.BorderColor = System.Drawing.Color.FromArgb(200, 15, 163, 177);
+                    var txt = plt.AddText(valuesAsDouble[i].ToString(), i, valuesAsDouble[i]);
+                    txt.Color = System.Drawing.Color.FromArgb(204, 204, 204);
+                    txt.Font.Alignment = Alignment.LowerCenter;
+                    txt.Font.Size = 16;
+                    txt.Font.Bold = true;
+                }
+            }
 
-            bar.ShowValuesAboveBars = showValuesAboveBars; 
+            plt.AddBarSeries(bars);
+            plt.SetAxisLimitsY(valuesAsDouble.Min(), valuesAsDouble.Max()*1.2);
+
             plt.XTicks(positions, keys);
             plt.SetAxisLimits(yMin: 0);
+            plt.Grid(false);
+            plt.YAxis.Ticks(false);
+            plt.XAxis.TickLabelStyle(fontSize: 15);
+
+            plt.YAxis2.Line(false);
+            plt.XAxis2.Line(false);
+
 
             plt.Legend();
-            plt.Title(title);
+            // plt.Title(title);
 
             return chart;
         }
@@ -71,13 +123,14 @@ namespace FFC_PDM
                 chartData.Select(item => item.Item1.ToOADate()).ToArray(),
                 chartData.Select(item => item.Item2).ToArray(),
                 markerSize: 2,
-                color: ColorTranslator.FromHtml("#0fa3b1")
+                color: System.Drawing.Color.FromArgb(255, 148, 213, 240)
             );
             wpfPlot.Plot.AddFill(chartData.Select(item => item.Item1.ToOADate()).ToArray(),
-                chartData.Select(item => item.Item2).ToArray(), color: System.Drawing.Color.FromArgb(100,15,163,177));
-            wpfPlot.Plot.Title("장비 가동률");
+                chartData.Select(item => item.Item2).ToArray(), color: System.Drawing.Color.FromArgb(180, 148, 213, 240));
+            //wpfPlot.Plot.Title("장비 가동률");
             wpfPlot.Plot.XAxis.DateTimeFormat(true);
             wpfPlot.Plot.YAxis.SetBoundary(95, 100);
+            wpfPlot.Plot.YLabel("단위: %");
             wpfPlot.Plot.Grid(enable: true);
 
             return wpfPlot;
