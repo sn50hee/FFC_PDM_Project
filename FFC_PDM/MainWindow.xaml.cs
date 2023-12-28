@@ -265,18 +265,16 @@ namespace FFC_PDM
         {
             List<string> inputDataList1 = new List<string>();
             List<string> inputDataList2 = new List<string>();
-            //List<CheckData> gridDatas = DG_checkData.ItemsSource;
-            foreach (CheckData data in DG_checkData.ItemsSource)
-            {
-                if (data.VoltMin == null || data.VoltMax == null || data.RotateMax == null || data.RotateMin == null || data.PressureMin == null || data.PressureMax == null || data.VibrationMin == null || data.VibrationMax == null || data.Age == null)
-                {
-                    MessageBox.Show("모든 값을 입력해야 합니다");
-                    break;
-                }
 
+            // 리스트를 생성하고 DG_checkData의 데이터를 복사
+            List<CheckData> gridDatas = new List<CheckData>(DG_checkData.ItemsSource.OfType<CheckData>());
+
+            foreach (CheckData data in gridDatas)
+            {
                 inputDataList1.Add($"[[{data.ModelId.ToString()},{data.Age.ToString()}, {data.VoltMin.ToString()}, {data.RotateMin.ToString()}, {data.PressureMin.ToString()}, {data.VibrationMin.ToString()}]]");
                 inputDataList2.Add($"[[{data.ModelId.ToString()},{data.Age.ToString()}, {data.VoltMax.ToString()}, {data.RotateMax.ToString()}, {data.PressureMax.ToString()}, {data.VibrationMax.ToString()}]]");
             }
+
             GetPythonModel getPythonModel = new GetPythonModel();
             List<string> outputDataList1 = getPythonModel.FailureCheck(inputDataList1);
             List<string> outputDataList2 = getPythonModel.FailureCheck(inputDataList2);
@@ -285,14 +283,16 @@ namespace FFC_PDM
             {
                 if (outputDataList1[i] == "[1]\r\n" && outputDataList2[i] == "[1]\r\n")
                 {
-                    gridDatas[0].Failure = "고장 위험";
+                    gridDatas[i].Failure = "고장 위험";
                 }
                 else
                 {
-                    gridDatas[0].Failure = "안전";
+                    gridDatas[i].Failure = "안전";
                 }
             }
 
+            // 수정된 데이터로 다시 바인딩
+            DG_checkData.ItemsSource = gridDatas;
             DG_checkData.Items.Refresh();
         }
 
@@ -365,45 +365,44 @@ namespace FFC_PDM
             }
         }
 
-        private int GetAgeForModel(int modelId)
-        {
-            // 실제로는 각 모델에 대한 적절한 나이를 반환하는 로직을 구현
-            // 예시로 모델에 따라 다른 나이를 반환하도록 함
-            switch (modelId)
-            {
-                case 1:
-                    return 18;
-                case 2:
-                    return 7;
-                case 3:
-                    return 8;
-                case 4:
-                    return 7;
-                case 5:
-                    return 2;
-                case 6:
-                    return 7;
-                case 7:
-                    return 20;
-                case 8:
-                    return 16;
-                default:
-                    return 0;
-            }
-        }
+        //private int GetAgeForModel(int modelId)
+        //{
+        //    // 실제로는 각 모델에 대한 적절한 나이를 반환하는 로직을 구현
+        //    // 예시로 모델에 따라 다른 나이를 반환하도록 함
+        //    switch (modelId)
+        //    {
+        //        case 1:
+        //            return 18;
+        //        case 2:
+        //            return 7;
+        //        case 3:
+        //            return 8;
+        //        case 4:
+        //            return 7;
+        //        case 5:
+        //            return 2;
+        //        case 6:
+        //            return 7;
+        //        case 7:
+        //            return 20;
+        //        case 8:
+        //            return 16;
+        //        default:
+        //            return 0;
+        //    }
+        //}
 
         List<CheckData> CheckDataList = new List<CheckData>();
+        private ModelAgeManager modelAgeManager = new ModelAgeManager();
         private void Btn_apply_Click(object sender, RoutedEventArgs e)
         {
             for (int modelId = 1; modelId <= 8; modelId++)
             {
-                int ageForModel = GetAgeForModel(modelId);
+                int ageForModel = modelAgeManager.GetAgeForModel(modelId);
                 CheckData newData = new CheckData
                 {
                     ModelId = modelId.ToString(),
-                    Age = 0, // 적절한 값을 할당해야 함
-
-                    // 텍스트 박스의 값을 읽어와서 적절한 형태로 변환하여 할당
+                    Age = ageForModel,
                     VoltMin = double.Parse(volt_min.Text),
                     VoltMax = double.Parse(volt_max.Text),
                     RotateMin = double.Parse(rot_min.Text),
