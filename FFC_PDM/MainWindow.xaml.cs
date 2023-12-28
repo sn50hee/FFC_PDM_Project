@@ -46,12 +46,11 @@ namespace FFC_PDM
             WP_BackgroundAlpha();
             // 윤석희끝
             GenerateCBModelName();
+            DisableClick();
+
+            InitializeTextBoxHandlers();
 
             // 통신 시작
-            
-
-
-
         }
 
         public void WP_BackgroundAlpha()
@@ -248,27 +247,7 @@ namespace FFC_PDM
             }
 
         }
-        // 김정관 끝
 
-        //ObservableCollection<StatisticsTabGridData> gridDatas = new ObservableCollection<StatisticsTabGridData>();
-
-        //private void AddRowButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    // + 버튼 클릭 시 새로운 행 추가
-        //    gridDatas.Add(new StatisticsTabGridData { age = null, modelId = null, pressure = null, rotate = null, vibration = null, volt = null, failure = null});
-        //    DG_checkData.ItemsSource = gridDatas;
-        //}
-
-        //private void RemoveRowButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (DG_checkData.Items.Count > 0)
-        //    {
-        //        int lastIndex = DG_checkData.Items.Count - 1;
-        //        gridDatas.RemoveAt(lastIndex);
-        //    }
-        //}
-
-        // 김정관 수정
         private void Btn_check_Click(object sender, RoutedEventArgs e)
         {
             List<string> inputDataList1 = new List<string>();
@@ -374,33 +353,6 @@ namespace FFC_PDM
             }
         }
 
-        //private int GetAgeForModel(int modelId)
-        //{
-        //    // 실제로는 각 모델에 대한 적절한 나이를 반환하는 로직을 구현
-        //    // 예시로 모델에 따라 다른 나이를 반환하도록 함
-        //    switch (modelId)
-        //    {
-        //        case 1:
-        //            return 18;
-        //        case 2:
-        //            return 7;
-        //        case 3:
-        //            return 8;
-        //        case 4:
-        //            return 7;
-        //        case 5:
-        //            return 2;
-        //        case 6:
-        //            return 7;
-        //        case 7:
-        //            return 20;
-        //        case 8:
-        //            return 16;
-        //        default:
-        //            return 0;
-        //    }
-        //}
-
         List<CheckData> CheckDataList = new List<CheckData>();
         private ModelAgeManager modelAgeManager = new ModelAgeManager();
         private void Btn_apply_Click(object sender, RoutedEventArgs e)
@@ -438,6 +390,9 @@ namespace FFC_PDM
             // 데이터 그리드 업데이트
             DG_checkData.ItemsSource = CheckDataList;
             DG_checkData.Items.Refresh();
+
+            Btn_check.IsEnabled = true;
+            Btn_plc.IsEnabled = true;
         }
 
         private void Btn_plc_Click(object sender, RoutedEventArgs e)
@@ -505,7 +460,17 @@ namespace FFC_PDM
                 e.CancelCommand();
             }
         }
-        //김정관 끝
+
+
+        private void DisableClick()
+        {
+            if (DG_checkData.Items.Count == 0)
+            {
+                Btn_check.IsEnabled = false;
+                Btn_plc.IsEnabled = false;
+            }
+        }
+
         //김정관 끝
     }
 

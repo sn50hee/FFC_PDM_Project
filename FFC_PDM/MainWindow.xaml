@@ -420,6 +420,8 @@
                             <Style TargetType="DataGridCell">
                                 <!--Grid 숫자만 입력 가능-->
                                 <EventSetter Event="PreviewTextInput" Handler="NumericInputOnly"/>
+                                <!-- Space 키 무시 -->
+                                <EventSetter Event="PreviewKeyDown" Handler="TextBox_PreviewKeyDown"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Failure}" Value="고장 위험">
                                         <Setter Property="Foreground" Value="Red"/>
@@ -434,11 +436,13 @@
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.5*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="0.2*"/>
+                            <ColumnDefinition Width="0.5*"/>
                             <ColumnDefinition Width="1.5*"/>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="Btn_check" Content="고장 예측" HorizontalAlignment="Left" materialDesign:ButtonAssist.CornerRadius="18" FontWeight="ExtraBold" FontSize="16" Height="40" Background="#2196F3" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Column="1" Click="Btn_check_Click"/>
-                        <Button x:Name="Btn_plc" Content="PLC 쓰기" HorizontalAlignment="Right" materialDesign:ButtonAssist.CornerRadius="18" FontWeight="ExtraBold" FontSize="16" Height="40" Background="#2196F3" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Column="1" Click="Btn_plc_Click"/>
+                        <Button x:Name="Btn_check" Content="고장 예측" HorizontalAlignment="Stretch" materialDesign:ButtonAssist.CornerRadius="18" FontWeight="ExtraBold" FontSize="16" Height="40" Background="#2196F3" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Column="1" Click="Btn_check_Click"/>
+                        <Button x:Name="Btn_plc" Content="PLC 쓰기" HorizontalAlignment="Stretch" materialDesign:ButtonAssist.CornerRadius="18" FontWeight="ExtraBold" FontSize="16" Height="40" Background="#2196F3" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Column="3" Click="Btn_plc_Click"/>
                     </Grid>
                 </Grid>
             </TabItem>
