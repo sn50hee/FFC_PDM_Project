@@ -128,7 +128,7 @@
                         </Grid.RowDefinitions>
 
                         <Label Content="고장 위험 설비 현황" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="20" Foreground="#DD333333" FontWeight="Bold"/>
-                        <DataGrid x:Name="DG_FailuressList" AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="1" CanUserSortColumns="False" FontSize="14">
+                        <DataGrid x:Name="DG_FailuressList" AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="1" CanUserSortColumns="False" FontSize="14" IsReadOnly="True">
                             <DataGrid.ColumnHeaderStyle>
                                 <StaticResource ResourceKey="CustomMaterialDesignDataGridColumnHeader" />
                             </DataGrid.ColumnHeaderStyle>

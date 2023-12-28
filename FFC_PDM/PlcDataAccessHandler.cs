@@ -72,10 +72,6 @@ namespace FFC_PDM
             //MainWindow에서 작업한 CheckData 갖고오기
             CheckDataList = checkDataList;
         }
-        ~PlcDataAccessHandler()
-        {
-
-        }
 
         private static byte LOBYTE(ushort a)
         {
@@ -134,61 +130,163 @@ namespace FFC_PDM
             CommObjectFactory20 factory = new CommObjectFactory20();
             this.oCommDriver = factory.GetMLDPCommObject20("192.168.1.2:2004");
             // checkBox 리스트에 있는 volt, rotate, pressure, vibration 최대 최소값 넣을 리스트
-            List<int> plc_write = new List<int>();
-            foreach (var checkData in CheckDataList)
+            List<Dictionary<string, int>> plc_write = new List<Dictionary<string, int>>();
+
+            foreach (CheckData checkData in CheckDataList)
             {
-                double voltMin = checkData.VoltMin;
-                plc_write.Add(int.Parse(voltMin.ToString()));
-                double voltMax = checkData.VoltMax;
-                plc_write.Add(int.Parse(voltMax.ToString()));
-                double rotateMin = checkData.RotateMin;
-                plc_write.Add(int.Parse(rotateMin.ToString()));
-                double rotateMax = checkData.RotateMax;
-                plc_write.Add(int.Parse(rotateMax.ToString()));
-                double pressureMin = checkData.PressureMin;
-                plc_write.Add(int.Parse(pressureMin.ToString()));
-                double pressureMax = checkData.PressureMax;
-                plc_write.Add(int.Parse(pressureMax.ToString()));
-                double vibrationMin = checkData.VibrationMin;
-                plc_write.Add(int.Parse(vibrationMin.ToString()));
-                double vibrationMax = checkData.VibrationMax;
-                plc_write.Add(int.Parse(vibrationMax.ToString()));
-                
+                Dictionary<string, int> checkDataDict = new Dictionary<string, int>()
+                {
+                    { "modelId", int.Parse(checkData.ModelId) },
+                    { "voltMin", int.Parse(checkData.VoltMin.ToString()) },
+                    { "voltMax", int.Parse(checkData.VoltMax.ToString()) },
+                    { "rotateMin", int.Parse(checkData.RotateMin.ToString()) },
+                    { "rotateMax", int.Parse(checkData.RotateMax.ToString()) },
+                    { "pressureMin", int.Parse(checkData.PressureMin.ToString()) },
+                    { "pressureMax", int.Parse(checkData.PressureMax.ToString()) },
+                    { "vibrationMin", int.Parse(checkData.VibrationMin.ToString()) },
+                    { "vibrationMax", int.Parse(checkData.VibrationMax.ToString()) }
+
+                };
+                plc_write.Add(checkDataDict);
             }
-            
-            
+
+            FacilityDataControl facilityDataControl = new FacilityDataControl();
+            List<ParseTelemetry_PLC> csvDataList = facilityDataControl.GetPLCParseTelemetryData();
+            int index = 0;
+
+
             if (1 == this.oCommDriver.Connect(""))
             {
                 MessageBox.Show("Connect Success");
-                                
                 DispatcherTimer timer = new DispatcherTimer();
-                //List<StatisticsTabGridData> datagridItem
-                // PLC_Write -> 24byte 쓰기
-                // Plc_Write_Repeate -> 24byte 연속 쓰기 - /timer 통해서 쓸 것
-               
-                PLC_Write_Data(plc_write);
-                Plc_Write_Repeat(plc_write, 0, 24, 0);
-                //   Plc_Read(true);
 
-               timer.Interval = TimeSpan.FromSeconds(10);  // 정해진 시간(1초)마다 
-                //timer.Tick += Write_Repeat_Timer;
-               timer.Tick += Keep_alive;// 함수를 이벤트 핸들러에 보내서 실행한다.
-               timer.Start();
-               
-               UpdateKeepAlive();
+                PlcWriteInitData(plc_write, 16);
 
+                timer.Tick += (sender, e) => {
+                    PlcWriteCsvData(csvDataList[index], 2);
+                    index = (index < csvDataList.Count - 1) ? index + 1 : 0;
+                    //KeepAlive();
+                };
+                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Start();
             }
-
-            /*
-            else
-            {
-                Connect();
-            }
-            */
             m_nLastCommTime = Environment.TickCount;
 
 
         }
+
+        public void PlcWriteCsvData(ParseTelemetry_PLC plcWriteCsvData, long lSizeWord)
+        {
+
+            long lRetValue = 0;
+            byte[] bufWrite = new byte[2];
+            bool writeSuccess = false;
+
+
+            for (int j = 0; j < 4; j++)
+            {
+                CommObjectFactory20 factory = new CommObjectFactory20();
+                this.oCommDriver.RemoveAll();
+                XGCommLib.DeviceInfo oDevice = factory.CreateDevice();
+                // 데이터 타입
+                oDevice.ucDeviceType = (byte)'M';
+                // 데이터 크기
+                oDevice.ucDataType = (byte)'B';
+                // 시작점 제시, byte 단위
+                oDevice.lOffset = j * 6 + (plcWriteCsvData.modelID-1)*24;
+                // 크기 C#은 Byte 기준으로?
+                oDevice.lSize = 2; //Word
+                this.oCommDriver.AddDeviceInfo(oDevice);
+
+                if (null != this.oCommDriver)
+                {
+                    if ( j == 0 )
+                    {
+                        bufWrite[0] = LOBYTE((ushort)(plcWriteCsvData.volt));
+                        bufWrite[1] = HIBYTE((ushort)(plcWriteCsvData.volt));
+                    }
+                    else if (j == 1)
+                    {
+                        bufWrite[0] = LOBYTE((ushort)(plcWriteCsvData.rotate));
+                        bufWrite[1] = HIBYTE((ushort)(plcWriteCsvData.rotate));
+                    }
+                    else if (j == 2)
+                    {
+                        bufWrite[0] = LOBYTE((ushort)(plcWriteCsvData.pressure));
+                        bufWrite[1] = HIBYTE((ushort)(plcWriteCsvData.pressure));
+                    }
+                    else if (j == 3)
+                    {
+                        bufWrite[0] = LOBYTE((ushort)(plcWriteCsvData.vibration));
+                        bufWrite[1] = HIBYTE((ushort)(plcWriteCsvData.vibration));
+                    }
+                    lRetValue = this.oCommDriver.WriteRandomDevice(bufWrite);
+
+                    // 성공 여부 체크
+                    writeSuccess = (lRetValue == 1);
+
+                }
+            }
+
+            if (!writeSuccess)
+            {
+                MessageBox.Show("데이터 쓰기 실패");
+            }
+        }
+
+        public void PlcWriteInitData(List<Dictionary<string, int>> plcWriteDataList, long lSizeWord)
+        {
+
+            long lRetValue = 0;
+            byte[] bufWrite = new byte[4];
+            bool writeSuccess = false;
+
+            for (int i = 0; i < plcWriteDataList.Count; i++)
+            {
+                for( int j = 0; j<4; j++)
+                {
+                    CommObjectFactory20 factory = new CommObjectFactory20();
+                    this.oCommDriver.RemoveAll();
+                    XGCommLib.DeviceInfo oDevice = factory.CreateDevice();
+                    // 데이터 타입
+                    oDevice.ucDeviceType = (byte)'M';
+                    // 데이터 크기
+                    oDevice.ucDataType = (byte)'B';
+                    // 시작점 제시, byte 단위
+                    oDevice.lOffset = i * 24 + 2 + j * 6;
+                    // 크기 C#은 Byte 기준으로?
+                    oDevice.lSize = 4; //Word
+                    this.oCommDriver.AddDeviceInfo(oDevice);
+
+                    if (null != this.oCommDriver)
+                    {
+                        string propertyPrefix = "";
+                        if (j == 0) propertyPrefix = "volt";
+                        else if (j == 1) propertyPrefix = "rotate";
+                        else if (j == 2) propertyPrefix = "pressure";
+                        else if (j == 3) propertyPrefix = "vibration";
+
+                        bufWrite[0] = LOBYTE((ushort)(plcWriteDataList[i][$"{propertyPrefix}Min"]));
+                        bufWrite[1] = HIBYTE((ushort)(plcWriteDataList[i][$"{propertyPrefix}Min"]));
+                        bufWrite[2] = LOBYTE((ushort)(plcWriteDataList[i][$"{propertyPrefix}Max"]));
+                        bufWrite[3] = HIBYTE((ushort)(plcWriteDataList[i][$"{propertyPrefix}Max"]));
+
+                        lRetValue = this.oCommDriver.WriteRandomDevice(bufWrite);
+
+                        // 성공 여부 체크
+                        writeSuccess = (lRetValue == 1);
+
+                    }
+                }
+            }
+
+            if (writeSuccess)
+            {
+                MessageBox.Show("Write OK!");
+            }
+        }
+
+        
 
         // 연결용
         public void Re_Connect()
@@ -220,363 +318,12 @@ namespace FFC_PDM
         // Plc 접속 지속
         // Timer
 
-        public void Keep_alive(object sender, EventArgs e)
+        public void KeepAlive()
         {
-
             PlcDataAccessHandler handler = new PlcDataAccessHandler(CheckDataList);
             uint uReturn = handler.UpdateKeepAlive();
-
-            // Alive 시작!!!!
         }
 
-        // 타이머 만들기
-        public void Write_Repeat_Timer(object sender, EventArgs e)
-        {
-            PlcDataAccessHandler handler = new PlcDataAccessHandler(CheckDataList);
-            List<int> plc_write = new List<int>();
-            foreach (var checkData in CheckDataList)
-            {
-                double voltMin = checkData.VoltMin;
-                plc_write.Add(int.Parse(voltMin.ToString()));
-                double voltMax = checkData.VoltMax;
-                plc_write.Add(int.Parse(voltMax.ToString()));
-                double rotateMin = checkData.RotateMin;
-                plc_write.Add(int.Parse(rotateMin.ToString()));
-                double rotateMax = checkData.RotateMax;
-                plc_write.Add(int.Parse(rotateMax.ToString()));
-                double pressureMin = checkData.PressureMin;
-                plc_write.Add(int.Parse(pressureMin.ToString()));
-                double pressureMax = checkData.PressureMax;
-                plc_write.Add(int.Parse(pressureMax.ToString()));
-                double vibrationMin = checkData.VibrationMin;
-                plc_write.Add(int.Parse(vibrationMin.ToString()));
-                double vibrationMax = checkData.VibrationMax;
-                plc_write.Add(int.Parse(vibrationMax.ToString()));
-
-            }
-            Plc_Write_Repeat(plc_write, 24*i, 24, i);
-            i += 1;
-        }
-
-
-
-        public void Plc_Write()
-        {
-
-            long lRetValue = 0;
-            byte[] bufWrite = new byte[24];
-            // 실제 데이터의 길이를 저장할 변수
-
-            CommObjectFactory20 factory = new CommObjectFactory20();
-            //CommObject20 oCommDriver = factory.GetMLDPCommObject20("192.168.1.20:2004");
-            this.oCommDriver.RemoveAll();
-            XGCommLib.DeviceInfo oDevice = factory.CreateDevice();
-            // 데이터 타입
-            oDevice.ucDeviceType = (byte)'M';
-            // 데이터 크기
-            oDevice.ucDataType = (byte)'B';
-            // 시작점 제시, byte 단위
-            oDevice.lOffset = 0;
-            // 크기 C#은 Byte 기준으로?
-            oDevice.lSize = 2 * 12; //Word
-            this.oCommDriver.AddDeviceInfo(oDevice);
-
-            /*
-            string data = Convert.ToString(7, 2);
-            bufWrite[0] = HIBYTE(ushort.Parse(data));
-            bufWrite[1] = LOBYTE(ushort.Parse(data));
-            */
-            //for (int i = 0; i < 12; i++)
-            //{
-            //    // HIBYTE, LOBYTE - 2byte
-            //    // 1byte = HIBYTE로 지정
-            //    // 1byte = LOBYTE로 지정
-            //    bufWrite[2 * i] = LOBYTE((ushort)(65 * i)); // 값을 저장하기 위한 변수
-            //    bufWrite[2 * i + 1] = HIBYTE((ushort)(65 * i)); 
-            //}
-
-            //m_nLastCommTime = Environment.TickCount;
-            // 연결 성공
-
-            if (null != this.oCommDriver)
-            {
-                for (int i = 0; i < 12; i++)
-                {
-                    // HIBYTE, LOBYTE - 2byte
-                    // 1byte = HIBYTE로 지정
-                    // 1byte = LOBYTE로 지정
-                    bufWrite[2 * i] = LOBYTE((ushort)(85 * i));// 값을 저장하기 위한 변수
-                    bufWrite[2 * i + 1] = HIBYTE((ushort)(85 * i));
-                }
-
-                //변경할 데이터의 값을 보관할 byte 배열
-                lRetValue = this.oCommDriver.WriteRandomDevice(bufWrite);
-
-                if (1 == lRetValue)
-                {
-                    MessageBox.Show("Write OK!");
-                    m_nLastCommTime = Environment.TickCount;
-                }
-
-                else
-                {
-                    MessageBox.Show("Write Failed");
-                    Re_Connect();
-                    if(oCommDriver.Connect("") == 1)
-                    {
-                        lRetValue = this.oCommDriver.WriteRandomDevice(bufWrite);
-                        if (0 == lRetValue)
-                        {
-                            //UnLock();
-                            MessageBox.Show("Write Failed");
-                        }
-                    }
-
-                    else
-                    {
-                        //UnLock();
-                        Re_Connect();
-                    }
-                }
-                //UnLock();
-                m_nLastCommTime = Environment.TickCount;
-
-            }
-
-            else
-            {
-                MessageBox.Show("Connect Fail");
-                Re_Connect();
-            }
-        }
-        // 시험용 각자 쓰기
-        public void PLC_Write_Data(List<int> plc_write)
-        {
-            FacilityDataControl Data = new FacilityDataControl();
-            long lRetValue = 0;
-            byte[] bufWrite = new byte[24];
-            List<int> Plc_Value = new List<int>();
-            // 실제 데이터의 길이를 저장할 변수
-
-            CommObjectFactory20 factory = new CommObjectFactory20();
-            //CommObject20 oCommDriver = factory.GetMLDPCommObject20("192.168.1.20:2004");
-            this.oCommDriver.RemoveAll();
-            XGCommLib.DeviceInfo oDevice = factory.CreateDevice();
-            // 데이터 타입
-            oDevice.ucDeviceType = (byte)'M';
-            // 데이터 크기
-            oDevice.ucDataType = (byte)'B';
-            // 시작점 제시, byte 단위
-            oDevice.lOffset = 0;
-            // 크기 C#은 Byte 기준으로?
-            oDevice.lSize = 2 * 12; //Word
-            this.oCommDriver.AddDeviceInfo(oDevice);
-            List<ParseTelemetry_PLC> Plc = Data.GetPLC_ParseTelemetryData();
-
-            foreach (ParseTelemetry_PLC pl in Plc)
-            {
-                Plc_Value.Add(pl.volt);
-                Plc_Value.Add(pl.rotate);
-                Plc_Value.Add(pl.pressure);
-                Plc_Value.Add(pl.vibration);
-            }
-              
-            //m_nLastCommTime = Environment.TickCount;
-            // 연결 성공
-
-            if (null != this.oCommDriver)
-            {
-                // 0 ~ 5 Volt : 실제, 최소, 최대 순
-                bufWrite[0] = LOBYTE((ushort)(Plc_Value[0]));
-                bufWrite[1] = HIBYTE((ushort)(Plc_Value[0]));
-                bufWrite[2] = LOBYTE((ushort)(plc_write[0]));
-                bufWrite[3] = HIBYTE((ushort)(plc_write[0]));
-                bufWrite[4] = LOBYTE((ushort)(plc_write[1]));
-                bufWrite[5] = HIBYTE((ushort)(plc_write[1]));
-
-                // 6 ~ 11 rotate : 실제, 최소, 최대 순
-                bufWrite[6] = LOBYTE((ushort)(Plc_Value[1]));
-                bufWrite[7] = HIBYTE((ushort)(Plc_Value[1]));
-                bufWrite[8] = LOBYTE((ushort)(plc_write[2]));
-                bufWrite[9] = HIBYTE((ushort)(plc_write[2]));
-                bufWrite[10] = LOBYTE((ushort)(plc_write[3]));
-                bufWrite[11] = HIBYTE((ushort)(plc_write[3]));
-
-                // 12~17 pressure : 실제, 최소, 최대 순
-                bufWrite[12] = LOBYTE((ushort)(Plc_Value[2]));
-                bufWrite[13] = HIBYTE((ushort)(Plc_Value[2]));
-                bufWrite[14] = LOBYTE((ushort)(plc_write[4]));
-                bufWrite[15] = HIBYTE((ushort)(plc_write[4]));
-                bufWrite[16] = LOBYTE((ushort)(plc_write[5]));
-                bufWrite[17] = HIBYTE((ushort)(plc_write[5]));
-
-                // 18~23 vibration : 실제, 최소, 최대 순
-                bufWrite[18] = LOBYTE((ushort)(Plc_Value[3]));
-                bufWrite[19] = HIBYTE((ushort)(Plc_Value[3]));
-                bufWrite[20] = LOBYTE((ushort)(plc_write[6]));
-                bufWrite[21] = HIBYTE((ushort)(plc_write[6]));
-                bufWrite[22] = LOBYTE((ushort)(plc_write[7]));
-                bufWrite[23] = HIBYTE((ushort)(plc_write[7]));
-
-                //변경할 데이터의 값을 보관할 byte 배열
-                lRetValue = this.oCommDriver.WriteRandomDevice(bufWrite);
-
-                if (1 == lRetValue)
-                {
-                    MessageBox.Show("Write OK!");
-                    m_nLastCommTime = Environment.TickCount;
-                }
-
-                else
-                {
-                    MessageBox.Show("Write Failed");
-                    Re_Connect();
-                    if (oCommDriver.Connect("") == 1)
-                    {
-                        lRetValue = this.oCommDriver.WriteRandomDevice(bufWrite);
-                        if (0 == lRetValue)
-                        {
-                            //UnLock();
-                            MessageBox.Show("Write Failed");
-                        }
-                    }
-
-                    else
-                    {
-                        //UnLock();
-                        Re_Connect();
-                    }
-                }
-                //UnLock();
-                m_nLastCommTime = Environment.TickCount;
-
-            }
-
-            else
-            {
-                MessageBox.Show("Connect Fail");
-                Re_Connect();
-            }
-        }
-
-        // 연속 쓰기
-        // plc_write - checklist Data 중 최소, 최대 volt, rotate, pressure, vibrate 
-        // Plc - 실제 volt, rotate, pressure, vibrate
-        // long lSizeWord, a
-        public void Plc_Write_Repeat(List<int> plc_write, long lOffsetWord, long lSizeWord, int num)
-        {
-            FacilityDataControl Data = new FacilityDataControl();
-            long lRetValue = 0;
-            byte[] bufWrite = new byte[lSizeWord];
-            List<int> Plc_Value = new List<int>();
-            // 실제 데이터의 길이를 저장할 변수
-
-            CommObjectFactory20 factory = new CommObjectFactory20();
-            //CommObject20 oCommDriver = factory.GetMLDPCommObject20("192.168.1.20:2004");
-            this.oCommDriver.RemoveAll();
-            XGCommLib.DeviceInfo oDevice = factory.CreateDevice();
-            // 데이터 타입
-            oDevice.ucDeviceType = (byte)'M';
-            // 데이터 크기
-            oDevice.ucDataType = (byte)'B';
-            // 시작점 제시, byte 단위
-            oDevice.lOffset = int.Parse(lOffsetWord.ToString());
-            
-            // 크기 C#은 Byte 기준으로?
-            oDevice.lSize = int.Parse(lSizeWord.ToString()); //Word
-            this.oCommDriver.AddDeviceInfo(oDevice);
-            List<ParseTelemetry_PLC> Plc = Data.GetPLC_ParseTelemetryData();
-
-            foreach (ParseTelemetry_PLC pl in Plc)
-            {
-                Plc_Value.Add(pl.volt);
-                Plc_Value.Add(pl.rotate);
-                Plc_Value.Add(pl.pressure);
-                Plc_Value.Add(pl.vibration);
-            }
-
-            if (null != this.oCommDriver)
-            {
-                // 0 ~ 5 Volt : 실제, 최소, 최대 순
-                bufWrite[int.Parse(lOffsetWord.ToString())] = LOBYTE((ushort)(Plc_Value[4*num]));
-                bufWrite[int.Parse(lOffsetWord.ToString())+1] = HIBYTE((ushort)(Plc_Value[4*num]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 2] = LOBYTE((ushort)(plc_write[0]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 3] = HIBYTE((ushort)(plc_write[0]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 4] = LOBYTE((ushort)(plc_write[1]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 5] = HIBYTE((ushort)(plc_write[1]));
-
-                // 6 ~ 11 rotate : 실제, 최소, 최대 순
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 6] = LOBYTE((ushort)(Plc_Value[4*num+1]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 7] = HIBYTE((ushort)(Plc_Value[4*num+1]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 8] = LOBYTE((ushort)(plc_write[2]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 9] = HIBYTE((ushort)(plc_write[2]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 10] = LOBYTE((ushort)(plc_write[3]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 11] = HIBYTE((ushort)(plc_write[3]));
-
-                // 12~17 pressure : 실제, 최소, 최대 순
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 12] = LOBYTE((ushort)(Plc_Value[4*num+2]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 13] = HIBYTE((ushort)(Plc_Value[4*num+2]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 14] = LOBYTE((ushort)(plc_write[4]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 15] = HIBYTE((ushort)(plc_write[4]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 16] = LOBYTE((ushort)(plc_write[5]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 17] = HIBYTE((ushort)(plc_write[5]));
-
-                // 18~23 vibration : 실제, 최소, 최대 순
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 18] = LOBYTE((ushort)(Plc_Value[4*num+3]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 19] = HIBYTE((ushort)(Plc_Value[4*num+3]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 20] = LOBYTE((ushort)(plc_write[6]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 21] = HIBYTE((ushort)(plc_write[6]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 22] = LOBYTE((ushort)(plc_write[7]));
-                bufWrite[int.Parse(lOffsetWord.ToString()) + 23] = HIBYTE((ushort)(plc_write[7]));
-
-                //변경할 데이터의 값을 보관할 byte 배열
-                lRetValue = this.oCommDriver.WriteRandomDevice(bufWrite);
-
-                if (1 == lRetValue)
-                {
-                    MessageBox.Show("Write OK!");
-                    m_nLastCommTime = Environment.TickCount;
-                }
-
-                else
-                {
-                    MessageBox.Show("Write Failed");
-                    Re_Connect();
-                    if (oCommDriver.Connect("") == 1)
-                    {
-                        lRetValue = this.oCommDriver.WriteRandomDevice(bufWrite);
-                        if (0 == lRetValue)
-                        {
-                            //UnLock();
-                            MessageBox.Show("Write Failed");
-                        }
-
-                        else
-                        {
-                            MessageBox.Show("Write Success!");
-                        }
-                    }
-
-                    else
-                    {
-                        //UnLock();
-                        Re_Connect();
-                    }
-                }
-                //UnLock();
-                m_nLastCommTime = Environment.TickCount;
-
-            }
-
-            else
-            {
-                MessageBox.Show("Connect Fail");
-                Re_Connect();
-            }
-        }
-
-    
-    
         
         public void Plc_Read(bool bByteSwap)
         {

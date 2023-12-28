@@ -55,7 +55,7 @@
 
   <ItemGroup>
     <Resource Include="Resources\PdM_PLC_edit.csv" />
-    <Resource Include="Resources\PdM_PLC__aedit.csv" />
+    <EmbeddedResource Include="Resources\PdM_PLC__aedit.csv" />
     <Resource Include="Resources\PdM_PLC__edit.csv" />
   </ItemGroup>
 

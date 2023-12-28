@@ -430,39 +430,13 @@ namespace FFC_PDM
             // 데이터 그리드 업데이트
             DG_checkData.ItemsSource = CheckDataList;
             DG_checkData.Items.Refresh();  // Refresh 호출이 필요할 수 있습니다.
-
-            PlcDataAccessHandler handler = new PlcDataAccessHandler(CheckDataList);
-            //handler.PLC_Write_Data(DG_checkData.ItemsSource as List<StatisticsTabGridData>);
         }
 
         private void Btn_plc_Click(object sender, RoutedEventArgs e)
         {
-            
-            for (int modelId = 1; modelId <= 8; modelId++)
-            {
-                CheckData newData = new CheckData
-                {
-                    ModelId = modelId.ToString(),
-                    Age = 0, // 적절한 값을 할당해야 함
+            List<CheckData> gridDatas = new List<CheckData>(DG_checkData.ItemsSource.OfType<CheckData>());
 
-                    // 텍스트 박스의 값을 읽어와서 적절한 형태로 변환하여 할당
-                    VoltMin = double.Parse(volt_min.Text),
-                    VoltMax = double.Parse(volt_max.Text),
-                    RotateMin = double.Parse(rot_min.Text),
-                    RotateMax = double.Parse(rot_max.Text),
-                    PressureMin = double.Parse(press_min.Text),
-                    PressureMax = double.Parse(press_max.Text),
-                    VibrationMin = double.Parse(vibe_min.Text),
-                    VibrationMax = double.Parse(vibe_max.Text),
-                    Failure = "고장 판별"
-                };
-
-                // 데이터 추가
-                CheckDataList.Add(newData);
-            }
-            DG_checkData.ItemsSource = CheckDataList;
-            //DG_checkData.Items.Refresh();
-            PlcDataAccessHandler handler = new PlcDataAccessHandler(CheckDataList);
+            PlcDataAccessHandler handler = new PlcDataAccessHandler(gridDatas);
             
             handler.Connect_Start();
         }
