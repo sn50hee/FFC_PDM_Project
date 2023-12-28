@@ -427,6 +427,17 @@ namespace FFC_PDM
         {
 
         }
+
+        private void NumericInputOnly(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsNumericInput(e.Text);
+        }
+
+        private bool IsNumericInput(string text)
+        {
+            return text.All(char.IsDigit);
+        }
+
     }
 
 }
