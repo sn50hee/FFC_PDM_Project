@@ -268,7 +268,7 @@ namespace FFC_PDM
 
             for (int i = 0; i < outputDataList1.Count; i++)
             {
-                if (outputDataList1[i] == "[1]\r\n" && outputDataList2[i] == "[1]\r\n")
+                if (outputDataList1[i] == "[1]\r\n" || outputDataList2[i] == "[1]\r\n")
                 {
                     gridDatas[i].Failure = "고장 위험";
                 }
