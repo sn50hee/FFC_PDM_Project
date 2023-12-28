@@ -405,6 +405,14 @@ namespace FFC_PDM
         private ModelAgeManager modelAgeManager = new ModelAgeManager();
         private void Btn_apply_Click(object sender, RoutedEventArgs e)
         {
+            CheckDataList.Clear(); // modelID 중복금지 코드
+
+            if (string.IsNullOrWhiteSpace(volt_min.Text) || string.IsNullOrWhiteSpace(volt_max.Text) || string.IsNullOrWhiteSpace(rot_max.Text) || string.IsNullOrWhiteSpace(rot_min.Text) || string.IsNullOrWhiteSpace(press_min.Text) || string.IsNullOrWhiteSpace(press_max.Text) || string.IsNullOrWhiteSpace(vibe_min.Text) || string.IsNullOrWhiteSpace(vibe_max.Text))
+            {
+                MessageBox.Show("입력하지 않은 값이 있습니다. 값을 입력하세요.");
+                return;
+            }
+
             for (int modelId = 1; modelId <= 8; modelId++)
             {
                 int ageForModel = modelAgeManager.GetAgeForModel(modelId);
@@ -420,7 +428,7 @@ namespace FFC_PDM
                     PressureMax = double.Parse(press_max.Text),
                     VibrationMin = double.Parse(vibe_min.Text),
                     VibrationMax = double.Parse(vibe_max.Text),
-                    Failure = "고장 판별"
+                    Failure = ""
                 };
 
                 // List에 데이터 추가
@@ -429,7 +437,7 @@ namespace FFC_PDM
 
             // 데이터 그리드 업데이트
             DG_checkData.ItemsSource = CheckDataList;
-            DG_checkData.Items.Refresh();  // Refresh 호출이 필요할 수 있습니다.
+            DG_checkData.Items.Refresh();
         }
 
         private void Btn_plc_Click(object sender, RoutedEventArgs e)
@@ -452,6 +460,52 @@ namespace FFC_PDM
         {
             return text.All(char.IsDigit);
         }
+
+        // 띄어쓰기 제한
+        private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+            {
+                e.Handled = true;
+            }
+        }
+
+
+        private void InitializeTextBoxHandlers()
+        {
+            AddPastingHandlerToTextBox(volt_min);
+            AddPastingHandlerToTextBox(rot_min);
+            AddPastingHandlerToTextBox(vibe_min);
+            AddPastingHandlerToTextBox(press_min);
+            AddPastingHandlerToTextBox(volt_max);
+            AddPastingHandlerToTextBox(rot_max);
+            AddPastingHandlerToTextBox(vibe_max);
+            AddPastingHandlerToTextBox(press_max);
+        }
+
+        // 텍스트 박스 붙여넣기 only 숫자만 가능
+        private void AddPastingHandlerToTextBox(TextBox textBox)
+        {
+            DataObject.AddPastingHandler(textBox, TextBox_Pasting);
+        }
+
+        private void TextBox_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(typeof(string)))
+            {
+                string pastedText = (string)e.DataObject.GetData(typeof(string));
+
+                if (!IsNumericInput(pastedText))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
+            }
+        }
+        //김정관 끝
         //김정관 끝
     }
 
