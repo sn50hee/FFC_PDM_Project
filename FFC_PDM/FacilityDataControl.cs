@@ -251,6 +251,21 @@ public class Maint_1
     public string comp { get; set; }
 }
 
+public class CheckData
+{
+    public string ModelId { get; set; }
+    public int Age { get; set; }
+    public double VoltMin { get; set; }
+    public double VoltMax { get; set; }
+    public double RotateMin { get; set; }
+    public double RotateMax { get; set; }
+    public double PressureMin { get; set; }
+    public double PressureMax { get; set; }
+    public double VibrationMin { get; set; }
+    public double VibrationMax { get; set; }
+    public string Failure { get; set; } = "고장 판별전"; // 기본값 설정
+}
+
 // 김정관 끝
 
 public class StatisticsTabGridData
