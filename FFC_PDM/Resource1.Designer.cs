@@ -176,6 +176,25 @@ namespace FFC_PDM {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to machineID,volt,rotate,pressure,vibration
+        ///1,176.217853,418.5040782,113.0779355,45.08768576
+        ///2,176.5589132,424.6241621,76.00533247,43.76704852
+        ///3,185.4820432,461.2111374,87.45319939,28.21686425
+        ///4,169.7108469,463.6467269,95.92987658,38.40037192
+        ///5,165.0828994,452.2835762,84.5917221,40.29880253
+        ///6,136.8785885,492.0884196,149.003582,22.97328948
+        ///7,156.0063913,519.4979051,105.878295,42.52224477
+        ///8,159.3793197,409.4192167,111.7357327,44.10403835
+        ///1,162.8792229,402.7474896,95.46052538,43.41397268
+        ///2,158.2820441,4 [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string PdM_PLC__edit {
+            get {
+                return ResourceManager.GetString("PdM_PLC__edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;datetime&quot;,&quot;machineID&quot;,&quot;volt&quot;,&quot;rotate&quot;,&quot;pressure&quot;,&quot;vibration&quot;
         ///2015-01-01 06:00:00,1,176.217853015625,418.504078221616,113.077935462083,45.0876857639276
         ///2015-01-01 07:00:00,1,162.87922289706,402.747489565395,95.4605253823187,43.4139726834815

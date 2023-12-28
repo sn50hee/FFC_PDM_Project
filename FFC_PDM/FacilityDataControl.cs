@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Windows.Controls;
+using System.Windows.Media.Media3D;
 
 namespace FFC_PDM
 {
@@ -95,6 +96,7 @@ namespace FFC_PDM
             return telemetryData;
         }
 
+
         public List<ParseTelemetry_1> GetcleanParseTelemetryData()
         {
             string filePath = "FFC_PDM.Resources.PdM_telemetry_no_duplicates_cleaned.csv";
@@ -182,6 +184,24 @@ namespace FFC_PDM
                 .OrderBy(data => data.modelId)
                 .ToList();
             return result;
+        }
+
+        // 성민철
+        // 1~8까지 정렬시킨 데이터로 체인지 (PdM_PLC -> PdM_PLC__edit)
+        // csv 파일과 경로 바꿔주세요!
+        public List<ParseTelemetry_PLC> GetPLCParseTelemetryData()
+        {
+            string filePath = "FFC_PDM.Resources.PdM_PLC__aedit.csv";
+            List<ParseTelemetry_PLC> telemetryData = ReadData(filePath, line => new ParseTelemetry_PLC
+            {
+                modelID = int.Parse(line[1]),
+                volt = int.Parse(line[2]),
+                rotate = int.Parse(line[3]),
+                pressure = int.Parse(line[4]),
+                vibration = int.Parse(line[5])
+            });
+
+            return telemetryData;
         }
 
     }
@@ -279,3 +299,11 @@ public class StatisticsTabGridData
     public string failure { get; set; }
 }
 
+public class ParseTelemetry_PLC
+{
+    public int modelID { get; set; }
+    public int volt { get; set; }
+    public int rotate { get; set; }
+    public int pressure { get; set; }
+    public int vibration { get; set; }
+}

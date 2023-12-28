@@ -19,6 +19,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using XGCommLib;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 // main에서는 차트만 보여주기
@@ -31,6 +33,7 @@ namespace FFC_PDM
     public partial class MainWindow : Window
     {
         private List<ParseTelemetry> rawTelemetryData;
+        //public PlcDataAccessHandler handler = new PlcDataAccessHandler(CheckDataList);
         public MainWindow()
         {
             InitializeComponent(); 
@@ -42,8 +45,12 @@ namespace FFC_PDM
             DG_FailuressListView();
             WP_BackgroundAlpha();
             // 윤석희끝
-
             GenerateCBModelName();
+
+            // 통신 시작
+            
+
+
 
         }
 
@@ -427,7 +434,11 @@ namespace FFC_PDM
 
         private void Btn_plc_Click(object sender, RoutedEventArgs e)
         {
+            List<CheckData> gridDatas = new List<CheckData>(DG_checkData.ItemsSource.OfType<CheckData>());
 
+            PlcDataAccessHandler handler = new PlcDataAccessHandler(gridDatas);
+            
+            handler.Connect_Start();
         }
 
         //김정관 시작
