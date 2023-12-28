@@ -260,7 +260,8 @@ namespace FFC_PDM
         //        gridDatas.RemoveAt(lastIndex);
         //    }
         //}
-        ObservableCollection<CheckData> gridDatas = new ObservableCollection<CheckData>();
+
+        // 김정관 수정
         private void Btn_check_Click(object sender, RoutedEventArgs e)
         {
             List<string> inputDataList1 = new List<string>();
@@ -295,6 +296,7 @@ namespace FFC_PDM
             DG_checkData.ItemsSource = gridDatas;
             DG_checkData.Items.Refresh();
         }
+        // 김정관 수정끝
 
         ViewDetailsTabChartDataControl viewDetailsTabChartDataControl;
         private void WP_Volt_MouseMove(object sender, MouseEventArgs e)
@@ -428,6 +430,8 @@ namespace FFC_PDM
 
         }
 
+        //김정관 시작
+        // 숫자만 입력 가능한 메서드
         private void NumericInputOnly(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !IsNumericInput(e.Text);
@@ -437,7 +441,7 @@ namespace FFC_PDM
         {
             return text.All(char.IsDigit);
         }
-
+        //김정관 끝
     }
 
 }
