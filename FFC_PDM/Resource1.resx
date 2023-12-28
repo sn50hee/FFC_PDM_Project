@@ -130,6 +130,9 @@
   <data name="PdM_maint" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\PdM_maint.csv;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;ks_c_5601-1987</value>
   </data>
+  <data name="PdM_PLC__edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\PdM_PLC__edit.csv;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;ks_c_5601-1987</value>
+  </data>
   <data name="PdM_telemetry" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\PdM_telemetry.csv;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;ks_c_5601-1987</value>
   </data>

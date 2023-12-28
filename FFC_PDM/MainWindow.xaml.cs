@@ -440,7 +440,6 @@ namespace FFC_PDM
             
             for (int modelId = 1; modelId <= 8; modelId++)
             {
-                int ageForModel = GetAgeForModel(modelId);
                 CheckData newData = new CheckData
                 {
                     ModelId = modelId.ToString(),

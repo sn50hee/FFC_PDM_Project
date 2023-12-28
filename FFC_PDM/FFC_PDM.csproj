@@ -5,6 +5,7 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>annotations</Nullable>
     <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,11 +13,25 @@
     <None Remove="Resources\PdM_failures.csv" />
     <None Remove="Resources\PdM_machines.csv" />
     <None Remove="Resources\PdM_maint.csv" />
-    <None Remove="Resources\PdM_PLC.csv" />
+    <None Remove="Resources\PdM_PLC_edit.csv" />
+    <None Remove="Resources\PdM_PLC__aedit.csv" />
+    <None Remove="Resources\PdM_PLC__edit.csv" />
     <None Remove="Resources\PdM_telemetry.csv" />
     <None Remove="Resources\PdM_telemetry_latest.csv" />
     <None Remove="Resources\PdM_telemetry_no_duplicates.csv" />
     <None Remove="Resources\PdM_telemetry_no_duplicates_cleaned.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <COMReference Include="XGCommLib">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>2cff650c-6df0-48ae-9b06-c8dd467e0cd3</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -39,7 +54,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\PdM_PLC.csv" />
+    <Resource Include="Resources\PdM_PLC_edit.csv" />
+    <Resource Include="Resources\PdM_PLC__aedit.csv" />
+    <Resource Include="Resources\PdM_PLC__edit.csv" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +70,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resource2.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resource3.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource3.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resource4.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource4.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -63,6 +90,14 @@
     <EmbeddedResource Update="Resource2.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource2.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource3.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource3.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource4.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource4.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 
