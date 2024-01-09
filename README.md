@@ -103,14 +103,14 @@
   <tr>
     <td>김정관</td>
     <td>포장 X-RAY 객체 탐지 분석모델 구축, PLC 제어</td>
-    <td><b>CV(Object Detection)</b>b>
+    <td><b>CV(Object Detection)</b>
       <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: Numpy, Pandas, Matplotlib, Keras, Sklearn, Tensorflow, Ipython, Pydotplus, Os, Graphviz, Random, Subprocess, Sys
       <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: YOLOv3
     </td>
   </tr>  <tr>
     <td>성민철</td>
     <td>관리자 얼굴 탐지 모델 구축</td>
-    <td><b>CV(Object Detection)</b>b>
+    <td><b>CV(Object Detection)</b>
       <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: Numpy, Pandas, Matplotlib, Keras, Sklearn, Tensorflow, Ipython, Pydotplus, Os, Graphviz, Random, Subprocess, Sys
       <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: YOLOv5
     </td>
@@ -118,7 +118,7 @@
   <tr>
     <td>윤석희</td>
     <td>관리자 시선 추적 모델 구축, PLC 제어</td>
-    <td><b>CV(Object Detection)</b>b>
+    <td><b>CV(Object Detection)</b>
       <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: Numpy, Pandas, Matplotlib, Keras, Sklearn, Tensorflow, Ipython, Pydotplus, Os, Graphviz, Random, Subprocess, Sys
       <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: L2CS-Net
     </td>
