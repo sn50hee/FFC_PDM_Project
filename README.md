@@ -94,39 +94,46 @@
 # 3. 사용 기술 및 개발 계획
 ## 1) 사용 기술
 
-<b>1-1) 데이터 분석</b>
-
-&nbsp;&nbsp;&nbsp;&nbsp;A. 언어: python3.8
-
-&nbsp;&nbsp;&nbsp;&nbsp;B. 라이브러리: numpy1.24.3, pandas2.0.3, joblib
-
-&nbsp;&nbsp;&nbsp;&nbsp;C. 개발 툴: Visual Studio Code 1.84.2
-
-
-<b>1-2) WPF</b>
-
-&nbsp;&nbsp;&nbsp;&nbsp;A. 언어: C# 11.0
-
-&nbsp;&nbsp;&nbsp;&nbsp;B. Framework: .NET 7.0, WPF
-
-&nbsp;&nbsp;&nbsp;&nbsp;C. 라이브러리: scottplot 4.1.68, XGCommLib(PLC와 통신)
-
-
-<b>1-3) 데이터 분석 모델과 WPF 연결</b>
-
-&nbsp;&nbsp;&nbsp;&nbsp;A. C# Process 클래스(네임스페이스: System.Diagnostics)
-
-<b>1-4) PLC</b>
-
-&nbsp;&nbsp;&nbsp;&nbsp;A. 언어: LD(Ladder Diagram)
-
-<b>1-5) CV(Object Detection)</b>
-
-&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: PyTorch
-
-&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: YOLOv3, YOLOv5
-
-
+<table>
+  <tr>
+    <th>담당자</th>
+    <th>담당 업무</th>
+    <th>사용 기술 및 도구</th>
+  </tr>
+  <tr>
+    <td>김정관</td>
+    <td>포장 X-RAY 객체 탐지 분석모델 구축, PLC 제어</td>
+    <td>CV(Object Detection)
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: Numpy, Pandas, Matplotlib, Keras, Sklearn, Tensorflow, Ipython, Pydotplus, Os, Graphviz, Random, Subprocess, Sys
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: YOLOv3
+    </td>
+  </tr>  <tr>
+    <td>성민철</td>
+    <td>관리자 얼굴 탐지 모델 구축</td>
+    <td>CV(Object Detection)
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: Numpy, Pandas, Matplotlib, Keras, Sklearn, Tensorflow, Ipython, Pydotplus, Os, Graphviz, Random, Subprocess, Sys
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: YOLOv5
+    </td>
+  </tr>
+  <tr>
+    <td>윤석희</td>
+    <td>관리자 시선 추적 모델 구축, PLC 제어</td>
+    <td>CV(Object Detection)
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: Numpy, Pandas, Matplotlib, Keras, Sklearn, Tensorflow, Ipython, Pydotplus, Os, Graphviz, Random, Subprocess, Sys
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: L2CS-Net
+    </td>
+  </tr>
+  <tr>
+    <td>공통</td>
+    <td>WPF 화면 구현, 테스트</td>
+    <td>WPF
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 언어: C# 11.0
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;B. Framework: .NET 7.0, WPF
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;C. 라이브러리: scottplot 4.1.68, XGCommLib(PLC와 통신)
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;D. 모델 통신: C# Process 클래스(네임스페이스: System.Diagnostics)
+    </td>
+  </tr>
+</table>
 
 
 ## 2) 개발 계획
@@ -203,74 +210,12 @@ B. 상세 계획
 
 &nbsp;&nbsp;&nbsp;&nbsp;B) 현재 X-RAY 화면을 확인할 수 있으며 양품일 때는 화면의 테두리가 녹색으로, 불량품일 때는 화면의 테두리가 빨간색으로 표시됩니다.
 
-&nbsp;&nbsp;&nbsp;&nbsp;C) 하단에는 현재 날짜의 불량품 검출 수를 보여준다.
+&nbsp;&nbsp;&nbsp;&nbsp;C) 하단에는 현재 날짜의 불량품 검출 수를 보여줍니다.
 
-안전
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;안전
 
 ![안전](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/d30d12fe-6eb3-4135-8174-7686f1ba1918)
 
-불량품
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;불량품
 
 ![위험](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/e4a96b79-8247-4758-b767-e0350521fe7f)
-
-
-
-## 1) 기능
-
-&nbsp;&nbsp;&nbsp;&nbsp;A) 통계 탭을 통하여 전체 장비의 고장률, 오류 발생률 등 통계 정보를 pie chart로 보여준다.
-
-&nbsp;&nbsp;&nbsp;&nbsp;B) 상세 보기 탭에서는 모델명, 모델ID를 선택할 수 있다.(다중 선택 가능)
-
-&nbsp;&nbsp;&nbsp;&nbsp;C) 상세 보기 탭에서는 원하는 기간을 설정할 수 있다.
-
-&nbsp;&nbsp;&nbsp;&nbsp;D) 선택한 장비와 기간에 대해서 위험 인자에 대한 정보와 고장 횟수, 유지보수 횟수을 보여준다.
-
-&nbsp;&nbsp;&nbsp;&nbsp;E) 위험 인자에 대한 정보는 안정 범위(임계값)와 현재 위험한 장비의 모델ID, 차트(Scatter Plot)가 있다.
-
-&nbsp;&nbsp;&nbsp;&nbsp;F) 차트의 X축은 시간, Y축은 값으로 구성된다.
-
-&nbsp;&nbsp;&nbsp;&nbsp;G) 고장 횟수, 유지보수 횟수는 bar chart로 보여준다
-
-&nbsp;&nbsp;&nbsp;&nbsp;H) 초기값 세팅 탭에서는 장비의 자동화를 위한 초기값을 지정할 수 있다.
-
-&nbsp;&nbsp;&nbsp;&nbsp;I) 자동화를 위한 초기값을 지정할 때 학습 시킨 머신러닝 모델을 사용하여 고장 위험을 알린다.
-
-&nbsp;&nbsp;&nbsp;&nbsp;J) 고장 위험이 높은 값을 입력 시 메시지 박스를 사용하여 안정 범위의 초기값을 유도한다.
-
-&nbsp;&nbsp;&nbsp;&nbsp;K) 
-
-&nbsp;&nbsp;&nbsp;&nbsp;L) 
-
-&nbsp;&nbsp;&nbsp;&nbsp;M) 검사 공정에서 불량품이 검출될 시 컨베이어 벨트의 라인을 자동 스위칭하여 불량 판별을 자동화한다.
-
-
-## 2) 화면 설계
-
-
-
-통계 탭
-
-![슬라이드1](https://github.com/sn50hee/FFC_PDM/assets/139873815/377bf04c-8e34-4230-b52f-07019b02ebce)
-
-![슬라이드2](https://github.com/sn50hee/FFC_PDM/assets/139873815/f2730e07-db1d-4531-837c-7aa70e8ffefd)
-
-
-상세보기 탭
-
-![슬라이드3](https://github.com/sn50hee/FFC_PDM/assets/139873815/3e9bdb1a-8aad-4b99-83ae-866326bff0ac)
-
-![슬라이드4](https://github.com/sn50hee/FFC_PDM/assets/139873815/61455b1f-24d5-4aa9-b15f-85ff3cf36408)
-
-![슬라이드5](https://github.com/sn50hee/FFC_PDM/assets/139873815/1df1c89a-901a-4b63-9522-e2a121052c77)
-
-
-초기값 세팅 탭
-
-![image (2)](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/3bd05255-be83-4bb1-aae5-911682bb5a72)
-
-
-검사 공정 모니터링 탭
-
-![프레젠테이션1](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/451a3e18-6fb5-49e2-8290-becfb6fa0320)
-
-
