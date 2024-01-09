@@ -229,7 +229,7 @@ B. 상세 계획
 
 &nbsp;&nbsp;&nbsp;&nbsp;C) 하단에는 현재 날짜의 불량품 검출 수를 보여줍니다.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;안전
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정상
 
 ![안전](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/d30d12fe-6eb3-4135-8174-7686f1ba1918)
 
