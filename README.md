@@ -103,14 +103,14 @@
   <tr>
     <td>김정관</td>
     <td>포장 X-RAY 객체 탐지 분석모델 구축, PLC 제어</td>
-    <td>CV(Object Detection)
+    <td><b>CV(Object Detection)</b>b>
       <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: Numpy, Pandas, Matplotlib, Keras, Sklearn, Tensorflow, Ipython, Pydotplus, Os, Graphviz, Random, Subprocess, Sys
       <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: YOLOv3
     </td>
   </tr>  <tr>
     <td>성민철</td>
     <td>관리자 얼굴 탐지 모델 구축</td>
-    <td>CV(Object Detection)
+    <td><b>CV(Object Detection)</b>b>
       <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: Numpy, Pandas, Matplotlib, Keras, Sklearn, Tensorflow, Ipython, Pydotplus, Os, Graphviz, Random, Subprocess, Sys
       <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: YOLOv5
     </td>
@@ -118,7 +118,7 @@
   <tr>
     <td>윤석희</td>
     <td>관리자 시선 추적 모델 구축, PLC 제어</td>
-    <td>CV(Object Detection)
+    <td><b>CV(Object Detection)</b>b>
       <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: Numpy, Pandas, Matplotlib, Keras, Sklearn, Tensorflow, Ipython, Pydotplus, Os, Graphviz, Random, Subprocess, Sys
       <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: L2CS-Net
     </td>
@@ -126,7 +126,7 @@
   <tr>
     <td>공통</td>
     <td>WPF 화면 구현, 테스트</td>
-    <td>WPF
+    <td><b>WPF</b>
       <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 언어: C# 11.0
       <br>&nbsp;&nbsp;&nbsp;&nbsp;B. Framework: .NET 7.0, WPF
       <br>&nbsp;&nbsp;&nbsp;&nbsp;C. 라이브러리: scottplot 4.1.68, XGCommLib(PLC와 통신)
