@@ -185,14 +185,14 @@ B. 상세 계획
 
 &nbsp;&nbsp;&nbsp;&nbsp;B. 관리자의 동공을 통한 시선 추적으로 관리자의 집중도를 파악하여 설비의 속도가 자동 조절합니다.
 
-<br>
+<br><br><br>
 2) 통계 탭
 
 &nbsp;&nbsp;&nbsp;&nbsp;A) 실시간 고장 위험 장비 현황, 실시간 장비 가동률, 최근 10건 고장 장비, 오류 횟수를 보여줍니다.
 
 ![통계](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/81ccf564-0f13-449c-8295-a5eaa7e212e8)
-<br>
 
+<br><br><br>
 3) 상세보기 탭
 
 &nbsp;&nbsp;&nbsp;&nbsp;A) 모델명, 모델ID, 기간을 선택할 수 있습니다.
@@ -205,12 +205,11 @@ B. 상세 계획
 
 &nbsp;&nbsp;&nbsp;&nbsp;E) 고장 횟수, 유지보수 횟수는 pie chart로 보여줍니다.
 
-![상세보기1](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/2ec418d3-e37c-45b2-8f35-91a73a58c31d)
+![상세보기1_tnwjd](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/75c903e9-83a9-4c97-bfe3-5d92f364b8df)
 
-![상세보기2](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/3ca270b6-2c7a-4cbb-b3dd-e424b7514d0b)
+![상세보기2_수정](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/2a1607c1-121d-440b-b13d-4aa31e39019a)
 
-
-<br>
+<br><br><br>
 4) 자동화 값 설정 탭
 
 &nbsp;&nbsp;&nbsp;&nbsp;A) 장비의 자동화를 위한 초기값을 지정할 수 있습니다.
@@ -221,7 +220,7 @@ B. 상세 계획
 
 ![자동화 위험 포함](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/f6753da6-343a-4f4a-aafc-b7a3d1ccca6a)
 
-<br>
+<br><br><br>
 5) 검사 공정 모니터링 탭
 
 &nbsp;&nbsp;&nbsp;&nbsp;A) 검사 공정에서 불량품이 검출될 시 컨베이어 벨트의 라인을 자동 스위칭하여 불량 판별을 자동화합니다.
