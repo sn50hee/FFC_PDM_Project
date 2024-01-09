@@ -163,7 +163,58 @@ B. 상세 계획
 
 </details>
 
-# 4. 기능 및 UI
+# 4. 화면 설계
+1) 공통 사항
+&nbsp;&nbsp;&nbsp;&nbsp;A. 최초 접근 시 관리자 얼굴을 등록하여 관리자가 접근 시에만 시스템 사용이 가능합니다.
+&nbsp;&nbsp;&nbsp;&nbsp;B. 관리자의 동공을 통한 시선 추적으로 관리자의 집중도를 파악하여 설비의 속도가 자동 조절합니다.
+
+2) 통계 탭
+&nbsp;&nbsp;&nbsp;&nbsp;A) 실시간 고장 위험 장비 현황, 실시간 장비 가동률, 최근 10건 고장 장비, 오류 횟수를 보여줍니다.
+![통계](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/81ccf564-0f13-449c-8295-a5eaa7e212e8)
+
+3) 상세보기 탭
+&nbsp;&nbsp;&nbsp;&nbsp;A) 모델명, 모델ID, 기간을 선택할 수 있습니다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;B) 선택한 장비와 기간에 대해서 위험 인자에 대한 정보와 고장 횟수, 유지보수 횟수을 확인할 수 있습니다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;C) 위험 인자는 임계값을 기준으로 위험한 범위를 표시하여 Scatter Plot으로 보여줍니다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;D) 차트의 X축은 시간, Y축은 값으로 구성됩니다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;E) 고장 횟수, 유지보수 횟수는 pie chart로 보여줍니다.
+
+![상세보기1](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/2ec418d3-e37c-45b2-8f35-91a73a58c31d)
+
+![상세보기2](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/3ca270b6-2c7a-4cbb-b3dd-e424b7514d0b)
+
+4) 자동화 값 설정 탭
+
+&nbsp;&nbsp;&nbsp;&nbsp;A) 장비의 자동화를 위한 초기값을 지정할 수 있습니다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;B) 자동화를 위한 초기값을 지정할 때 학습 시킨 머신러닝 모델을 사용하여 고장 위험을 알립니다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;C) PLC 쓰기 버튼을 클릭하면 설정한 값이 PLC로 전송되며 자동화가 시작됩니다.
+
+![자동화 위험 포함](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/f6753da6-343a-4f4a-aafc-b7a3d1ccca6a)
+
+5) 검사 공정 모니터링 탭
+
+&nbsp;&nbsp;&nbsp;&nbsp;A) 검사 공정에서 불량품이 검출될 시 컨베이어 벨트의 라인을 자동 스위칭하여 불량 판별을 자동화합니다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;B) 현재 X-RAY 화면을 확인할 수 있으며 양품일 때는 화면의 테두리가 녹색으로, 불량품일 때는 화면의 테두리가 빨간색으로 표시됩니다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;C) 하단에는 현재 날짜의 불량품 검출 수를 보여준다.
+
+안전
+
+![안전](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/d30d12fe-6eb3-4135-8174-7686f1ba1918)
+
+불량품
+
+![위험](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/e4a96b79-8247-4758-b767-e0350521fe7f)
+
+
+
 ## 1) 기능
 
 &nbsp;&nbsp;&nbsp;&nbsp;A) 통계 탭을 통하여 전체 장비의 고장률, 오류 발생률 등 통계 정보를 pie chart로 보여준다.
@@ -186,14 +237,17 @@ B. 상세 계획
 
 &nbsp;&nbsp;&nbsp;&nbsp;J) 고장 위험이 높은 값을 입력 시 메시지 박스를 사용하여 안정 범위의 초기값을 유도한다.
 
-&nbsp;&nbsp;&nbsp;&nbsp;K) 관리자 얼굴을 등록하여 관리자가 접근 시에만 시스템 사용이 가능하다.
+&nbsp;&nbsp;&nbsp;&nbsp;K) 
 
-&nbsp;&nbsp;&nbsp;&nbsp;L) 관리자의 동공을 통한 시선 추적으로 관리자의 집중도를 파악하여 설비의 속도가 자동 조절된다.
+&nbsp;&nbsp;&nbsp;&nbsp;L) 
 
 &nbsp;&nbsp;&nbsp;&nbsp;M) 검사 공정에서 불량품이 검출될 시 컨베이어 벨트의 라인을 자동 스위칭하여 불량 판별을 자동화한다.
 
 
 ## 2) 화면 설계
+
+
+
 통계 탭
 
 ![슬라이드1](https://github.com/sn50hee/FFC_PDM/assets/139873815/377bf04c-8e34-4230-b52f-07019b02ebce)
