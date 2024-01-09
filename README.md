@@ -128,7 +128,7 @@ X-RAY 검사기를 사용하여 품질검사를 하는 검사공정에서 이미
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. 언어: LD(Ladder Diagram)
 
-1-5) CV
+1-5) CV(Object Detection)
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: PyTorch
 
