@@ -91,8 +91,9 @@ X-RAY 검사기를 사용하여 품질검사를 하는 검사공정에서 이미
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 최종적으로 96% 정확도로 고장 예측이 가능하다.
 
+<br>
 
-<br>- 이미지 학습 데이터
+- 이미지 학습 데이터
 
 &nbsp;&nbsp;&nbsp;&nbsp;1) [포장 x-ray](https://www.kamp-ai.kr/aidataDetail?AI_SEARCH=&page=1&DATASET_SEQ=12&EQUIP_SEL=&GUBUN_SEL=&FILE_TYPE_SEL=&WDATE_SEL=)
 <br>&nbsp;&nbsp;&nbsp;&nbsp;2) [시선 검출](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=data&dataSetSn=71421)
