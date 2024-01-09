@@ -106,6 +106,7 @@
     <td><b>CV(Object Detection)</b>
       <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: Numpy, Pandas, Matplotlib, Keras, Sklearn, Tensorflow, Ipython, Pydotplus, Os, Graphviz, Random, Subprocess, Sys
       <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: YOLOv3
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;C. 개발 툴: Google Colab
     </td>
   </tr>  <tr>
     <td>성민철</td>
@@ -113,6 +114,7 @@
     <td><b>CV(Object Detection)</b>
       <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: Numpy, Pandas, Matplotlib, Keras, Sklearn, Tensorflow, Ipython, Pydotplus, Os, Graphviz, Random, Subprocess, Sys
       <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: YOLOv5
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;C. 개발 툴: Google Colab
     </td>
   </tr>
   <tr>
@@ -121,6 +123,7 @@
     <td><b>CV(Object Detection)</b>
       <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: Numpy, Pandas, Matplotlib, Keras, Sklearn, Tensorflow, Ipython, Pydotplus, Os, Graphviz, Random, Subprocess, Sys
       <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 알고리즘: L2CS-Net
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;C. 개발 툴: Visual Studio Code
     </td>
   </tr>
   <tr>
@@ -131,6 +134,10 @@
       <br>&nbsp;&nbsp;&nbsp;&nbsp;B. Framework: .NET 7.0, WPF
       <br>&nbsp;&nbsp;&nbsp;&nbsp;C. 라이브러리: scottplot 4.1.68, XGCommLib(PLC와 통신)
       <br>&nbsp;&nbsp;&nbsp;&nbsp;D. 모델 통신: C# Process 클래스(네임스페이스: System.Diagnostics)
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;E. 개발 툴: Visual Studio 2022
+      <br><b>PLC</b>
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 언어: LD
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;B. 개발 툴: XG5000
     </td>
   </tr>
 </table>
