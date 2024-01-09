@@ -89,7 +89,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;1) [포장 x-ray](https://www.kamp-ai.kr/aidataDetail?AI_SEARCH=&page=1&DATASET_SEQ=12&EQUIP_SEL=&GUBUN_SEL=&FILE_TYPE_SEL=&WDATE_SEL=): 인공지능 중소벤처 제조 플랫폼(KAMP) - X-ray 검사장비 AI 데이터셋
 <br>&nbsp;&nbsp;&nbsp;&nbsp;2) [시선 검출](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=data&dataSetSn=71421): AI Hub - 디스플레이 중심 안구 움직임 영상 데이터
-<br>&nbsp;&nbsp;&nbsp;&nbsp;3) 관리자 얼굴 판별: 개발자의 얼굴 데이터(Github ID: kwaaaaan, raysmc517, sn50hee)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;3) 관리자 얼굴 판별: 개발자의 얼굴 데이터(Github ID: kwaaaaan, raysmc517, sn50hee) 직접 촬영 및 라벨링
 
 # 3. 사용 기술 및 개발 계획
 ## 1) 사용 기술
