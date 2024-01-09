@@ -95,7 +95,7 @@ X-RAY 검사기를 사용하여 품질검사를 하는 검사공정에서 이미
 <br>- 이미지 학습 데이터
 
 &nbsp;&nbsp;&nbsp;&nbsp;1) [포장 x-ray](https://www.kamp-ai.kr/aidataDetail?AI_SEARCH=&page=1&DATASET_SEQ=12&EQUIP_SEL=&GUBUN_SEL=&FILE_TYPE_SEL=&WDATE_SEL=)
-<br>&nbsp;&nbsp;&nbsp;&nbsp;2) [동공](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=data&dataSetSn=71421)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;2) [시선 검출](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=data&dataSetSn=71421)
 <br>&nbsp;&nbsp;&nbsp;&nbsp;3) 관리자 얼굴 판별: 개발자의 얼굴 데이터(Github ID: kwaaaaan, raysmc517, sn50hee)
 
 # 3. 사용 기술 및 개발 계획
