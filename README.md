@@ -223,3 +223,8 @@ B. 상세 계획
 ![image (2)](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/3bd05255-be83-4bb1-aae5-911682bb5a72)
 
 
+검사 공정 모니터링 탭
+
+![프레젠테이션1](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/451a3e18-6fb5-49e2-8290-becfb6fa0320)
+
+
