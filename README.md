@@ -13,13 +13,15 @@
 4. 기능 및 화면 설계
 
 # 1. 개요
-반도체, 2차 전지 등 공정 과정의 전압, 진동수, 압력, 회전수를 모니터링하여 고장의 위험도를 감소시킨다. 구체적으로는 데이터 분석을 통해 학습 시킨 머신러닝 모델을 사용하여 고장 위험을 사전에 판별한다. 95% 이상의 정확도를 가진 예측 시스템을 사용하여 고장을 예방한다. 작은 문제를 조기에 해결하면 큰 수리 비용을 피할 수 있고, 예방 정비는 비용 효율적인 방법으로 시스템을 유지할 수 있다. 이를 통하여 전체적인 설비의 안정성을 향상시킬 수 있다.
 
-PLC를 사용하여 전압, 진동수, 압력, 회전수를 정상, 주의, 위험 세가지 기준으로 구분하여 각 상태에 따라 적절한 제어 회로를 작동하여 설비를 자동화한다.
+본 프로젝트에서는 특정 공정의 사고 위험을 방지하는 소프트웨어를 개발합니다. 구체적으로는 반도체, 2차 전지와 같은 공정 과정의 전압, 진동수, 압력, 회전수를 모니터링하고, 학습된 머신러닝 모델을 사용하여 사전에 고장 위험을 판별할 수 있습니다. 위험 판별 모델은 95% 이상의 정확도를 가집니다. 실시간으로 변화하는 공정 데이터를 모니터링하고 위험성을 사전에 판별하는 것으로 예상치 못한 피해, 또는 대형 사고를 효과적으로 예방하며, 각 설비의 안정성을 향상시킬 수 있습니다. 핵심 기능에 대한 설명은 아래와 같습니다.
 
-X-RAY 검사기를 사용하여 품질검사를 하는 검사공정에서 이미지 데이터의 분석 및 학습을 통해 AI 객체 탐지 분석모델을 도입하였다. 불량품 탐지 시 PLC의 회로를 제어하여 불량품 판별을 자동화 한다.
+1. PLC를 사용하여 전압, 진동수, 압력, 회전수를 정상, 주의, 위험 세가지 기준으로 구분하고, 공정 상태에 따라 PLC 내부 회로(LD 프로그램 구성)를 변경하는 것으로 자동화를 이루었습니다.
 
-시스템은 얼굴 인식 및 동공 움직임 분석을 통해 인가된 사용자의 안전한 접근을 보장하며, 또한 이 기술을 통해 사용자의 집중도를 파악하여 설비의 안정성을 높일 수 있다. 이를 통해 생산 과정에서의 안정성과 효율성을 극대화 할 수 있다.
+2. X-RAY 검사기를 사용하는 품질 검사 과정에서 생성되는 X-RAY 이미지를 학습하여 AI 객체 탐지 분석 모델을 만들었습니다. 불량품 탐지 시 PLC의 회로를 제어하여 생산라인을 변경합니다.
+
+3. 얼굴 인식 및 동공 움직임 분석을 통해 인가된 사용자의 안전한 접근을 보장하며, 사용자의 집중도를 파악하여 설비의 안정성을 높일 수 있습니다.
+위 세가지 요소를 통해 생산 과정의 안정성과 효율성을 극대화 할 수 있습니다.
 
 
 # 2. 사용 데이터 및 데이터 분석
@@ -30,27 +32,17 @@ X-RAY 검사기를 사용하여 품질검사를 하는 검사공정에서 이미
 <details>
 <summary>&nbsp;&nbsp;&nbsp;&nbsp; 데이터 예시</summary>
 
-&nbsp;&nbsp;&nbsp;&nbsp;A. PdM_errors.csv
-
-![image](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/85281b24-7ed6-462d-832e-7f24134a4c59)
-
-&nbsp;&nbsp;&nbsp;&nbsp;B. PdM_failures.csv
+&nbsp;&nbsp;&nbsp;&nbsp;A. PdM_failures.csv
 
 ![image](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/fce08720-5f42-4a3d-a250-4a525e2159e4)
 
-&nbsp;&nbsp;&nbsp;&nbsp;C. PdM_machines.csv
+&nbsp;&nbsp;&nbsp;&nbsp;B. PdM_errors.csv: datetime, machineID, errorID
 
-![image](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/1322c73a-8434-4caa-aed6-71865e7cd0bb)
+&nbsp;&nbsp;&nbsp;&nbsp;C. PdM_machines.csv: machineID, model, age
 
-&nbsp;&nbsp;&nbsp;&nbsp;D. PdM_maint.csv
+&nbsp;&nbsp;&nbsp;&nbsp;D. PdM_maint.csv: datetime, machineID, comp
 
-![image](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/80ae350e-8b76-4d2a-a052-3f7d6b2a1727)
-
-&nbsp;&nbsp;&nbsp;&nbsp;E. PdM_telemetry.csv
-
-![image](https://github.com/sn50hee/FFC_PDM_Project/assets/139873815/f1b56fff-224b-4973-bdb5-ee30d90ee050)
-
-</details>
+&nbsp;&nbsp;&nbsp;&nbsp;E. PdM_telemetry.csv: datetime, machineID, volt, rotate, pressure, vibration
 
 - 데이터 분석
 
