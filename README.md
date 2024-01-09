@@ -54,8 +54,6 @@ X-RAY 검사기를 사용하여 품질검사를 하는 검사공정에서 이미
 
 </details>
 
-
-
 - 데이터 분석
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A. 장비 가동 데이터, 장비 정보, 설비 고장 이력 데이터, 경고 이력 데이터, 유지 보수 이력 데이터를 활용하여 고장에 위험을 주는 요소를 선별한다.
@@ -93,6 +91,12 @@ X-RAY 검사기를 사용하여 품질검사를 하는 검사공정에서 이미
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 최종적으로 96% 정확도로 고장 예측이 가능하다.
 
+
+- 이미지 학습 데이터
+
+&nbsp;&nbsp;&nbsp;&nbsp;1) [포장 x-ray](https://www.kamp-ai.kr/aidataDetail?AI_SEARCH=&page=1&DATASET_SEQ=12&EQUIP_SEL=&GUBUN_SEL=&FILE_TYPE_SEL=&WDATE_SEL=)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;2) [동공](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=data&dataSetSn=71421)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;3) 관리자 얼굴 판별: 개발자의 얼굴 데이터(Github ID: )
 
 # 3. 사용 기술 및 개발 계획
 ## 1) 사용 기술
