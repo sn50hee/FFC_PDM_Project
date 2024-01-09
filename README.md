@@ -103,7 +103,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;C. 개발 툴: Visual Studio Code 1.84.2
 
 
-<b>1-2) GUI</b>
+<b>1-2) WPF</b>
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. 언어: C# 11.0
 
