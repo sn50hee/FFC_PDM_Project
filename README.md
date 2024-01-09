@@ -44,6 +44,8 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;E. PdM_telemetry.csv: datetime, machineID, volt, rotate, pressure, vibration
 
+</details>
+
 - 데이터 분석
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A. 장비 가동 데이터, 장비 정보, 설비 고장 이력 데이터, 경고 이력 데이터, 유지 보수 이력 데이터를 활용하여 고장에 위험을 주는 요소를 선별한다.
