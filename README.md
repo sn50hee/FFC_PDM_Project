@@ -1,7 +1,7 @@
 # FFC_PDM_WPF_Project
 팀명: FFC(Future Factory Collaborators)
 
-팀원: 윤석희, 김정관, 성민철
+팀원: 김정관, 성민철, 윤석희
 
 주제: 보안과 안전이 추가된 제조 공정 예측 유지 보수, 자동화 하기
 
