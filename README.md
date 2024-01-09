@@ -102,7 +102,7 @@ X-RAY 검사기를 사용하여 품질검사를 하는 검사공정에서 이미
 # 3. 사용 기술 및 개발 계획
 ## 1) 사용 기술
 
-1-1) 데이터 분석
+<b>1-1) 데이터 분석</b>
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. 언어: python3.8
 
@@ -111,7 +111,7 @@ X-RAY 검사기를 사용하여 품질검사를 하는 검사공정에서 이미
 &nbsp;&nbsp;&nbsp;&nbsp;C. 개발 툴: Visual Studio Code 1.84.2
 
 
-1-2) GUI
+<b>1-2) GUI</b>
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. 언어: C# 11.0
 
@@ -120,15 +120,15 @@ X-RAY 검사기를 사용하여 품질검사를 하는 검사공정에서 이미
 &nbsp;&nbsp;&nbsp;&nbsp;C. 라이브러리: scottplot 4.1.68, XGCommLib(PLC와 통신)
 
 
-1-3) 데이터 분석 모델과 WPF 연결
+<b>1-3) 데이터 분석 모델과 WPF 연결</b>
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. C# Process 클래스(네임스페이스: System.Diagnostics)
 
-1-4) PLC
+<b>1-4) PLC</b>
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. 언어: LD(Ladder Diagram)
 
-1-5) CV(Object Detection)
+<b>1-5) CV(Object Detection)</b>
 
 &nbsp;&nbsp;&nbsp;&nbsp;A. 라이브러리: PyTorch
 
