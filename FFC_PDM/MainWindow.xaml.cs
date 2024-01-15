@@ -480,6 +480,37 @@ namespace FFC_PDM
             gazePLCAccessHandler.Connect_Start();
         }
 
+
+        //김정관 시작
+        private System.Timers.Timer updateTimer;
+        GetPythonModel_Xray get_xray_Tracking = new GetPythonModel_Xray();
+        private void RunObjectDetectionButton_Click(object sender, RoutedEventArgs e)
+        {
+            get_xray_Tracking.GazeTracking();
+
+            updateTimer = new System.Timers.Timer();
+            updateTimer.Interval = 1000; // 1초마다 업데이트
+            updateTimer.Elapsed += UpdateResult; // 타이머가 경과할 때마다 호출할 메서드
+            updateTimer.Start();
+        }
+
+        private void UpdateResult(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            string result = get_xray_Tracking.GetApiCheckResult();
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (result == "1")
+                {
+                    xrayGrid.Background = new SolidColorBrush(Colors.Red);
+                }
+                else if (result == "0")
+                {
+                    xrayGrid.Background = new SolidColorBrush(Colors.Green);
+                }
+            }));
+        }
+        // 김정관 끝
     }
 
 }
