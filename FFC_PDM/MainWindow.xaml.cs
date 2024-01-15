@@ -472,6 +472,14 @@ namespace FFC_PDM
         }
 
         //김정관 끝
+
+
+        private void btn_gaze_click(object sender, RoutedEventArgs e)
+        {
+            GazePLCAccessHandler gazePLCAccessHandler = new GazePLCAccessHandler();
+            gazePLCAccessHandler.Connect_Start();
+        }
+
     }
 
 }
