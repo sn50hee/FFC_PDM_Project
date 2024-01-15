@@ -130,14 +130,11 @@ namespace FFC_PDM
             {
                 Debug.WriteLine("ApiCheck 시작");
                 JToken data = callWebClient();
-                Debug.WriteLine(data.ToString());
+                //Debug.WriteLine(data.ToString());
                 if (data != null)
                 {
-                    if (data["direction"].ToString() != "center")
-                    {
-                        apiCheckResult = data["direction"].ToString();
-                        Debug.WriteLine(apiCheckResult);
-                    }
+                    apiCheckResult = data["direction"].ToString();
+                    Debug.WriteLine(apiCheckResult);
                 }
 
             }
@@ -155,7 +152,7 @@ namespace FFC_PDM
 
         public string GetApiCheckResult()
         {
-            lock (this)
+            //lock (this)
             {
                 return apiCheckResult;
             }

@@ -509,32 +509,12 @@ namespace FFC_PDM
         //김정관 끝
 
 
-
-        private void gaze_tracking()
+        private void btn_gaze_click(object sender, RoutedEventArgs e)
         {
-            
+            GazePLCAccessHandler gazePLCAccessHandler = new GazePLCAccessHandler();
+            gazePLCAccessHandler.Connect_Start();
         }
 
-        private void btn_gaze_Click(object sender, RoutedEventArgs e)
-        {
-            GetGazeTracking getGazeTracking = new GetGazeTracking();
-            List<string> newDatas = new List<string>();
-            getGazeTracking.GazeTracking();
-            tb_gaze.Text = "";
-
-            var updateResultTask = Task.Run(async () =>
-            {
-                while (true)
-                {
-                    string result = getGazeTracking.GetApiCheckResult();
-                    await Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        tb_gaze.Text = result;
-                    }));
-                    await Task.Delay(1000); // 1초 대기
-                }
-            });
-        }
     }
 
 }
