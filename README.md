@@ -132,7 +132,7 @@
     <td><b>WPF</b>
       <br>&nbsp;&nbsp;&nbsp;&nbsp;A. 언어: C# 11.0
       <br>&nbsp;&nbsp;&nbsp;&nbsp;B. Framework: .NET 7.0, WPF
-      <br>&nbsp;&nbsp;&nbsp;&nbsp;C. 라이브러리: scottplot 4.1.68, XGCommLib(PLC와 통신)
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;C. 라이브러리: scottplot 4.1.68, XGCommLib(PLC와 통신), RestSharp 110.2.0
       <br>&nbsp;&nbsp;&nbsp;&nbsp;D. 모델 통신: C# Process 클래스(네임스페이스: System.Diagnostics)
       <br>&nbsp;&nbsp;&nbsp;&nbsp;E. 개발 툴: Visual Studio 2022
       <br><b>PLC</b>
