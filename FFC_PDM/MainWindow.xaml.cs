@@ -3,6 +3,7 @@ using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
@@ -36,8 +37,9 @@ namespace FFC_PDM
         //public PlcDataAccessHandler handler = new PlcDataAccessHandler(CheckDataList);
         public MainWindow()
         {
-            InitializeComponent(); 
-
+            InitializeComponent();
+            // 성민철 안면인식
+            FaceDetection();
             // 윤석희 추가
             WP_RecentFacilityView();
             WP_ErrorRateView();
@@ -511,6 +513,69 @@ namespace FFC_PDM
             }));
         }
         // 김정관 끝
+
+        // 성민철 안면 인식
+        public void FaceDetection()
+        {
+            PLC_FaceDetection transfer = new PLC_FaceDetection();
+            ProcessStartInfo cmd = new ProcessStartInfo();
+            Process process = new Process();
+            List<string> path = new List<string>();
+            // cmd 실행할거임!
+            cmd.FileName = @"C:\Windows\System32\cmd.exe";
+
+            cmd.UseShellExecute = false;
+            cmd.CreateNoWindow = false;  // cmd창 띄우기
+            cmd.RedirectStandardError = true; // cmd창에서 오류 내용 가져오기proc
+            cmd.RedirectStandardOutput = true; //cmd창에서 데이터 가져오기 
+            cmd.RedirectStandardInput = true; // cmd창에서 데이터 보내기
+
+            process.EnableRaisingEvents = true; // 끝나면 종료 이벤트?
+            process.StartInfo = cmd;
+            // 위의 조건이 설정되고 cmd 실행
+            // cmd를 On 시키는데에 앞서 위에 부분 시행!
+            process.Start();
+            // 명령어 마무리
+            //cmd창에서 데이터 가져오기
+            // 프로그램 불러오기
+
+
+            //가상환경 활성화 코드 -> 본인 컴퓨터 내부의 아나콘다로 경로 바꿀 것
+            process.StandardInput.WriteLine(@"%windir%\System32\cmd.exe /K ""C:\Users\barya\anaconda3\Scripts\activate.bat""");
+            // 가상환경 활성화, activate 뒤에 본인 가상환경 이름으로 할 것
+            process.StandardInput.WriteLine(@"activate yolo");
+            // 파이썬 파일 경로, 본인 파이썬 파일 경로로
+            process.StandardInput.WriteLine(@"cd C:\Users\barya\Downloads\YoloDAtaSelfPhoth\yolov5");
+            // detect 모델 수행, 경로도 본인 기준으로 
+            process.StandardInput.WriteLine(@"python detect.py --weights ""C:\Users\barya\Downloads\YoloDAtaSelfPhoth\yolov5\runs\train\mincheolphoto\weights\best.pt"" --conf 0.8 --source 0");
+            process.StandardInput.Flush();
+            process.StandardInput.Close();
+
+
+            string result = process.StandardOutput.ReadToEnd();
+            string[] lines = result.Split('\n');
+            foreach (string line in lines)
+            {
+                // '1'이 포함된 라인을 찾음
+                if (line.Contains("1"))
+                {
+                    
+                    //transfer.Connect();
+                }
+
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[Result Info]" + DateTime.Now + "\r\n");
+            sb.Append(result);
+            sb.Append("\r\n");
+            
+            process.WaitForExit();
+            process.Close();
+
+
+
+
+        }
     }
 
 }
