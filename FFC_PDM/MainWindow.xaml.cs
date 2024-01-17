@@ -541,13 +541,13 @@ namespace FFC_PDM
 
 
             //가상환경 활성화 코드 -> 본인 컴퓨터 내부의 아나콘다로 경로 바꿀 것
-            process.StandardInput.WriteLine(@"%windir%\System32\cmd.exe /K ""C:\Users\barya\anaconda3\Scripts\activate.bat""");
+            process.StandardInput.WriteLine(@"%windir%\System32\cmd.exe /K ""C:\Users\admin\anaconda3\Scripts\activate.bat""");
             // 가상환경 활성화, activate 뒤에 본인 가상환경 이름으로 할 것
             process.StandardInput.WriteLine(@"activate yolo");
             // 파이썬 파일 경로, 본인 파이썬 파일 경로로
-            process.StandardInput.WriteLine(@"cd C:\Users\barya\Downloads\YoloDAtaSelfPhoth\yolov5");
+            process.StandardInput.WriteLine(@"cd C:\Users\admin\source\repos\FFC_PDM_Project\FFC_PDM\bin\x86\Debug\net7.0-windows\contents\yolov5-master");
             // detect 모델 수행, 경로도 본인 기준으로 
-            process.StandardInput.WriteLine(@"python detect.py --weights ""C:\Users\barya\Downloads\YoloDAtaSelfPhoth\yolov5\runs\train\mincheolphoto\weights\best.pt"" --conf 0.8 --source 0");
+            process.StandardInput.WriteLine(@"python detect.py --weights ""C:\Users\admin\source\repos\FFC_PDM_Project\FFC_PDM\bin\x86\Debug\net7.0-windows\contents\yolov5-master\runs\train\mincheol2\weights\best.pt"" --conf 0.7 --source 0");
             process.StandardInput.Flush();
             process.StandardInput.Close();
 

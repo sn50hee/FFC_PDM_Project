@@ -128,7 +128,7 @@ namespace FFC_PDM
         {
             // 연결하기
             CommObjectFactory20 factory = new CommObjectFactory20();
-            this.oCommDriver = factory.GetMLDPCommObject20("192.168.1.2:2004");
+            this.oCommDriver = factory.GetMLDPCommObject20("192.168.0.30:2004");
             // checkBox 리스트에 있는 volt, rotate, pressure, vibration 최대 최소값 넣을 리스트
             List<Dictionary<string, int>> plc_write = new List<Dictionary<string, int>>();
 

@@ -72,6 +72,7 @@ namespace FFC_PDM
                         sw.WriteLine(condaPath);
                         sw.WriteLine("conda activate kwan");
                         sw.WriteLine($"python {Path.Combine(contentsPath, "networking.py")}");
+                        Debug.WriteLine($"python {Path.Combine(contentsPath, "networking.py")}");
                     }
                 }
             }

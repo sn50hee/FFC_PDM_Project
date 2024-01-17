@@ -16,6 +16,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Threading;
 using System.Diagnostics;
+using System.Windows.Media;
 
 namespace FFC_PDM
 {
@@ -145,7 +146,7 @@ namespace FFC_PDM
             var client = new RestClient("http://127.0.0.1:5000/");
             var request = new RestRequest("get_gaze_data");
             var response = client.ExecuteGet(request);
-            JToken data = JToken.Parse(response.Content);
+            JToken data = JToken.Parse(response.Content) != null? JToken.Parse(response.Content):null;
             return data;
 
         }

@@ -17,7 +17,7 @@ namespace FFC_PDM
         public void Connect()
         {
             CommObjectFactory20 factory = new CommObjectFactory20();
-            this.oCommDriver = factory.GetMLDPCommObject20("192.168.1.2:2004");
+            this.oCommDriver = factory.GetMLDPCommObject20("192.168.0.30:2004");
 
             if (1 == this.oCommDriver.Connect(""))
             {
